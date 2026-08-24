@@ -36,7 +36,10 @@
 </div>
 <script>
 const K={menu:'tin2_menu',orders:'tin2_orders',expenses:'tin2_expenses',setup:'tin2_setup',auto:'tin2_auto_backups',last:'tin2_last_backup',cash:'tin2_cash',bank:'tin2_bank'};
-const $=id=>document.getElementById(id), today=()=>new Date().toISOString().slice(0,10), money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+const $=id=>document.getElementById(id), today=()=>{
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}, money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
