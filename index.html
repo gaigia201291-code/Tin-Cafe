@@ -10,11 +10,12 @@
 @media(max-width:520px){.tabs button{font-size:12px;padding:10px 4px}.grid{grid-template-columns:1fr 1fr}.item{grid-template-columns:1fr auto 64px 78px}.brand b{font-size:21px}}
 </style></head>
 <body><div class="app">
-<header class="brand"><div><b>Cà Phê Tin ❤️</b><div><small>Đơn giản • Offline • Dữ liệu trên máy</small></div></div><small id="backupStatus">Đang sao lưu…</small></header>
-<nav class="tabs no-print"><button class="active" data-tab="order">Order</button><button data-tab="stats">Thống kê</button><button data-tab="cost">Chi phí</button><button data-tab="data">Dữ liệu</button></nav>
+<header class="brand"><div><b>Cà Phê Tin ❤️</b><div><small>Đơn giản • Offline • Dữ liệu trên máy</small></div></div><small>Offline</small></header>
+<nav class="tabs no-print"><button class="active" data-tab="order">Order</button><button data-tab="stats">Thống kê</button><button data-tab="cost">Chi phí</button></nav>
 <section id="order" class="tab active">
 <div class="card"><div class="section-title">Tạo đơn</div><div id="menuList"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotal">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrder">Chốt đơn</button><button class="btn" id="clearCart">Xóa đơn</button></div></div>
 <div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div>
+<div class="card"><div class="section-title">Quản lý món & giá vốn</div><div id="menuAdmin"></div><div class="actions"><button class="btn primary" id="addMenu">Thêm món</button></div></div>
 </section>
 <section id="stats" class="tab">
 <div class="card"><div class="section-title">Hôm nay</div><div class="grid"><div class="stat"><small>Doanh thu</small><b id="todayRevenue">0đ</b></div><div class="stat"><small>Giá vốn</small><b id="todayCogs">0đ</b></div><div class="stat"><small>Chi phí ngày</small><b id="todayExpense">0đ</b></div><div class="stat"><small>Lợi nhuận</small><b id="todayProfit">0đ</b></div></div></div>
@@ -28,22 +29,18 @@
 <div class="card"><div class="section-title">Chi phí mở quầy</div><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
 <div class="card"><div class="section-title">Danh sách chi phí</div><div id="expenseList"></div></div>
 </section>
-<section id="data" class="tab">
-<div class="card"><div class="section-title">Sao lưu & khôi phục</div><p class="note">Web tự động lưu một bản sao trong bộ nhớ máy mỗi ngày. Bạn vẫn nên tải file sao lưu xuống để phòng mất dữ liệu khi đổi/xóa trình duyệt.</p><div id="autoInfo" class="note"></div><div class="actions" style="margin-top:10px"><button class="btn good" id="downloadBackup">Tải sao lưu</button><button class="btn" id="restoreBtn">Khôi phục file</button><input id="restoreFile" type="file" accept=".json,application/json" hidden></div><div class="actions" style="margin-top:10px"><button class="btn" id="clearData">Xóa toàn bộ dữ liệu</button></div></div>
-<div class="card"><div class="section-title">Menu & giá vốn</div><div id="menuAdmin"></div><div class="actions"><button class="btn primary" id="addMenu">Thêm món</button></div></div>
-</section>
 
 </div>
 <script>
 const K={menu:'tin2_menu',orders:'tin2_orders',expenses:'tin2_expenses',setup:'tin2_setup',auto:'tin2_auto_backups',last:'tin2_last_backup',cash:'tin2_cash',bank:'tin2_bank'};
-const $=id=>document.getElementById(id), today=()=>new Date().toISOString().slice(0,10), money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+const $=id=>document.getElementById(id), today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()), money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
 function save(){localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));autoBackup()}
 function stats(date){let os=orders.filter(o=>o.date===date), revenue=os.reduce((s,o)=>s+Number(o.total||0),0),cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date===date).reduce((s,e)=>s+Number(e.amount||0),0),orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount}}
 function monthStats(m){let ds=orders.filter(o=>o.date?.startsWith(m)), revenue=ds.reduce((s,o)=>s+Number(o.total||0),0),cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);return{revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)}}
-function render(){renderMenu();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();updateBackupStatus()}
+function render(){renderMenu();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin()}
 function renderMenu(){let h='';menu.forEach((m,i)=>{let q=Number(cart[i]||0);h+=`<div class="item"><div><div class="name">${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});$('menuList').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
 function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
 function renderToday(){let os=orders.filter(o=>o.date===today()).slice().reverse();$('todayOrders').innerHTML=os.length?os.map(o=>`<div class="summaryline"><span>${o.time||''} • ${(o.items||[]).map(i=>`${esc(i.name)} x${i.qty}`).join(', ')}<br><small>${money(o.total)}</small></span><button class="btn danger" type="button" data-del-order="${o.id}">Xóa</button></div>`).join(''):'<div class="empty">Chưa có đơn hôm nay.</div>';document.querySelectorAll('[data-del-order]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.delOrder))}
@@ -54,23 +51,55 @@ function renderMenuAdmin(){$('menuAdmin').innerHTML=menu.map((m,i)=>`<div class=
 function deleteMenu(i){if(!confirm('Xóa món này khỏi menu?'))return;delete cart[i];menu.splice(i,1);let nc={};Object.keys(cart).forEach(k=>{let n=+k;if(n>i)nc[n-1]=cart[k];else if(n<i)nc[n]=cart[k]});cart=nc;save();render()}
 function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Bank hiện có:',bank));if(!Number.isFinite(b)||b<0)return;cash=c;bank=b;save();render()}
 function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
-function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render();alert('Đã chốt đơn.')}
+function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render(); if(confirm('Đã chốt đơn. Em có muốn in hóa đơn không?')) printInvoice(o);}
+function printInvoice(o){
+  const lines=(o.items||[]).map(i=>`<div class=\"line\"><span>${esc(i.name)} × ${i.qty}</span><span>${money(i.qty*i.price)}</span></div>`).join('');
+  const w=window.open('','_blank','width=420,height=700');
+  if(!w){alert('Trình duyệt đang chặn cửa sổ in. Em cho phép cửa sổ bật lên rồi thử lại nhé.');return;}
+  w.document.write(`<!doctype html><html><head><meta charset=\"utf-8\"><title>Hóa đơn Cafe Tin</title><style>body{font-family:Arial,sans-serif;width:72mm;margin:0 auto;padding:8px;font-size:12px;color:#000}.title{text-align:center;font-size:18px;font-weight:800}.center{text-align:center}.line{display:flex;justify-content:space-between;gap:8px;padding:3px 0}.total{border-top:1px dashed #000;margin-top:5px;padding-top:6px;font-size:15px;font-weight:800}@page{size:72mm auto;margin:3mm}</style></head><body><div class=\"title\">☕ CÀ PHÊ TIN ❤️</div><div class=\"center\">Hóa đơn #${String(o.id).slice(-6)}</div><div class=\"center\">${o.date} ${o.time||''}</div><hr>${lines}<div class=\"line total\"><span>TỔNG CỘNG</span><span>${money(o.total)}</span></div><div class=\"center\" style=\"margin-top:12px\">Cảm ơn quý khách!</div><script>window.onload=()=>{window.print();setTimeout(()=>window.close(),500)}<\/script></body></html>`);
+  w.document.close();
+}
 function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
 function addExpense(){let n=$('expenseName').value.trim(),a=Number($('expenseAmount').value),d=$('expenseDate').value||today();if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');expenses.push({id:Date.now(),date:d,name:n,amount:a});$('expenseName').value='';$('expenseAmount').value='';save();render()}
 function addSetup(){let n=$('setupName').value.trim(),a=Number($('setupAmount').value);if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');setup.push({id:Date.now(),name:n,amount:a});$('setupName').value='';$('setupAmount').value='';save();render()}
 function delExpense(id){expenses=expenses.filter(x=>String(x.id)!==String(id));save();render()} function delSetup(id){setup=setup.filter(x=>String(x.id)!==String(id));save();render()}
 function autoBackup(){let d=today(),b=load(K.auto,{});b[d]=snapshot();let keys=Object.keys(b).sort();if(keys.length>30)delete b[keys[0]];localStorage.setItem(K.auto,JSON.stringify(b));localStorage.setItem(K.last,JSON.stringify({date:d,time:new Date().toLocaleString('vi-VN')}))}
 function snapshot(){return{version:3,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank}}
-function downloadBackup(){let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`TinCafe-sao-luu-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:menu;menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=Array.isArray(d.tinSetup)?d.tinSetup:[];cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);save();render();alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`)}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
-function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
 
+function migrateLegacyData(){
+  if(localStorage.getItem(K.orders)||localStorage.getItem(K.menu)) return;
+  try{
+    const oldMenu=JSON.parse(localStorage.getItem('tinMenu')||'null');
+    const oldOrders=JSON.parse(localStorage.getItem('tinOrders')||'null');
+    const oldExpenses=JSON.parse(localStorage.getItem('tinExpenses')||'null');
+    const oldHistory=JSON.parse(localStorage.getItem('tinHistory')||'null');
+    if(Array.isArray(oldMenu)) menu=oldMenu.map(m=>({name:String(m[0]||''),price:Number(m[1])||0,cost:0})).filter(m=>m.name);
+    if(Array.isArray(oldOrders)) orders=oldOrders.map(o=>({...o,items:(o.items||[]).map(i=>({...i,cost:Number(i.cost)||0}))}));
+    if(Array.isArray(oldExpenses)) expenses=oldExpenses;
+    if(oldHistory && typeof oldHistory==='object' && !orders.length){
+      orders=Object.entries(oldHistory).filter(([d,v])=>v&&Number(v.total)>0).map(([d,v],i)=>({id:Date.now()+i,date:d,time:'',manual:true,orderCount:1,items:[{name:'Doanh thu chuyển từ sổ cũ',qty:1,price:Number(v.total)||0,cost:0}],total:Number(v.total)||0}));
+    }
+    save();
+  }catch(e){}
+}
+migrateLegacyData();
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
-$('saveOrder').onclick=addOrder;$('clearCart').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
-$('expenseDate').value=today();$('manualDate').value=today();
-// Hỗ trợ nhập file sao lưu cũ của Cafe Tin.
-window.addEventListener('beforeunload',autoBackup);autoBackup();render();
+$('saveOrder').onclick=addOrder;
+$('clearCart').onclick=()=>{cart={};renderMenu()};
+$('addExpense').onclick=addExpense;
+$('addManualRevenue').onclick=addManualRevenue;
+$('addSetup').onclick=addSetup;
+$('monthPick').value=today().slice(0,7);
+$('monthPick').onchange=renderStats;
+$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};
+$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};
+$('editMoney').onclick=updateMoney;
+$('expenseDate').value=today();
+$('manualDate').value=today();
+window.addEventListener('beforeunload',autoBackup);
+autoBackup();
+render();
 </script>
 <script>
 (function(){
@@ -134,40 +163,6 @@ window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 </script>
 
 
-<script>
-(function(){
-  const BAR_ID='v51-transfer-tools';
-  function make(){
-    if(document.getElementById(BAR_ID)) return;
-    const b=document.createElement('div');
-    b.id=BAR_ID;
-    b.style.cssText='position:fixed;bottom:12px;left:12px;right:12px;z-index:9999;background:#fff;border:1px solid #ddd;border-radius:14px;padding:10px;box-shadow:0 3px 14px #0002';
-    b.innerHTML='<b>Chuyển dữ liệu v5</b><div style="font-size:12px;color:#666;margin:4px 0 8px">Xuất dữ liệu trên bản tải về rồi Khôi phục trên bản GitHub.</div><button id="v51out">💾 Xuất dữ liệu v5</button> <label style="display:inline-block;background:#7b3f00;color:#fff;padding:8px 10px;border-radius:9px;font-weight:700">♻️ Nhập dữ liệu v5<input id="v51in" type="file" accept=".json" style="display:none"></label>';
-    document.body.appendChild(b);
-    b.querySelector('#v51out').onclick=()=>{
-      const data={version:'TinCafe-v5-transfer',exportedAt:new Date().toISOString(),localStorage:{}};
-      for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data.localStorage[k]=localStorage.getItem(k);}
-      const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tin-cafe-v5-du-lieu-'+new Date().toISOString().slice(0,10)+'.json';a.click();
-      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-    };
-    b.querySelector('#v51in').onchange=e=>{
-      const f=e.target.files[0]; if(!f)return;
-      const r=new FileReader();
-      r.onload=()=>{
-        try{
-          const x=JSON.parse(r.result);
-          if(!x.localStorage) throw Error('File không phải bản sao lưu dữ liệu v5');
-          Object.entries(x.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));
-          alert('Đã chuyển dữ liệu v5 thành công. Trang sẽ tải lại.');
-          location.reload();
-        }catch(err){alert('Không thể nhập dữ liệu v5: '+err.message)}
-      };
-      r.readAsText(f);
-    };
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',make);else make();
-})();
-</script>
+
 
 </body></html>
