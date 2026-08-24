@@ -133,4 +133,41 @@ window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 })();
 </script>
 
+
+<script>
+(function(){
+  const BAR_ID='v51-transfer-tools';
+  function make(){
+    if(document.getElementById(BAR_ID)) return;
+    const b=document.createElement('div');
+    b.id=BAR_ID;
+    b.style.cssText='position:fixed;bottom:12px;left:12px;right:12px;z-index:9999;background:#fff;border:1px solid #ddd;border-radius:14px;padding:10px;box-shadow:0 3px 14px #0002';
+    b.innerHTML='<b>Chuyển dữ liệu v5</b><div style="font-size:12px;color:#666;margin:4px 0 8px">Xuất dữ liệu trên bản tải về rồi Khôi phục trên bản GitHub.</div><button id="v51out">💾 Xuất dữ liệu v5</button> <label style="display:inline-block;background:#7b3f00;color:#fff;padding:8px 10px;border-radius:9px;font-weight:700">♻️ Nhập dữ liệu v5<input id="v51in" type="file" accept=".json" style="display:none"></label>';
+    document.body.appendChild(b);
+    b.querySelector('#v51out').onclick=()=>{
+      const data={version:'TinCafe-v5-transfer',exportedAt:new Date().toISOString(),localStorage:{}};
+      for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data.localStorage[k]=localStorage.getItem(k);}
+      const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tin-cafe-v5-du-lieu-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    };
+    b.querySelector('#v51in').onchange=e=>{
+      const f=e.target.files[0]; if(!f)return;
+      const r=new FileReader();
+      r.onload=()=>{
+        try{
+          const x=JSON.parse(r.result);
+          if(!x.localStorage) throw Error('File không phải bản sao lưu dữ liệu v5');
+          Object.entries(x.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));
+          alert('Đã chuyển dữ liệu v5 thành công. Trang sẽ tải lại.');
+          location.reload();
+        }catch(err){alert('Không thể nhập dữ liệu v5: '+err.message)}
+      };
+      r.readAsText(f);
+    };
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',make);else make();
+})();
+</script>
+
 </body></html>
