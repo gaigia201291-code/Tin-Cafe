@@ -185,22 +185,19 @@ const K={menu:'tin2_menu',orders:'tin2_orders',expenses:'tin2_expenses',setup:'t
   const existingMenu=__arr('tin2_menu',[]);
   const existingExpenses=__arr('tin2_expenses',[]);
   const existingSetup=__arr('tin2_setup',[]);
-  const seeded=localStorage.getItem('tin2_seed_loaded_v2')==='1';
-  // Preserve current data. Only on the first run, merge the supplied backup.
-  if(!seeded){
-    if(existingOrders.length===0){
-      __put('tin2_orders',__seed.tin2_orders);
-    }else{
-      const ids=new Set(existingOrders.map(x=>String(x.id)));
-      __put('tin2_orders',existingOrders.concat(__seed.tin2_orders.filter(x=>!ids.has(String(x.id)))));
-    }
-    if(existingMenu.length===0)__put('tin2_menu',__seed.tin2_menu);
-    if(existingExpenses.length===0)__put('tin2_expenses',__seed.tin2_expenses);
-    if(existingSetup.length===0)__put('tin2_setup',__seed.tin2_setup);
-    if(localStorage.getItem('tin2_cash')===null)__put('tin2_cash',__seed.tin2_cash);
-    if(localStorage.getItem('tin2_bank')===null)__put('tin2_bank',__seed.tin2_bank);
-    try{localStorage.setItem('tin2_seed_loaded_v2','1')}catch(e){}
+  // Preserve all existing user data; if this is a fresh device, load the supplied backup.
+  if(existingOrders.length===0){
+    __put('tin2_orders',__seed.tin2_orders);
+  } else {
+    const ids=new Set(existingOrders.map(x=>String(x.id)));
+    const merged=existingOrders.concat(__seed.tin2_orders.filter(x=>!ids.has(String(x.id))));
+    __put('tin2_orders',merged);
   }
+  if(existingMenu.length===0)__put('tin2_menu',__seed.tin2_menu);
+  if(existingExpenses.length===0)__put('tin2_expenses',__seed.tin2_expenses);
+  if(existingSetup.length===0)__put('tin2_setup',__seed.tin2_setup);
+  if(localStorage.getItem('tin2_cash')===null)__put('tin2_cash',__seed.tin2_cash);
+  if(localStorage.getItem('tin2_bank')===null)__put('tin2_bank',__seed.tin2_bank);
 })();
 
 const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentElement:{parentElement:{appendChild(){}},appendChild(){}},className:'',value:'',textContent:'',innerHTML:'',checked:false,files:[],onclick:null,onchange:null,click(){}}; const $=id=>document.getElementById(id)||__tinDummy, today=()=>{
@@ -210,6 +207,14 @@ const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentEleme
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
+function save(){
+  localStorage.setItem(K.menu,JSON.stringify(menu));
+  localStorage.setItem(K.orders,JSON.stringify(orders));
+  localStorage.setItem(K.expenses,JSON.stringify(expenses));
+  localStorage.setItem(K.setup,JSON.stringify(setup));
+  localStorage.setItem(K.cash,JSON.stringify(cash));
+  localStorage.setItem(K.bank,JSON.stringify(bank));
+}
 
 function normalizeDate(v){
   if(!v)return '';
@@ -258,8 +263,8 @@ function dashboardOrders(date){
 function normalizeCafeDate(v){
   if(!v)return '';
   const s=String(v).trim();
-  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;
-  const m=s.match(/^(\\d{1,2})[\\/.-](\\d{1,2})[\\/.-](\\d{4})/);
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  const m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
   if(m)return m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');
   const d=new Date(v);
   return isNaN(d.getTime())?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -317,15 +322,6 @@ function renderSetup(){let total=setup.reduce((s,e)=>s+Number(e.amount||0),0);$(
 function renderMenuAdmin(){$('menuAdmin').innerHTML=menu.map((m,i)=>`<div class="item"><div><input value="${escAttr(m.name)}" data-name="${i}"></div><input type="number" value="${m.price}" data-price="${i}"><input type="number" value="${m.cost}" data-cost="${i}"><button class="btn danger" type="button" data-del-menu="${i}">Xóa</button></div>`).join('');document.querySelectorAll('[data-del-menu]').forEach(x=>x.onclick=()=>deleteMenu(+x.dataset.delMenu));document.querySelectorAll('[data-name],[data-price],[data-cost]').forEach(x=>x.onchange=()=>{let i=x.dataset.name??x.dataset.price??x.dataset.cost; if(x.dataset.name!==undefined)menu[i].name=x.value; if(x.dataset.price!==undefined)menu[i].price=Number(x.value)||0;if(x.dataset.cost!==undefined)menu[i].cost=Number(x.value)||0;save();render()})}
 function deleteMenu(i){if(!confirm('Xóa món này khỏi menu?'))return;delete cart[i];menu.splice(i,1);let nc={};Object.keys(cart).forEach(k=>{let n=+k;if(n>i)nc[n-1]=cart[k];else if(n<i)nc[n]=cart[k]});cart=nc;save();render()}
 function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Bank hiện có:',bank));if(!Number.isFinite(b)||b<0)return;cash=c;bank=b;save();render()}
-function save(){
-  try{localStorage.setItem(K.menu,JSON.stringify(menu))}catch(e){}
-  try{localStorage.setItem(K.orders,JSON.stringify(orders))}catch(e){}
-  try{localStorage.setItem(K.expenses,JSON.stringify(expenses))}catch(e){}
-  try{localStorage.setItem(K.setup,JSON.stringify(setup))}catch(e){}
-  try{localStorage.setItem(K.cash,JSON.stringify(cash))}catch(e){}
-  try{localStorage.setItem(K.bank,JSON.stringify(bank))}catch(e){}
-  try{autoBackup()}catch(e){}
-}
 function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
 function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render();alert('Đã chốt đơn.')}
 function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
@@ -367,8 +363,8 @@ function recoverFromExistingBackup(){
 
 function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
 
-function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};$('saveOrderOrder').onclick=addOrder;$('clearCartOrder').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
-$('expenseDate').value=today();$('manualDate').value=today();
+function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};if($('saveOrderOrder'))$('saveOrderOrder').onclick=addOrder;if($('clearCartOrder'))$('clearCartOrder').onclick=()=>{cart={};renderMenu()};if($('addExpense'))$('addExpense').onclick=addExpense;if($('addManualRevenue'))$('addManualRevenue').onclick=addManualRevenue;if($('addSetup'))$('addSetup').onclick=addSetup;if($('monthPick'))$('monthPick').value=today().slice(0,7);if($('monthPick'))$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{if($('monthPick'))$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
+if($('expenseDate'))$('expenseDate').value=today();if($('manualDate'))$('manualDate').value=today();
 // Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
 const recoveredExistingData=recoverFromExistingBackup();
 
