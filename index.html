@@ -193,7 +193,7 @@ const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentEleme
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }, money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
-const __tinHashLoaded=tinHashLoad();
+const __tinHashLoaded=false;
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
 
@@ -210,7 +210,6 @@ function save(){
   try{localStorage.setItem(K.setup,JSON.stringify(setup));}catch(e){}
   try{localStorage.setItem(K.cash,JSON.stringify(cash));}catch(e){}
   try{localStorage.setItem(K.bank,JSON.stringify(bank));}catch(e){}
-  try{tinHashSave();}catch(e){}
   try{autoBackup();}catch(e){}
 }
 function normalizeDate(v){
@@ -263,6 +262,7 @@ function dashboardOrders(date){
   });
 }
 function stats(date){
+  try{const persisted=load(K.orders,orders);if(Array.isArray(persisted))orders=persisted}catch(e){}
   const os=dashboardOrders(date);
   const revenue=os.reduce((s,o)=>s+orderTotal(o),0);
   const cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0);
@@ -281,13 +281,8 @@ function monthStats(m){
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){
   try{
-    // Re-read the persisted state so Overview never depends on a stale variable.
-    const hs=tinHashDecode();
-    if(hs && Array.isArray(hs.tinOrders)) orders=hs.tinOrders;
-    else{
-      const persisted=load(K.orders,orders);
-      if(Array.isArray(persisted)) orders=persisted;
-    }
+    const persisted=load(K.orders,orders);
+    if(Array.isArray(persisted)) orders=persisted;
   }catch(e){}
   const d=dashboardDate(), t=stats(d), it=itemStats(t.orders), avg=t.orderCount?t.revenue/t.orderCount:0;
   if($('dashDate'))$('dashDate').textContent=d;
@@ -374,7 +369,7 @@ function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.cl
 $('expenseDate').value=today();$('manualDate').value=today();
 // Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
 const recoveredExistingData=recoverFromExistingBackup();
-if(!__tinHashLoaded)tinHashSave();
+
 window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
 </script>
