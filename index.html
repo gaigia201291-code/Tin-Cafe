@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6f4328"><link rel="manifest" href="manifest.json">
+<title>Cafe Tin</title>
+<style>
+:root{--bg:#edf8ec;--card:rgba(255,255,255,.94);--ink:#24452d;--muted:#718273;--accent:#78b982;--accent-dark:#5d9f68;--line:#d7ead5;--good:#68ad78;--danger:#dc7777;--blue:#a7d8c1;--lav:#c9dcb7;--cream:#fff9ed;--leaf:#8fbd79;--flower:#e7a8b8}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(2px);opacity:.6;pointer-events:none}body:before{width:190px;height:190px;left:-85px;top:170px;background:#cfe8c7}body:after{width:230px;height:230px;right:-105px;bottom:80px;background:#e7dce9}.app{max-width:980px;margin:auto;padding:14px 14px 44px}
+.app:before,.app:after{position:fixed;z-index:-1;pointer-events:none;font-size:42px;opacity:.45}.app:before{content:"🌿  🌸  🍃";left:5px;top:110px;transform:rotate(-8deg)}.app:after{content:"🌱  🌼  🍃";right:2px;bottom:25px;transform:rotate(7deg)}
+.brand{background:linear-gradient(135deg,#91c98b,#72b987);color:#fff;border-radius:24px;padding:20px 22px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 10px 28px rgba(74,126,78,.16);position:relative;overflow:hidden}.brand:after{content:"🌿  ✿  🍃  🌸";position:absolute;right:18px;bottom:-8px;font-size:45px;opacity:.16;letter-spacing:7px}.brand b{font-size:27px;letter-spacing:.2px}.brand small{opacity:.92}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:sticky;top:0;z-index:3;background:rgba(237,248,236,.86);backdrop-filter:blur(12px);padding:7px 0}.tabs button,.btn{border:1px solid #d4e6d1;border-radius:15px;padding:11px 10px;font-weight:750;background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 3px 10px rgba(70,111,72,.06);transition:.18s}.tabs button:hover,.btn:hover{transform:translateY(-1px)}.tabs button.active,.btn.primary{background:linear-gradient(135deg,#79b985,#69aa74);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(104,169,115,.24)}.btn.good{background:#68ad78;color:#fff;border-color:transparent}.btn.danger{background:#fff0f0;color:#c45b5b;border-color:#efd0d0}.tab{display:none}.tab.active{display:block}
+.card{background:var(--card);border:1px solid rgba(196,220,191,.9);border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(70,111,72,.09);backdrop-filter:blur(10px);position:relative;overflow:hidden}.card:after{content:"🌿  ✿";position:absolute;right:10px;top:4px;font-size:22px;opacity:.13;pointer-events:none}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#fbfffa,#f1f8ed);box-shadow:0 3px 12px rgba(70,111,72,.04)}.stat:nth-child(4n+1){background:linear-gradient(145deg,#f5fff4,#ebf7e9)}.stat:nth-child(4n+2){background:linear-gradient(145deg,#fffaf1,#fff5e8)}.stat:nth-child(4n+3){background:linear-gradient(145deg,#f3fbf4,#edf7ee)}.stat:nth-child(4n){background:linear-gradient(145deg,#fff6f8,#f9eef2)}.stat small{display:block;color:var(--muted);font-weight:600}.stat b{font-size:22px;color:#24452d}.row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:8px 0}.row>*{min-width:0}input,select{width:100%;padding:11px;border:1px solid #cfe0cb;border-radius:12px;background:rgba(255,255,255,.96);font-size:16px;color:var(--ink);outline:none}input:focus,select:focus{border-color:#8abd83;box-shadow:0 0 0 3px rgba(139,189,131,.14)}label{font-size:13px;color:var(--muted);display:block;margin:7px 0 4px}
+.item{display:grid;grid-template-columns:1fr auto 70px 86px;gap:7px;align-items:center;padding:11px 6px;border-bottom:1px dashed #d7e6d3;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(247,252,244,.7),rgba(255,255,255,.4));border-radius:13px;margin:3px 0}.item:last-child{border-bottom:0}.item:after{content:"✿";position:absolute;right:80px;top:3px;font-size:23px;color:var(--flower);opacity:.16;pointer-events:none}.item:nth-child(2n):after{content:"🍃";color:var(--leaf);font-size:25px}.item .name{font-weight:750}.item small{display:block;color:var(--muted)}.money{font-weight:800;text-align:right}.list{max-height:390px;overflow:auto}.empty{color:var(--muted);text-align:center;padding:28px 12px}.section-title{font-size:19px;font-weight:850;margin:4px 0 11px;color:#31563a}.section-title:before{content:"🌿 ";color:#75ae72}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1;min-width:130px}.total{font-size:25px;font-weight:900;color:#477b4e}.note{color:var(--muted);font-size:13px}.success{color:var(--good);font-weight:700}.danger{color:var(--danger);font-weight:700}.monthnav{display:flex;gap:8px;align-items:center}.monthnav input{max-width:170px}.summaryline{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}#dailyBalanceBox{background:var(--card)!important;border-color:var(--line)!important;box-shadow:0 8px 24px rgba(70,111,72,.09)}
+.hero-art{position:absolute;right:-4px;top:0;height:100%;width:42%;object-fit:cover;object-position:center;border-radius:0 24px 24px 0;opacity:.92;mix-blend-mode:multiply;pointer-events:none}.brand-copy{position:relative;z-index:2;max-width:60%}.brand .cup-art{width:62px;height:62px;object-fit:contain;border-radius:50%;margin-right:12px;background:#fffdf8;vertical-align:middle;box-shadow:0 4px 12px rgba(70,111,72,.12)}.brand-main{display:flex;align-items:center}.brand-main small{display:block}.hero-glow{position:absolute;left:28%;top:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.28);filter:blur(3px);pointer-events:none}.empty-illustration{display:block;width:min(100%,230px);height:125px;object-fit:cover;object-position:center 62%;border-radius:18px;margin:0 auto 10px;opacity:.95}
+@media(max-width:700px){.app{padding:10px 10px 34px}.brand{padding:17px 18px;border-radius:21px}.brand b{font-size:23px}.brand:after{font-size:35px}.card{border-radius:19px;padding:14px}.grid{gap:8px}.stat{padding:12px}.stat b{font-size:20px}.app:before,.app:after{font-size:28px;opacity:.3}}@media(max-width:520px){.tabs button{font-size:12px;padding:10px 4px}.grid{grid-template-columns:1fr 1fr}.item{grid-template-columns:1fr auto 52px 68px}.item:after{right:65px;font-size:18px}.brand b{font-size:21px}.monthnav{align-items:stretch}.monthnav input{max-width:none}.monthnav .btn{white-space:nowrap}.hero-art{width:44%;opacity:.7}.brand-copy{max-width:72%}.brand .cup-art{width:52px;height:52px;margin-right:8px}.hero-glow{left:18%;width:150px;height:150px}.empty-illustration{height:105px}}
+</style>
+<style>
+.brand{
+  background:#fffdf8;
+  color:#294437;
+  padding:16px 18px 15px;
+  border-bottom:1px solid #e7eee8;
+  box-shadow:0 2px 10px rgba(40,70,52,.06);
+}
+.brand-title{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  line-height:1;
+  margin-bottom:5px;
+}
+.brand-cafe{font-size:15px;font-weight:600;color:#6d7e73;letter-spacing:.2px}
+.brand-tin{font-family:Georgia,"Times New Roman",serif;font-size:31px;font-weight:800;color:#2f8a5b;letter-spacing:-.7px}
+.brand-heart{font-size:17px;color:#e58b91;margin-left:1px}
+.brand small{color:#7b8980;font-size:11.5px}
+.card,.panel,.box{border-radius:14px !important;box-shadow:0 2px 9px rgba(40,70,52,.06) !important}
+button{border-radius:10px !important}
+input,select,textarea{border-radius:9px !important}
+@media(max-width:520px){
+ .brand{padding:14px 15px 13px}
+ .brand-cafe{font-size:14px}
+ .brand-tin{font-size:28px}
+ .brand-heart{font-size:16px}
+ .brand small{font-size:11px}
+}
+</style>
+
+<style id="cafe-tin-brown-theme">
+:root{
+ --bg:#f6efe4;--card:rgba(255,253,248,.96);--ink:#4a2d1d;--muted:#806f61;
+ --accent:#8a5738;--accent-dark:#6f422a;--line:#ead9c6;--good:#7b9b68;
+ --danger:#c96f6f;--blue:#d9c0a5;--lav:#e8d7c2;--cream:#fffaf0;--leaf:#8d9d6f;--flower:#c99168
+}
+html{background:#f6efe4}
+body{
+ background:
+ radial-gradient(circle at 8% 4%,#fffdf8 0 8%,transparent 27%),
+ radial-gradient(circle at 94% 10%,#ead9c4 0 11%,transparent 30%),
+ linear-gradient(180deg,#f4eadc 0%,#fbf7f0 48%,#f2e7d8 100%);
+ color:var(--ink)
+}
+body:before{background:#e8d4bc}
+body:after{background:#ead8c8}
+.app:before{content:"☕  ✦  ♡";color:#8a5738;opacity:.12}
+.app:after{content:"✦  ☕  ♡";color:#8a5738;opacity:.10}
+.brand{
+ background:linear-gradient(135deg,#fffaf0,#f2e2cd);
+ color:#4a2d1d;border:1px solid #ead8c2;
+ box-shadow:0 8px 24px rgba(89,57,35,.10)
+}
+.brand:after{content:"☕  ✦  ♡";color:#8a5738;opacity:.10}
+.brand-cafe{color:#8a725f}
+.brand-tin{color:#704124}
+.brand-heart{color:#b85e62}
+.brand small{color:#806f61}
+.brand .cup-art{
+ background:#fffaf0;box-shadow:0 4px 14px rgba(89,57,35,.12);border:1px solid #ead8c2
+}
+.hero-art{display:none}
+.hero-glow{background:rgba(255,255,255,.48)}
+.tabs{background:rgba(246,239,228,.88)}
+.tabs button,.btn{border-color:#e3d2bd;background:rgba(255,253,248,.94);color:#4a2d1d;box-shadow:0 3px 10px rgba(89,57,35,.06)}
+.tabs button.active,.btn.primary{background:linear-gradient(135deg,#93603f,#704124);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(112,65,36,.22)}
+.btn.good{background:#7b9b68;color:#fff}
+.card{background:var(--card);border-color:#ead8c2;box-shadow:0 7px 22px rgba(89,57,35,.075)}
+.card:after{content:"✦  ♡";color:#9b6b48;opacity:.10}
+.stat{border-color:#ead9c6;background:linear-gradient(145deg,#fffdf8,#f7eee3);box-shadow:0 3px 12px rgba(89,57,35,.04)}
+.stat:nth-child(4n+1){background:linear-gradient(145deg,#fffdf8,#f5eadc)}
+.stat:nth-child(4n+2){background:linear-gradient(145deg,#fffaf0,#f3e2d0)}
+.stat:nth-child(4n+3){background:linear-gradient(145deg,#fbf8f1,#efe5d9)}
+.stat:nth-child(4n){background:linear-gradient(145deg,#fff7f2,#f5e8df)}
+.stat b{color:#4a2d1d}
+input,select{border-color:#ddcbb5;background:rgba(255,253,248,.98);color:#4a2d1d}
+input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,75,.13)}
+.item{border-bottom-color:#ead9c6;background:linear-gradient(90deg,rgba(252,247,239,.82),rgba(255,253,248,.5))}
+.item:after{content:"✦";color:#b9855e}
+.item:nth-child(2n):after{content:"♡";color:#b85e62}
+.section-title{color:#6f422a}
+.section-title:before{content:"☕ ";color:#93603f}
+.total{color:#704124}
+#dailyBalanceBox{background:var(--card)!important;border-color:#ead8c2!important;box-shadow:0 8px 24px rgba(89,57,35,.075)!important}
+.empty-illustration{border:1px solid #ead8c2}
+</style>
+
+<style id="cafe-tin-dashboard">:root{--brown:#6f4328;--brown2:#8c5a38;--cream:#fbf7ef;--green:#6f9857;--text:#3d3028;--muted2:#7e746d;--border:#eadfd1;--white:#fffdf9;--shadow:0 7px 24px rgba(91,67,45,.08)}body{background:linear-gradient(135deg,#f7f3eb,#fbfaf6 48%,#f3eadf);color:var(--text)}body:before,body:after{display:none}.app{max-width:1440px;margin:0 auto;padding:0;min-height:100vh;display:grid;grid-template-columns:250px 1fr}.sidebar{background:rgba(255,253,249,.97);border-right:1px solid var(--border);min-height:100vh;padding:16px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;z-index:10}.side-logo{display:flex;justify-content:center;padding:4px 4px 14px}.side-logo img{width:166px;height:166px;object-fit:contain;border-radius:24px}.side-brand{text-align:center;padding:0 8px 13px}.side-brand .cafe{font-size:13px;color:#8b7767;font-weight:700}.side-brand .tin{font:800 27px Georgia,serif;color:var(--brown)}.side-brand .heart{color:#b95f60}.side-nav{display:flex;flex-direction:column;gap:5px}.tabs{display:flex;flex-direction:column;gap:5px;position:static;background:transparent;padding:0}.tabs button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:0;background:transparent;color:#4b4742;box-shadow:none;padding:12px 13px;border-radius:12px!important;font-weight:700;font-size:14px}.tabs button .navico{width:24px;text-align:center;font-size:19px}.tabs button.active{background:#eef4e8;color:#4f8750}.tabs button:hover{transform:none;background:#f7f3ed}.side-footer{margin-top:auto;background:#eef4e8;border-radius:16px;padding:12px 13px;display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:#76a85e;color:#fff;display:grid;place-items:center}.content{padding:20px 28px 40px;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.welcome h1{font-size:30px;margin:0;color:#29231f}.welcome p{margin:6px 0 0;color:var(--muted2);font-size:14px}.welcome strong{color:var(--green)}.top-actions{display:flex;gap:9px}.date-pill,.bell-pill{background:var(--white);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:999px;padding:10px 14px;font-weight:700;color:#5a5149}.bell-pill{width:44px;height:44px;padding:0;border-radius:50%;position:relative}.bell-pill:after{content:"";width:8px;height:8px;border-radius:50%;background:#e54848;position:absolute;right:8px;top:7px;border:2px solid white}.tab{display:none}.tab.active{display:block}.dashboard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.dash-stat,.dash-card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.dash-stat{min-height:132px}.stat-head{display:flex;align-items:center;gap:10px;color:#5d554e;font-size:14px;font-weight:700}.stat-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#edf4e8;font-size:20px}.dash-stat:nth-child(2) .stat-icon{background:#f8ead9}.dash-stat:nth-child(3) .stat-icon{background:#eaf0f8}.dash-stat:nth-child(4) .stat-icon{background:#f0e8f5}.dash-stat b{display:block;font-size:25px;margin-top:12px}.dash-stat small{display:block;color:#7b746d;margin-top:6px}.up{color:var(--green)!important}.dashboard-main{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}.dash-card h2{font-size:19px;margin:0;color:#3f3025}.dash-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.text-link{border:0;background:transparent;color:#4f8050;font-weight:750}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.quick{border:1px solid var(--border);background:#fffdfa;border-radius:14px;padding:14px 8px;text-align:center;font-weight:700;color:#3e3731;cursor:pointer}.quick .qicon{font-size:23px;display:block;margin-bottom:7px}.quick.active-q{border-color:#b9d0aa;box-shadow:inset 0 -3px 0 var(--green)}.popular-row{display:grid;grid-template-columns:28px 44px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee6dc}.rank{width:24px;height:24px;border-radius:6px;background:#75a65e;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}.drink{font-size:28px;text-align:center}.popular-row b{font-size:14px}.popular-row small{display:block;color:#81776d;margin-top:3px}.qty{color:#578151;font-weight:800;white-space:nowrap}.recent{margin-top:14px}.recent-table{width:100%;border-collapse:collapse;font-size:13px}.recent-table th{background:#f0f3e8;text-align:left;padding:10px;color:#625a53}.recent-table td{padding:10px;border-bottom:1px solid #eee8df}.status{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8f2e1;color:#5c8851;font-weight:700;font-size:12px}.section-title{color:var(--brown)!important}.section-title:before{content:"☕ "!important;color:var(--brown2)!important}.card{background:var(--white);border-color:var(--border);box-shadow:var(--shadow)}.stat{background:#fffaf4!important;border-color:var(--border)}.btn.primary{background:linear-gradient(135deg,#7e5132,#694025)}
+@media(max-width:900px){.app{grid-template-columns:78px 1fr}.sidebar{padding:12px 8px}.side-logo img{width:58px;height:58px;border-radius:14px}.side-brand{display:none}.tabs button{justify-content:center;padding:12px 7px}.tabs button span:not(.navico){display:none}.side-footer{justify-content:center;padding:10px}.side-footer>div:not(.avatar){display:none}.content{padding:16px}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.dashboard-main{grid-template-columns:1fr}}
+@media(max-width:620px){.app{display:block}.sidebar{position:sticky;top:0;height:auto;min-height:0;padding:8px 10px;border-right:0;border-bottom:1px solid var(--border);display:block}.side-logo{display:none}.side-brand{display:block;padding:3px 0 8px}.side-brand .tin{font-size:24px}.side-nav{margin:0}.tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;overflow:auto}.tabs button{font-size:10px;justify-content:center;flex-direction:column;gap:3px;padding:7px 3px;white-space:nowrap}.tabs button span:not(.navico){display:block}.tabs button .navico{font-size:17px;height:18px}.side-footer{display:none}.content{padding:12px 10px 28px}.welcome h1{font-size:22px}.welcome p{font-size:12px}.date-pill{font-size:11px;padding:8px 10px}.bell-pill{width:38px;height:38px}.dashboard-grid{gap:8px}.dash-stat{padding:13px;min-height:118px;border-radius:15px}.dash-stat b{font-size:19px}.dash-stat .stat-head{font-size:12px}.stat-icon{width:34px;height:34px;font-size:17px}.dashboard-main{gap:9px;margin-top:9px}.dash-card{padding:14px;border-radius:15px}.quick-grid{gap:7px}.quick{padding:11px 4px;font-size:12px}.recent-table{font-size:11px}.recent-table th,.recent-table td{padding:8px 5px}.recent-table th:nth-child(3),.recent-table td:nth-child(3){display:none}}
+/* Cafe Tin - dễ nhìn hơn */
+.app{grid-template-columns:285px 1fr}
+.sidebar{padding:18px 16px}
+.side-logo img{width:185px;height:185px}
+.side-brand .cafe{font-size:15px}.side-brand .tin{font-size:31px}
+.side-nav{gap:8px}.tabs{gap:8px}.tabs button{padding:15px 15px;font-size:16px;border-radius:14px!important}.tabs button .navico{width:28px;font-size:22px}
+.side-footer{padding:14px 15px;font-size:15px}.avatar{width:44px;height:44px}
+.content{padding:26px 34px 48px}
+.topbar{margin-bottom:22px}.welcome h1{font-size:34px}.welcome p{font-size:16px}
+.date-pill{font-size:16px;padding:12px 17px}.bell-pill{width:48px;height:48px}
+.dashboard-grid{gap:18px}.dash-stat,.dash-card{border-radius:20px;padding:21px}.dash-stat{min-height:148px}
+.stat-head{font-size:16px;gap:12px}.stat-icon{width:48px;height:48px;font-size:23px}.dash-stat b{font-size:29px;margin-top:14px}.dash-stat small{font-size:14px}
+.dashboard-main{gap:18px;margin-top:18px}.dash-card h2{font-size:22px}.dash-card-head{margin-bottom:17px}.text-link{font-size:15px}
+.quick-grid{gap:14px}.quick{padding:18px 10px;font-size:16px;border-radius:16px}.quick .qicon{font-size:27px;margin-bottom:9px}
+.popular-row{grid-template-columns:32px 48px 1fr auto;gap:12px;padding:13px 0}.rank{width:28px;height:28px;font-size:14px}.drink{font-size:31px}.popular-row b{font-size:16px}.popular-row small{font-size:14px}.qty{font-size:15px}
+.recent{margin-top:18px}.recent-table{font-size:14px}.recent-table th,.recent-table td{padding:13px 11px}.status{font-size:13px;padding:6px 11px}
+.card{border-radius:20px;padding:20px}.section-title{font-size:21px}.stat{padding:17px;border-radius:16px}.stat small{font-size:14px}.stat b{font-size:25px}.btn{font-size:15px;padding:13px 14px}
+@media(max-width:900px){.app{grid-template-columns:88px 1fr}.sidebar{padding:12px 9px}.side-logo img{width:64px;height:64px}.tabs button{padding:13px 7px}.tabs button .navico{font-size:21px}.content{padding:20px}.welcome h1{font-size:30px}.dashboard-grid{gap:12px}.dash-stat{padding:17px;min-height:135px}.dash-stat b{font-size:25px}}
+@media(max-width:620px){
+ .app{display:block}.sidebar{padding:10px 8px}.side-brand{padding:4px 0 10px}.side-brand .tin{font-size:27px}.side-brand .cafe{font-size:14px}
+ .tabs{display:flex;flex-direction:row;gap:7px;overflow-x:auto;padding-bottom:3px;-webkit-overflow-scrolling:touch}
+ .tabs button{flex:0 0 88px;font-size:13px;gap:5px;padding:10px 5px;min-height:68px}.tabs button .navico{font-size:21px;height:23px}
+ .content{padding:16px 12px 34px}.topbar{align-items:flex-start;margin-bottom:16px}.welcome h1{font-size:25px;line-height:1.25}.welcome p{font-size:14px}.date-pill{font-size:13px;padding:9px 11px}.bell-pill{width:42px;height:42px}
+ .dashboard-grid{grid-template-columns:1fr 1fr;gap:10px}.dash-stat{padding:14px;min-height:132px;border-radius:16px}.stat-head{font-size:13px;gap:7px}.stat-icon{width:38px;height:38px;font-size:18px}.dash-stat b{font-size:21px;margin-top:11px}.dash-stat small{font-size:12px;line-height:1.3}
+ .dashboard-main{grid-template-columns:1fr;gap:10px;margin-top:10px}.dash-card{padding:16px;border-radius:17px}.dash-card h2{font-size:20px}.quick-grid{gap:9px}.quick{padding:14px 6px;font-size:14px}.quick .qicon{font-size:24px}
+ .popular-row{grid-template-columns:28px 40px 1fr auto;gap:8px;padding:11px 0}.rank{width:25px;height:25px;font-size:13px}.drink{font-size:27px}.popular-row b{font-size:14px}.popular-row small{font-size:12px}.qty{font-size:13px}
+ .recent-table{font-size:12px}.recent-table th,.recent-table td{padding:10px 6px}.status{font-size:11px;padding:5px 8px}
+ .card{padding:16px}.section-title{font-size:20px}.stat{padding:14px}.stat small{font-size:13px}.stat b{font-size:21px}.btn{font-size:14px;padding:12px 13px}
+}
+
+/* Cafe Tin page separation + new logo */
+.content[data-active-tab="overview"] .topbar{display:flex}
+.content[data-active-tab]:not([data-active-tab="overview"]) .topbar{display:none}
+.tab{display:none!important}
+.tab.active{display:block!important}
+.overview-logo-card{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fffaf0,#f3e4d1);border:1px solid var(--border);border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.overview-logo-card img{width:132px;height:132px;object-fit:contain;border-radius:18px}
+.page-heading{font-size:26px;font-weight:850;color:var(--brown);margin:0 0 14px}
+.menu-catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.menu-catalog-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fffaf4;border:1px solid var(--border);border-radius:16px;padding:15px 16px}
+.menu-catalog-item .menu-name{font-size:17px;font-weight:800;color:#3d3028}
+.menu-catalog-item small{display:block;color:#81766b;margin-top:4px}
+.menu-catalog-item .menu-price{font-size:18px;font-weight:900;color:var(--brown)}
+@media(max-width:620px){.overview-logo-card{padding:12px;margin-bottom:10px}.overview-logo-card img{width:105px;height:105px}.page-heading{font-size:22px;margin-bottom:10px}.menu-catalog{grid-template-columns:1fr}.menu-catalog-item{padding:14px}.menu-catalog-item .menu-name{font-size:16px}.menu-catalog-item .menu-price{font-size:17px}}
+</style></head>
+<body>
+<script>
+/* Cafe Tin V5 recovery: restore old data automatically only when the app is empty. */
+(function(){
+  const REC={
+    tinMenu:[
+      {name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},
+      {name:'Americano',price:12000,cost:5000},{name:'Matcha latte',price:15000,cost:7000},{name:'Matcha latte km',price:17000,cost:9000},
+      {name:'Cacao latte',price:15000,cost:5000},{name:'Cacao latte km',price:17000,cost:7000},{name:'Bạc xỉu',price:18000,cost:7000},{name:'Sữa chua',price:15000,cost:5000}
+    ],
+    tinOrders:[
+      {id:1787562028556,date:'2026-08-24',time:'16:00',items:[{name:'Cà phê đen',qty:5,price:12000,cost:5000}],total:60000},
+      {id:1787562543218,date:'2026-08-23',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:154000,cost:64000}],total:154000},
+      {id:1787562580233,date:'2026-08-22',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:105000,cost:0}],total:105000},
+      {id:1787562627951,date:'2026-08-21',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:318000,cost:131000}],total:318000},
+      {id:1787562666989,date:'2026-08-20',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:244000,cost:103000}],total:244000},
+      {id:1787562700133,date:'2026-08-19',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:196000,cost:180000}],total:196000},
+      {id:1787562769075,date:'2026-08-18',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:277000,cost:0}],total:277000},
+      {id:1787562842443,date:'2026-08-24',time:'16:14',items:[{name:'Cà phê đen',qty:1,price:12000,cost:5000},{name:'Cà phê sữa',qty:2,price:15000,cost:6000},{name:'Cà phê muối',qty:2,price:17000,cost:8000},{name:'Cacao latte',qty:5,price:15000,cost:5000},{name:'Bạc xỉu',qty:3,price:18000,cost:7000}],total:205000}
+    ],
+    tinExpenses:[
+      {id:1787561918881,date:'2026-08-17',name:'Nl',amount:333000},{id:1787561944841,date:'2026-08-18',name:'Nl',amount:308000},
+      {id:1787561962567,date:'2026-08-22',name:'ly',amount:36000},{id:1787561969633,date:'2026-08-22',name:'Cafe',amount:66000},
+      {id:1787561981350,date:'2026-08-24',name:'ly',amount:48000},{id:1787563328716,date:'2026-08-24',name:'NL',amount:205000},
+      {id:1787563461080,date:'2026-08-24',name:'Shhn',amount:20000},{id:1787563467864,date:'2026-08-24',name:'Đá',amount:5000}
+    ],
+    tinSetup:[{id:1787561872644,name:'Tổng',amount:6000000}],tinCash:0,tinBank:0
+  };
+  try{
+    const recoveryKey='tin2_recovery_done_v4';
+    const currentOrders=JSON.parse(localStorage.getItem('tin2_orders')||'[]');
+    const currentMenu=JSON.parse(localStorage.getItem('tin2_menu')||'[]');
+    /* Recovery build: if the stored app has no orders/menu, write the recovered dataset.
+       A new v4 marker also repairs devices that were previously marked recovered but still show 0. */
+    if(!Array.isArray(currentOrders) || currentOrders.length===0 || !Array.isArray(currentMenu) || currentMenu.length===0){
+      localStorage.setItem('tin2_menu',JSON.stringify(REC.tinMenu));
+      localStorage.setItem('tin2_orders',JSON.stringify(REC.tinOrders));
+      localStorage.setItem('tin2_expenses',JSON.stringify(REC.tinExpenses));
+      localStorage.setItem('tin2_setup',JSON.stringify(REC.tinSetup));
+      localStorage.setItem('tin2_cash','0');
+      localStorage.setItem('tin2_bank','0');
+    }
+    localStorage.setItem(recoveryKey,JSON.stringify({at:new Date().toISOString(),source:'Cafe Tin khoi phuc du lieu 2026-08-25',orders:REC.tinOrders.length,expenses:REC.tinExpenses.length}));
+  }catch(e){console.error('Recovery seed error',e)}
+})();
+</script>
+<div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="overview"><span class="navico">⌂</span><span>Tổng quan</span></button><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="overview"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
+<section id="overview" class="tab active dashboard"><div class="overview-logo-card"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="dashboard-grid"><div class="dash-stat"><div class="stat-head"><span class="stat-icon">💰</span>Doanh thu hôm nay</div><b id="dashRevenue">0đ</b><small class="up">Theo dữ liệu hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🛍️</span>Tổng số món</div><b id="dashItems">0</b><small id="dashItemsNote">Món đã bán hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">👥</span>Số order</div><b id="dashOrders">0</b><small id="dashOrdersNote">Đơn hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🧾</span>Đơn trung bình</div><b id="dashAverage">0đ</b><small>Doanh thu / order</small></div></div><div style="margin:10px 0;padding:12px 14px;border-radius:12px;background:#fff8ed;border:1px solid #ead7bc;font-size:14px"><b>Dữ liệu đã khôi phục:</b> tháng 08/2026 có <b>1.559.000đ</b> doanh thu, <b>8 đơn</b>, <b>25 món</b>. Hôm nay 25/08 chưa có đơn nên ô “Doanh thu hôm nay” có thể vẫn là <b>0đ</b>.</div><div class="dashboard-main"><div class="dash-card"><div class="dash-card-head"><h2>Món bán chạy</h2><button class="text-link" data-go="stats">Xem tất cả</button></div><div id="popularItems"></div></div></div><div class="dash-card recent"><div class="dash-card-head"><h2>Order gần đây</h2><button class="text-link" data-go="order">Xem tất cả</button></div><div id="recentOrders"></div></div></section>
+<section id="menuView" class="tab"><h2 class="page-heading">Menu</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div></section>
+<section id="order" class="tab"><div class="card"><div class="section-title">Tạo đơn</div><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div></section>
+<section id="stats" class="tab">
+<div class="card"><div class="section-title">Hôm nay</div><div class="grid"><div class="stat"><small>Doanh thu</small><b id="todayRevenue">0đ</b></div><div class="stat"><small>Giá vốn</small><b id="todayCogs">0đ</b></div><div class="stat"><small>Chi phí ngày</small><b id="todayExpense">0đ</b></div><div class="stat"><small>Lợi nhuận</small><b id="todayProfit">0đ</b></div><div class="stat"><small>Số món bán hôm nay</small><b id="todayItemsSold">0</b></div><div class="stat"><small>Món bán chạy nhất hôm nay</small><b id="todayBestItem">—</b></div><div class="stat"><small>Tổng tiền cuối ngày</small><b id="todayEndMoney">0đ</b></div></div></div>
+<div class="card"><div class="section-title">Theo tháng</div><div class="monthnav"><input type="month" id="monthPick"><button class="btn" id="thisMonth">Tháng này</button></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Doanh thu tháng</small><b id="monthRevenue">0đ</b></div><div class="stat"><small>Giá vốn tháng</small><b id="monthCogs">0đ</b></div><div class="stat"><small>Chi phí tháng</small><b id="monthExpense">0đ</b></div><div class="stat"><small>Lợi nhuận tháng</small><b id="monthProfit">0đ</b></div><div class="stat"><small>Số món bán trong tháng</small><b id="monthItemsSold">0</b></div><div class="stat"><small>Món bán chạy nhất tháng</small><b id="monthBestItem">—</b></div></div></div>
+<div class="card"><div class="section-title">Thêm doanh thu / order theo ngày</div><div class="note">Dùng khi bạn muốn bổ sung doanh thu của một ngày cũ mà không cần nhập lại từng món.</div><label>Ngày</label><input type="date" id="manualDate"><label>Doanh thu</label><input id="manualRevenue" type="number" min="0" step="1000" placeholder="0"><label>Giá vốn</label><input id="manualCogs" type="number" min="0" step="1000" placeholder="0"><label>Số order</label><input id="manualOrderCount" type="number" min="1" step="1" value="1"><label>Ghi chú</label><input id="manualNote" placeholder="Ví dụ: doanh thu nhập từ sổ cũ"><button class="btn primary" style="width:100%;margin-top:10px" id="addManualRevenue">Thêm doanh thu</button></div>
+<div class="card"><div class="section-title">Lịch sử theo ngày</div><div id="dailyHistory"></div></div>
+<div class="card daily-money-card"><div class="section-title">💵 Tiền mặt & 🏦 Bank theo ngày</div><p class="note">Mục này được làm mới theo từng ngày. Cuối ngày, em nhập số tiền mặt và số dư Bank thực tế rồi lưu lại. Dữ liệu của các ngày trước vẫn được giữ trong lịch sử.</p><div class="grid"><div class="stat"><small>Ngày</small><input id="dbDate" type="date" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tiền mặt cuối ngày</small><input id="dbCash" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Bank cuối ngày</small><input id="dbBank" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tổng tiền cuối ngày</small><b id="dbTotal">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="dbSave">Lưu số dư cuối ngày</button></div><div id="dbMsg" class="note" style="margin-top:8px"></div></div>
+</section><section id="cost" class="tab">
+<div class="card"><div class="section-title">Chi phí trong ngày</div><label>Ngày</label><input type="date" id="expenseDate"><label>Nội dung</label><input id="expenseName" placeholder="Ví dụ: tiền điện, nguyên liệu..."><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
+<div class="card"><div class="section-title">Chi phí mở quầy</div><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
+<div class="card"><div class="section-title">Danh sách chi phí</div><div id="expenseList"></div></div>
+</section><section id="data" class="tab">
+<div class="card"><div class="section-title">Sao lưu & khôi phục</div><p class="note">Web tự động lưu một bản sao trong bộ nhớ máy mỗi ngày. Bạn vẫn nên tải file sao lưu xuống để phòng mất dữ liệu khi đổi/xóa trình duyệt.</p><div id="autoInfo" class="note"></div><div class="actions" style="margin-top:10px"><button class="btn good" id="downloadBackup">Tải sao lưu</button><button class="btn" id="restoreBtn">Khôi phục file</button><input id="restoreFile" type="file" accept=".json,application/json" hidden></div><div class="actions" style="margin-top:10px"><button class="btn" id="clearData">Xóa toàn bộ dữ liệu</button></div></div>
+<div class="card"><div class="section-title">Menu & giá vốn</div><div id="menuAdmin"></div><div class="actions"><button class="btn primary" id="addMenu">Thêm món</button></div></div>
+</section></main></div>
+<script>
+const K={menu:'tin2_menu',orders:'tin2_orders',expenses:'tin2_expenses',setup:'tin2_setup',auto:'tin2_auto_backups',last:'tin2_last_backup',cash:'tin2_cash',bank:'tin2_bank'};
+const $=id=>document.getElementById(id), today=()=>{
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}, money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
+if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
+function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
+function save(){localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));autoBackup()}
+function stats(date){let os=orders.filter(o=>o.date===date), revenue=os.reduce((s,o)=>s+Number(o.total||0),0),cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date===date).reduce((s,e)=>s+Number(e.amount||0),0),orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount}}
+function monthStats(m){let ds=orders.filter(o=>o.date?.startsWith(m)), revenue=ds.reduce((s,o)=>s+Number(o.total||0),0),cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);return{revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)}}
+function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
+function renderOverview(){const t=stats(today()),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;$('dashDate').textContent=new Date().toLocaleDateString('vi-VN');$('dashRevenue').textContent=money(t.revenue);$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');$('dashOrders').textContent=t.orderCount.toLocaleString('vi-VN');$('dashAverage').textContent=money(avg);$('dashItemsNote').textContent=it.totalItems+' món đã bán hôm nay';$('dashOrdersNote').textContent=t.orderCount+' đơn hôm nay';const c={};t.orders.forEach(o=>(o.items||[]).forEach(i=>{let n=String(i.name||'Không tên');c[n]=(c[n]||0)+Number(i.qty||0)}));const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4),d=['☕','🧋','🥤','🍵'];$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${d[i%d.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng hôm nay.</div>';const recent=t.orders.slice().reverse().slice(0,5);$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(o.total)}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order hôm nay.</div>'}
+function renderMenuCatalog(){const el=$('menuCatalog');if(!el)return;el.innerHTML=menu.length?menu.map(m=>`<div class="menu-catalog-item"><div><div class="menu-name">${esc(m.name)}</div><small>Giá vốn: ${money(m.cost)}</small></div><div class="menu-price">${money(m.price)}</div></div>`).join(''):'<div class="empty">Chưa có món trong menu.</div>'}
+function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','🌱','✿'];menu.forEach((m,i)=>{let q=Number(cart[i]||0);let deco=botanicals[i%botanicals.length];h+=`<div class="item"><div><div class="name">${deco} ${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});$('menuList').innerHTML=h;if($('menuListOrder'))$('menuListOrder').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
+function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
+function renderToday(){let os=orders.filter(o=>o.date===today()).slice().reverse();$('todayOrders').innerHTML=os.length?os.map(o=>`<div class="summaryline"><span>${o.time||''} • ${(o.items||[]).map(i=>`${esc(i.name)} x${i.qty}`).join(', ')}<br><small>${money(o.total)}</small></span><button class="btn danger" type="button" data-del-order="${o.id}">Xóa</button></div>`).join(''):'<div class="empty"><img class="empty-illustration" src="cafe-tin-empty.png" alt="Minh họa chưa có đơn"><b>Chưa có đơn hôm nay.</b><br><small>Hãy tạo đơn đầu tiên nhé!</small></div>';document.querySelectorAll('[data-del-order]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.delOrder))}
+function itemStats(os){const counts={};(os||[]).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');counts[name]=(counts[name]||0)+Number(i.qty||0)}));let best='—',bestQty=0;Object.entries(counts).forEach(([name,qty])=>{if(qty>bestQty){best=name;bestQty=qty}});return{totalItems:Object.values(counts).reduce((a,b)=>a+b,0),best,bestQty}}
+function renderStats(){let balances=load('tinCafeDailyBalances',{}),todayBalance=balances[today()];if($('cashNow'))$('cashNow').textContent=money(cash);if($('bankNow'))$('bankNow').textContent=money(bank);let todayEnd=todayBalance?Number(todayBalance.cash||0)+Number(todayBalance.bank||0):Number(cash||0)+Number(bank||0);if($('todayEndMoney'))$('todayEndMoney').textContent=money(todayEnd);let t=stats(today()),ti=itemStats(t.orders);$('todayRevenue').textContent=money(t.revenue);$('todayCogs').textContent=money(t.cogs);$('todayExpense').textContent=money(t.ex);$('todayProfit').textContent=money(t.profit);if($('todayItemsSold'))$('todayItemsSold').textContent=ti.totalItems.toLocaleString('vi-VN');if($('todayBestItem'))$('todayBestItem').textContent=ti.best==='—'?'—':`${ti.best} (${ti.bestQty})`;let m=$('monthPick').value||today().slice(0,7),ms=monthStats(m),mos=orders.filter(o=>o.date?.startsWith(m)),mi=itemStats(mos);$('monthRevenue').textContent=money(ms.revenue);$('monthCogs').textContent=money(ms.cogs);$('monthExpense').textContent=money(ms.ex);$('monthProfit').textContent=money(ms.profit);if($('monthItemsSold'))$('monthItemsSold').textContent=mi.totalItems.toLocaleString('vi-VN');if($('monthBestItem'))$('monthBestItem').textContent=mi.best==='—'?'—':`${mi.best} (${mi.bestQty})`;let days=[...new Set([...orders.map(o=>o.date),...expenses.map(e=>e.date),...Object.keys(balances)])].filter(Boolean).sort().reverse();$('dailyHistory').innerHTML=days.length?days.map(d=>{let ds=stats(d),b=balances[d],end=b?Number(b.cash||0)+Number(b.bank||0):null,di=itemStats(ds.orders);return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Lợi nhuận <b>${money(ds.profit)}</b><br>Tiền mặt <b>${b?money(b.cash):'—'}</b> • Bank <b>${b?money(b.bank):'—'}</b><br>Tổng tiền cuối ngày <b>${end===null?'—':money(end)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu.</div>'}
+function renderExpenses(){let all=expenses.slice().reverse();$('expenseList').innerHTML=all.length?all.map((e,idx)=>`<div class="summaryline"><span>${e.date} • ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí.</div>'}
+function renderSetup(){let total=setup.reduce((s,e)=>s+Number(e.amount||0),0);$('setupTotal').textContent=money(total);$('setupList')?.remove();let box=document.createElement('div');box.id='setupList';box.innerHTML=setup.length?setup.slice().reverse().map(e=>`<div class="summaryline"><span>${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delSetup('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí mở quầy.</div>';$('setupTotal').parentElement.parentElement.appendChild(box)}
+function renderMenuAdmin(){$('menuAdmin').innerHTML=menu.map((m,i)=>`<div class="item"><div><input value="${escAttr(m.name)}" data-name="${i}"></div><input type="number" value="${m.price}" data-price="${i}"><input type="number" value="${m.cost}" data-cost="${i}"><button class="btn danger" type="button" data-del-menu="${i}">Xóa</button></div>`).join('');document.querySelectorAll('[data-del-menu]').forEach(x=>x.onclick=()=>deleteMenu(+x.dataset.delMenu));document.querySelectorAll('[data-name],[data-price],[data-cost]').forEach(x=>x.onchange=()=>{let i=x.dataset.name??x.dataset.price??x.dataset.cost; if(x.dataset.name!==undefined)menu[i].name=x.value; if(x.dataset.price!==undefined)menu[i].price=Number(x.value)||0;if(x.dataset.cost!==undefined)menu[i].cost=Number(x.value)||0;save();render()})}
+function deleteMenu(i){if(!confirm('Xóa món này khỏi menu?'))return;delete cart[i];menu.splice(i,1);let nc={};Object.keys(cart).forEach(k=>{let n=+k;if(n>i)nc[n-1]=cart[k];else if(n<i)nc[n]=cart[k]});cart=nc;save();render()}
+function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Bank hiện có:',bank));if(!Number.isFinite(b)||b<0)return;cash=c;bank=b;save();render()}
+function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
+function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render();alert('Đã chốt đơn.')}
+function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
+function addExpense(){let n=$('expenseName').value.trim(),a=Number($('expenseAmount').value),d=$('expenseDate').value||today();if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');expenses.push({id:Date.now(),date:d,name:n,amount:a});$('expenseName').value='';$('expenseAmount').value='';save();render()}
+function addSetup(){let n=$('setupName').value.trim(),a=Number($('setupAmount').value);if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');setup.push({id:Date.now(),name:n,amount:a});$('setupName').value='';$('setupAmount').value='';save();render()}
+function delExpense(id){expenses=expenses.filter(x=>String(x.id)!==String(id));save();render()} function delSetup(id){setup=setup.filter(x=>String(x.id)!==String(id));save();render()}
+function autoBackup(){let d=today(),b=load(K.auto,{});b[d]=snapshot();let keys=Object.keys(b).sort();if(keys.length>30)delete b[keys[0]];localStorage.setItem(K.auto,JSON.stringify(b));localStorage.setItem(K.last,JSON.stringify({date:d,time:new Date().toLocaleString('vi-VN')}))}
+function snapshot(){return{version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank}}
+function downloadBackup(){let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`TinCafe-sao-luu-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:menu;menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=Array.isArray(d.tinSetup)?d.tinSetup:[];cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);save();render();alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`)}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
+function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
+
+function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};$('saveOrderOrder').onclick=addOrder;$('clearCartOrder').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
+$('expenseDate').value=today();$('manualDate').value=today();
+// Hỗ trợ nhập file sao lưu cũ của Cafe Tin.
+window.addEventListener('beforeunload',autoBackup);autoBackup();render();
+</script>
+
+
+<script>
+(function(){
+  const KEY='tinCafeDailyBalances';
+  const money=n=>new Intl.NumberFormat('vi-VN').format(Number(n)||0)+'đ';
+  const $=id=>document.getElementById(id);
+  const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}};
+  const save=x=>localStorage.setItem(KEY,JSON.stringify(x));
+  function fill(){
+    const date=$('dbDate'),cash=$('dbCash'),bank=$('dbBank'),total=$('dbTotal'),msg=$('dbMsg');
+    if(!date||!cash||!bank)return;
+    const all=load(), x=all[date.value];
+    cash.value=x && x.cash!==undefined ? x.cash : '';
+    bank.value=x && x.bank!==undefined ? x.bank : '';
+    total.textContent=x ? money(Number(x.cash||0)+Number(x.bank||0)) : '0đ';
+    if(msg) msg.textContent=x ? ('Đã lưu lúc '+new Date(x.updatedAt).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})) : (date.value===today() ? 'Chưa cập nhật hôm nay. Cuối ngày hãy nhập số thực tế và lưu.' : 'Chưa có số dư cho ngày này.');
+  }
+  function saveDaily(){
+    const date=$('dbDate'),cash=$('dbCash'),bank=$('dbBank'),total=$('dbTotal'),msg=$('dbMsg');
+    if(!date||!cash||!bank)return;
+    const all=load();
+    all[date.value]={cash:Number(cash.value)||0,bank:Number(bank.value)||0,updatedAt:new Date().toISOString()};
+    save(all);
+    total.textContent=money(Number(cash.value||0)+Number(bank.value||0));
+    if(msg)msg.textContent='Đã lưu số dư cuối ngày '+date.value+'.';
+    if(typeof renderStats==='function')renderStats();
+  }
+  function init(){
+    const date=$('dbDate'),btn=$('dbSave');
+    if(!date||!btn)return;
+    date.value=today();
+    date.addEventListener('change',fill);
+    btn.addEventListener('click',saveDaily);
+    fill();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body></html>
