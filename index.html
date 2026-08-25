@@ -145,7 +145,7 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
 <div class="card"><div class="section-title">Theo tháng</div><div class="monthnav"><input type="month" id="monthPick"><button class="btn" id="thisMonth">Tháng này</button></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Doanh thu tháng</small><b id="monthRevenue">0đ</b></div><div class="stat"><small>Giá vốn tháng</small><b id="monthCogs">0đ</b></div><div class="stat"><small>Chi phí tháng</small><b id="monthExpense">0đ</b></div><div class="stat"><small>Lợi nhuận tháng</small><b id="monthProfit">0đ</b></div><div class="stat"><small>Số món bán trong tháng</small><b id="monthItemsSold">0</b></div><div class="stat"><small>Món bán chạy nhất tháng</small><b id="monthBestItem">—</b></div></div></div>
 <div class="card"><div class="section-title">Thêm doanh thu / order theo ngày</div><div class="note">Dùng khi bạn muốn bổ sung doanh thu của một ngày cũ mà không cần nhập lại từng món.</div><label>Ngày</label><input type="date" id="manualDate"><label>Doanh thu</label><input id="manualRevenue" type="number" min="0" step="1000" placeholder="0"><label>Giá vốn</label><input id="manualCogs" type="number" min="0" step="1000" placeholder="0"><label>Số order</label><input id="manualOrderCount" type="number" min="1" step="1" value="1"><label>Ghi chú</label><input id="manualNote" placeholder="Ví dụ: doanh thu nhập từ sổ cũ"><button class="btn primary" style="width:100%;margin-top:10px" id="addManualRevenue">Thêm doanh thu</button></div>
 <div class="card"><div class="section-title">Lịch sử theo ngày</div><div id="dailyHistory"></div></div>
-<div class="card"><div class="section-title">Tiền hiện có</div><div class="grid"><div class="stat"><small>Tiền mặt</small><b id="cashNow">0đ</b></div><div class="stat"><small>Bank</small><b id="bankNow">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn" id="editMoney">Cập nhật tiền mặt / Bank</button></div></div>
+<div class="card daily-money-card"><div class="section-title">💵 Tiền mặt & 🏦 Bank theo ngày</div><p class="note">Mục này được làm mới theo từng ngày. Cuối ngày, em nhập số tiền mặt và số dư Bank thực tế rồi lưu lại. Dữ liệu của các ngày trước vẫn được giữ trong lịch sử.</p><div class="grid"><div class="stat"><small>Ngày</small><input id="dbDate" type="date" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tiền mặt cuối ngày</small><input id="dbCash" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Bank cuối ngày</small><input id="dbBank" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tổng tiền cuối ngày</small><b id="dbTotal">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="dbSave">Lưu số dư cuối ngày</button></div><div id="dbMsg" class="note" style="margin-top:8px"></div></div>
 </section><section id="cost" class="tab">
 <div class="card"><div class="section-title">Chi phí trong ngày</div><label>Ngày</label><input type="date" id="expenseDate"><label>Nội dung</label><input id="expenseName" placeholder="Ví dụ: tiền điện, nguyên liệu..."><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
 <div class="card"><div class="section-title">Chi phí mở quầy</div><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
@@ -172,7 +172,7 @@ function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','�
 function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
 function renderToday(){let os=orders.filter(o=>o.date===today()).slice().reverse();$('todayOrders').innerHTML=os.length?os.map(o=>`<div class="summaryline"><span>${o.time||''} • ${(o.items||[]).map(i=>`${esc(i.name)} x${i.qty}`).join(', ')}<br><small>${money(o.total)}</small></span><button class="btn danger" type="button" data-del-order="${o.id}">Xóa</button></div>`).join(''):'<div class="empty"><img class="empty-illustration" src="cafe-tin-empty.png" alt="Minh họa chưa có đơn"><b>Chưa có đơn hôm nay.</b><br><small>Hãy tạo đơn đầu tiên nhé!</small></div>';document.querySelectorAll('[data-del-order]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.delOrder))}
 function itemStats(os){const counts={};(os||[]).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');counts[name]=(counts[name]||0)+Number(i.qty||0)}));let best='—',bestQty=0;Object.entries(counts).forEach(([name,qty])=>{if(qty>bestQty){best=name;bestQty=qty}});return{totalItems:Object.values(counts).reduce((a,b)=>a+b,0),best,bestQty}}
-function renderStats(){let balances=load('tinCafeDailyBalances',{}),todayBalance=balances[today()];$('cashNow').textContent=money(cash);$('bankNow').textContent=money(bank);let todayEnd=todayBalance?Number(todayBalance.cash||0)+Number(todayBalance.bank||0):Number(cash||0)+Number(bank||0);if($('todayEndMoney'))$('todayEndMoney').textContent=money(todayEnd);let t=stats(today()),ti=itemStats(t.orders);$('todayRevenue').textContent=money(t.revenue);$('todayCogs').textContent=money(t.cogs);$('todayExpense').textContent=money(t.ex);$('todayProfit').textContent=money(t.profit);if($('todayItemsSold'))$('todayItemsSold').textContent=ti.totalItems.toLocaleString('vi-VN');if($('todayBestItem'))$('todayBestItem').textContent=ti.best==='—'?'—':`${ti.best} (${ti.bestQty})`;let m=$('monthPick').value||today().slice(0,7),ms=monthStats(m),mos=orders.filter(o=>o.date?.startsWith(m)),mi=itemStats(mos);$('monthRevenue').textContent=money(ms.revenue);$('monthCogs').textContent=money(ms.cogs);$('monthExpense').textContent=money(ms.ex);$('monthProfit').textContent=money(ms.profit);if($('monthItemsSold'))$('monthItemsSold').textContent=mi.totalItems.toLocaleString('vi-VN');if($('monthBestItem'))$('monthBestItem').textContent=mi.best==='—'?'—':`${mi.best} (${mi.bestQty})`;let days=[...new Set([...orders.map(o=>o.date),...expenses.map(e=>e.date),...Object.keys(balances)])].filter(Boolean).sort().reverse();$('dailyHistory').innerHTML=days.length?days.map(d=>{let ds=stats(d),b=balances[d],end=b?Number(b.cash||0)+Number(b.bank||0):null,di=itemStats(ds.orders);return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Lợi nhuận <b>${money(ds.profit)}</b><br>Tổng tiền cuối ngày <b>${end===null?'—':money(end)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu.</div>'}
+function renderStats(){let balances=load('tinCafeDailyBalances',{}),todayBalance=balances[today()];if($('cashNow'))$('cashNow').textContent=money(cash);if($('bankNow'))$('bankNow').textContent=money(bank);let todayEnd=todayBalance?Number(todayBalance.cash||0)+Number(todayBalance.bank||0):Number(cash||0)+Number(bank||0);if($('todayEndMoney'))$('todayEndMoney').textContent=money(todayEnd);let t=stats(today()),ti=itemStats(t.orders);$('todayRevenue').textContent=money(t.revenue);$('todayCogs').textContent=money(t.cogs);$('todayExpense').textContent=money(t.ex);$('todayProfit').textContent=money(t.profit);if($('todayItemsSold'))$('todayItemsSold').textContent=ti.totalItems.toLocaleString('vi-VN');if($('todayBestItem'))$('todayBestItem').textContent=ti.best==='—'?'—':`${ti.best} (${ti.bestQty})`;let m=$('monthPick').value||today().slice(0,7),ms=monthStats(m),mos=orders.filter(o=>o.date?.startsWith(m)),mi=itemStats(mos);$('monthRevenue').textContent=money(ms.revenue);$('monthCogs').textContent=money(ms.cogs);$('monthExpense').textContent=money(ms.ex);$('monthProfit').textContent=money(ms.profit);if($('monthItemsSold'))$('monthItemsSold').textContent=mi.totalItems.toLocaleString('vi-VN');if($('monthBestItem'))$('monthBestItem').textContent=mi.best==='—'?'—':`${mi.best} (${mi.bestQty})`;let days=[...new Set([...orders.map(o=>o.date),...expenses.map(e=>e.date),...Object.keys(balances)])].filter(Boolean).sort().reverse();$('dailyHistory').innerHTML=days.length?days.map(d=>{let ds=stats(d),b=balances[d],end=b?Number(b.cash||0)+Number(b.bank||0):null,di=itemStats(ds.orders);return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Lợi nhuận <b>${money(ds.profit)}</b><br>Tiền mặt <b>${b?money(b.cash):'—'}</b> • Bank <b>${b?money(b.bank):'—'}</b><br>Tổng tiền cuối ngày <b>${end===null?'—':money(end)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu.</div>'}
 function renderExpenses(){let all=expenses.slice().reverse();$('expenseList').innerHTML=all.length?all.map((e,idx)=>`<div class="summaryline"><span>${e.date} • ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí.</div>'}
 function renderSetup(){let total=setup.reduce((s,e)=>s+Number(e.amount||0),0);$('setupTotal').textContent=money(total);$('setupList')?.remove();let box=document.createElement('div');box.id='setupList';box.innerHTML=setup.length?setup.slice().reverse().map(e=>`<div class="summaryline"><span>${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delSetup('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí mở quầy.</div>';$('setupTotal').parentElement.parentElement.appendChild(box)}
 function renderMenuAdmin(){$('menuAdmin').innerHTML=menu.map((m,i)=>`<div class="item"><div><input value="${escAttr(m.name)}" data-name="${i}"></div><input type="number" value="${m.price}" data-price="${i}"><input type="number" value="${m.cost}" data-cost="${i}"><button class="btn danger" type="button" data-del-menu="${i}">Xóa</button></div>`).join('');document.querySelectorAll('[data-del-menu]').forEach(x=>x.onclick=()=>deleteMenu(+x.dataset.delMenu));document.querySelectorAll('[data-name],[data-price],[data-cost]').forEach(x=>x.onchange=()=>{let i=x.dataset.name??x.dataset.price??x.dataset.cost; if(x.dataset.name!==undefined)menu[i].name=x.value; if(x.dataset.price!==undefined)menu[i].price=Number(x.value)||0;if(x.dataset.cost!==undefined)menu[i].cost=Number(x.value)||0;save();render()})}
@@ -191,70 +191,49 @@ function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
 function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
 
-function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));$('saveOrder').onclick=addOrder;$('clearCart').onclick=()=>{cart={};renderMenu()};$('saveOrderOrder').onclick=addOrder;$('clearCartOrder').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
+function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));$('saveOrder').onclick=addOrder;$('clearCart').onclick=()=>{cart={};renderMenu()};$('saveOrderOrder').onclick=addOrder;$('clearCartOrder').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
 $('expenseDate').value=today();$('manualDate').value=today();
 // Hỗ trợ nhập file sao lưu cũ của Cafe Tin.
 window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 </script>
+
+
 <script>
 (function(){
-  const KEY = 'tinCafeDailyBalances';
-  const money = n => new Intl.NumberFormat('vi-VN').format(Number(n)||0) + ' đ';
-
-  function todayVN(){
-    const d = new Date();
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  const KEY='tinCafeDailyBalances';
+  const money=n=>new Intl.NumberFormat('vi-VN').format(Number(n)||0)+'đ';
+  const $=id=>document.getElementById(id);
+  const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}};
+  const save=x=>localStorage.setItem(KEY,JSON.stringify(x));
+  function fill(){
+    const date=$('dbDate'),cash=$('dbCash'),bank=$('dbBank'),total=$('dbTotal'),msg=$('dbMsg');
+    if(!date||!cash||!bank)return;
+    const all=load(), x=all[date.value];
+    cash.value=x && x.cash!==undefined ? x.cash : '';
+    bank.value=x && x.bank!==undefined ? x.bank : '';
+    total.textContent=x ? money(Number(x.cash||0)+Number(x.bank||0)) : '0đ';
+    if(msg) msg.textContent=x ? ('Đã lưu lúc '+new Date(x.updatedAt).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})) : (date.value===today() ? 'Chưa cập nhật hôm nay. Cuối ngày hãy nhập số thực tế và lưu.' : 'Chưa có số dư cho ngày này.');
   }
-  function load(){
-    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; }
+  function saveDaily(){
+    const date=$('dbDate'),cash=$('dbCash'),bank=$('dbBank'),total=$('dbTotal'),msg=$('dbMsg');
+    if(!date||!cash||!bank)return;
+    const all=load();
+    all[date.value]={cash:Number(cash.value)||0,bank:Number(bank.value)||0,updatedAt:new Date().toISOString()};
+    save(all);
+    total.textContent=money(Number(cash.value||0)+Number(bank.value||0));
+    if(msg)msg.textContent='Đã lưu số dư cuối ngày '+date.value+'.';
+    if(typeof renderStats==='function')renderStats();
   }
-  function save(x){ localStorage.setItem(KEY, JSON.stringify(x)); }
-
-  function inject(){
-    if(document.getElementById('dailyBalanceBox')) return;
-    const box = document.createElement('section');
-    box.id='dailyBalanceBox';
-    box.style.cssText='margin:16px 0;padding:16px;border-radius:16px;background:#fff;border:1px solid #ddd';
-    box.innerHTML = `
-      <h3 style="margin:0 0 10px">💵 Tiền mặt & 🏦 Bank theo ngày</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <label>Ngày<input id="dbDate" type="date" style="width:100%;padding:9px"></label>
-        <div></div>
-        <label>Tiền mặt hiện có<input id="dbCash" type="number" min="0" style="width:100%;padding:9px" placeholder="0"></label>
-        <label>Bank hiện có<input id="dbBank" type="number" min="0" style="width:100%;padding:9px" placeholder="0"></label>
-      </div>
-      <button id="dbSave" style="margin-top:10px;padding:10px 14px">Lưu số dư ngày</button>
-      <div id="dbMsg" style="margin-top:8px"></div>
-    `;
-    const target = document.querySelector('main') || document.body;
-    target.insertBefore(box, target.firstChild);
-
-    const date = box.querySelector('#dbDate');
-    const cash = box.querySelector('#dbCash');
-    const bank = box.querySelector('#dbBank');
-    const msg = box.querySelector('#dbMsg');
-    date.value = todayVN();
-
-    function fill(){
-      const x=load()[date.value];
-      cash.value = x ? (x.cash ?? '') : '';
-      bank.value = x ? (x.bank ?? '') : '';
-    }
-    date.addEventListener('change', fill);
-    box.querySelector('#dbSave').onclick=()=>{
-      const all=load();
-      all[date.value]={cash:Number(cash.value)||0,bank:Number(bank.value)||0,updatedAt:new Date().toISOString()};
-      save(all);
-      msg.textContent='Đã lưu số dư của ngày '+date.value;
-    };
+  function init(){
+    const date=$('dbDate'),btn=$('dbSave');
+    if(!date||!btn)return;
+    date.value=today();
+    date.addEventListener('change',fill);
+    btn.addEventListener('click',saveDaily);
     fill();
   }
-
-  // This is a daily record: changing today's value does not overwrite other days.
-  // Existing app data remains untouched.
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
-  else inject();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-
 </body></html>
