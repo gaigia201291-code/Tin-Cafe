@@ -156,7 +156,39 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
 
 .mobile-brand-logo{display:none;justify-content:center;align-items:center;padding:2px 0 4px}.mobile-brand-logo img{width:62px;height:62px;object-fit:contain;border-radius:14px}.mobile-brand-logo + .side-brand{padding-top:0}
 @media(max-width:620px){.mobile-brand-logo{display:flex}.side-brand .cafe{font-size:14px}.side-brand .tin{font-size:27px}.side-brand{padding-bottom:8px}.overview-logo-card{display:none}}
-</style></head>
+</style>
+<style id="cafe-tin-readable-size">
+/* Tăng nhẹ cỡ chữ toàn trang, ưu tiên dễ đọc trên điện thoại */
+html{font-size:16px}
+body{font-size:16px;line-height:1.5}
+.brand-cafe{font-size:16px}
+.brand-tin{font-size:33px}
+.brand small{font-size:13px}
+.brand-slogan{font-size:12px}
+.tabs button,.btn{font-size:15px;padding:12px 11px}
+.section-title{font-size:20px}
+.card{padding:18px}
+.stat{padding:15px}
+.stat small{font-size:14px}
+.stat b{font-size:23px}
+input,select,textarea{font-size:17px;padding:12px}
+label{font-size:14px}
+.item{font-size:16px;padding:12px 7px}
+.item .name{font-size:16px}
+.item small,.note{font-size:14px}
+.total{font-size:27px}
+@media(max-width:520px){
+  .brand-cafe{font-size:15px}
+  .brand-tin{font-size:30px}
+  .brand small{font-size:12px}
+  .tabs button,.btn{font-size:14px;padding:11px 7px}
+  .card{padding:16px}
+  .section-title{font-size:19px}
+  .stat b{font-size:21px}
+  input,select,textarea{font-size:16px}
+}
+</style>
+</head>
 <body><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
