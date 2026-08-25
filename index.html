@@ -174,18 +174,30 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
 </section></main></div>
 <script>
 const K={menu:'tin2_menu',orders:'tin2_orders',expenses:'tin2_expenses',setup:'tin2_setup',auto:'tin2_auto_backups',last:'tin2_last_backup',cash:'tin2_cash',bank:'tin2_bank'};
-/* Cafe Tin: dữ liệu backup cũ được nạp sẵn vào bản nâng cấp. */
+/* Cafe Tin: dữ liệu backup cũ được giữ nguyên và chỉ bổ sung khi thiết bị chưa có dữ liệu. */
 (function(){
-  if(localStorage.getItem('tin2_orders')===null){
-    const __seed={"tin2_menu":[{"name":"Cà phê đen","price":12000,"cost":5000},{"name":"Cà phê sữa","price":15000,"cost":6000},{"name":"Cà phê muối","price":17000,"cost":8000},{"name":"Americano","price":12000,"cost":5000},{"name":"Matcha latte","price":15000,"cost":7000},{"name":"Matcha latte km","price":17000,"cost":9000},{"name":"Cacao latte","price":15000,"cost":5000},{"name":"Cacao latte km","price":17000,"cost":7000},{"name":"Bạc xỉu","price":18000,"cost":7000},{"name":"Sữa chua","price":15000,"cost":5000}],"tin2_orders":[{"id":1787562028556,"date":"2026-08-24","time":"16:00","items":[{"name":"Cà phê đen","qty":5,"price":12000,"cost":5000}],"total":60000},{"id":1787562543218,"date":"2026-08-23","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":154000,"cost":64000}],"total":154000},{"id":1787562580233,"date":"2026-08-22","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":105000,"cost":0}],"total":105000},{"id":1787562627951,"date":"2026-08-21","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":318000,"cost":131000}],"total":318000},{"id":1787562666989,"date":"2026-08-20","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":244000,"cost":103000}],"total":244000},{"id":1787562700133,"date":"2026-08-19","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":196000,"cost":180000}],"total":196000},{"id":1787562769075,"date":"2026-08-18","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":277000,"cost":0}],"total":277000},{"id":1787562842443,"date":"2026-08-24","time":"16:14","items":[{"name":"Cà phê đen","qty":1,"price":12000,"cost":5000},{"name":"Cà phê sữa","qty":2,"price":15000,"cost":6000},{"name":"Cà phê muối","qty":2,"price":17000,"cost":8000},{"name":"Cacao latte","qty":5,"price":15000,"cost":5000},{"name":"Bạc xỉu","qty":3,"price":18000,"cost":7000}],"total":205000}],"tin2_expenses":[{"id":1787561918881,"date":"2026-08-17","name":"Nl","amount":333000},{"id":1787561944841,"date":"2026-08-18","name":"Nl","amount":308000},{"id":1787561962567,"date":"2026-08-22","name":"ly","amount":36000},{"id":1787561969633,"date":"2026-08-22","name":"Cafe","amount":66000},{"id":1787561981350,"date":"2026-08-24","name":"ly","amount":48000},{"id":1787563328716,"date":"2026-08-24","name":"NL","amount":205000},{"id":1787563461080,"date":"2026-08-24","name":"Shhn","amount":20000},{"id":1787563467864,"date":"2026-08-24","name":"Đá","amount":5000}],"tin2_setup":[{"id":1787561872644,"name":"Tổng","amount":6000000}],"tin2_cash":0,"tin2_bank":0};
-    localStorage.setItem('tin2_menu',JSON.stringify(__seed.tin2_menu));
-    localStorage.setItem('tin2_orders',JSON.stringify(__seed.tin2_orders));
-    localStorage.setItem('tin2_expenses',JSON.stringify(__seed.tin2_expenses));
-    localStorage.setItem('tin2_setup',JSON.stringify(__seed.tin2_setup));
-    localStorage.setItem('tin2_cash',JSON.stringify(__seed.tin2_cash));
-    localStorage.setItem('tin2_bank',JSON.stringify(__seed.tin2_bank));
-    localStorage.setItem('tin2_seed_loaded_v1','1');
+  const __seed={"tin2_menu":[{"name":"Cà phê đen","price":12000,"cost":5000},{"name":"Cà phê sữa","price":15000,"cost":6000},{"name":"Cà phê muối","price":17000,"cost":8000},{"name":"Americano","price":12000,"cost":5000},{"name":"Matcha latte","price":15000,"cost":7000},{"name":"Matcha latte km","price":17000,"cost":9000},{"name":"Cacao latte","price":15000,"cost":5000},{"name":"Cacao latte km","price":17000,"cost":7000},{"name":"Bạc xỉu","price":18000,"cost":7000},{"name":"Sữa chua","price":15000,"cost":5000}],"tin2_orders":[{"id":1787562028556,"date":"2026-08-24","time":"16:00","items":[{"name":"Cà phê đen","qty":5,"price":12000,"cost":5000}],"total":60000},{"id":1787562543218,"date":"2026-08-23","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":154000,"cost":64000}],"total":154000},{"id":1787562580233,"date":"2026-08-22","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":105000,"cost":0}],"total":105000},{"id":1787562627951,"date":"2026-08-21","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":318000,"cost":131000}],"total":318000},{"id":1787562666989,"date":"2026-08-20","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":244000,"cost":103000}],"total":244000},{"id":1787562700133,"date":"2026-08-19","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":196000,"cost":180000}],"total":196000},{"id":1787562769075,"date":"2026-08-18","time":"","manual":true,"orderCount":1,"items":[{"name":"Doanh thu nhập tay","qty":1,"price":277000,"cost":0}],"total":277000},{"id":1787562842443,"date":"2026-08-24","time":"16:14","items":[{"name":"Cà phê đen","qty":1,"price":12000,"cost":5000},{"name":"Cà phê sữa","qty":2,"price":15000,"cost":6000},{"name":"Cà phê muối","qty":2,"price":17000,"cost":8000},{"name":"Cacao latte","qty":5,"price":15000,"cost":5000},{"name":"Bạc xỉu","qty":3,"price":18000,"cost":7000}],"total":205000}],"tin2_expenses":[{"id":1787561918881,"date":"2026-08-17","name":"Nl","amount":333000},{"id":1787561944841,"date":"2026-08-18","name":"Nl","amount":308000},{"id":1787561962567,"date":"2026-08-22","name":"ly","amount":36000},{"id":1787561969633,"date":"2026-08-22","name":"Cafe","amount":66000},{"id":1787561981350,"date":"2026-08-24","name":"ly","amount":48000},{"id":1787563328716,"date":"2026-08-24","name":"NL","amount":205000},{"id":1787563461080,"date":"2026-08-24","name":"Shhn","amount":20000},{"id":1787563467864,"date":"2026-08-24","name":"Đá","amount":5000}],"tin2_setup":[{"id":1787561872644,"name":"Tổng","amount":6000000}],"tin2_cash":0,"tin2_bank":0};
+  function __arr(k, fallback){
+    try{const raw=localStorage.getItem(k); if(raw===null)return fallback; const v=JSON.parse(raw); return Array.isArray(v)?v:fallback;}catch(e){return fallback;}
   }
+  function __put(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  const existingOrders=__arr('tin2_orders',[]);
+  const existingMenu=__arr('tin2_menu',[]);
+  const existingExpenses=__arr('tin2_expenses',[]);
+  const existingSetup=__arr('tin2_setup',[]);
+  // Preserve all existing user data; if this is a fresh device, load the supplied backup.
+  if(existingOrders.length===0){
+    __put('tin2_orders',__seed.tin2_orders);
+  } else {
+    const ids=new Set(existingOrders.map(x=>String(x.id)));
+    const merged=existingOrders.concat(__seed.tin2_orders.filter(x=>!ids.has(String(x.id))));
+    __put('tin2_orders',merged);
+  }
+  if(existingMenu.length===0)__put('tin2_menu',__seed.tin2_menu);
+  if(existingExpenses.length===0)__put('tin2_expenses',__seed.tin2_expenses);
+  if(existingSetup.length===0)__put('tin2_setup',__seed.tin2_setup);
+  if(localStorage.getItem('tin2_cash')===null)__put('tin2_cash',__seed.tin2_cash);
+  if(localStorage.getItem('tin2_bank')===null)__put('tin2_bank',__seed.tin2_bank);
 })();
 
 const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentElement:{parentElement:{appendChild(){}},appendChild(){}},className:'',value:'',textContent:'',innerHTML:'',checked:false,files:[],onclick:null,onchange:null,click(){}}; const $=id=>document.getElementById(id)||__tinDummy, today=()=>{
@@ -193,25 +205,9 @@ const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentEleme
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }, money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
-const __tinHashLoaded=false;
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
 
-/* Persistence fallback: URL hash, works even when browser storage is unavailable. */
-function tinHashEncode(s){try{const b=new TextEncoder().encode(JSON.stringify(s));let x='';for(let i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}catch(e){return''}}
-function tinHashDecode(){try{let h=location.hash||'';if(!h.startsWith('#tin='))return null;let b=h.slice(5).replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';let x=atob(b),u=new Uint8Array(x.length);for(let i=0;i<x.length;i++)u[i]=x.charCodeAt(i);return JSON.parse(new TextDecoder().decode(u))}catch(e){return null}}
-function tinHashSave(){try{let s={version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank},h=tinHashEncode(s);if(h)history.replaceState(null,'',location.pathname+location.search+'#tin='+h)}catch(e){}}
-function tinHashLoad(){let s=tinHashDecode();if(!s||!Array.isArray(s.tinMenu)||!Array.isArray(s.tinOrders))return false;menu=s.tinMenu;orders=s.tinOrders;expenses=Array.isArray(s.tinExpenses)?s.tinExpenses:[];setup=Array.isArray(s.tinSetup)?s.tinSetup:[];cash=Number(s.tinCash||0);bank=Number(s.tinBank||0);return true}
-
-function save(){
-  try{localStorage.setItem(K.menu,JSON.stringify(menu))}catch(e){}
-  try{localStorage.setItem(K.orders,JSON.stringify(orders))}catch(e){}
-  try{localStorage.setItem(K.expenses,JSON.stringify(expenses))}catch(e){}
-  try{localStorage.setItem(K.setup,JSON.stringify(setup))}catch(e){}
-  try{localStorage.setItem(K.cash,JSON.stringify(cash))}catch(e){}
-  try{localStorage.setItem(K.bank,JSON.stringify(bank))}catch(e){}
-  try{autoBackup()}catch(e){}
-}
 function normalizeDate(v){
   if(!v)return '';
   const s=String(v);
@@ -259,89 +255,54 @@ function dashboardOrders(date){
 function normalizeCafeDate(v){
   if(!v)return '';
   const s=String(v).trim();
-  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
-  const m=s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/);
+  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;
+  const m=s.match(/^(\\d{1,2})[\\/.-](\\d{1,2})[\\/.-](\\d{4})/);
   if(m)return m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');
   const d=new Date(v);
-  if(!isNaN(d.getTime()))return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  return s.slice(0,10);
+  return isNaN(d.getTime())?'':d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function cafeOrderDate(o){
-  if(!o)return '';
-  for(const v of [o.date,o.createdAt,o.created_at,o.timestamp,o.timeStamp]){
-    const d=normalizeCafeDate(v);
-    if(d)return d;
-  }
-  const n=Number(o.id);
-  if(Number.isFinite(n)&&n>100000000000){
-    const d=new Date(n);
-    if(!isNaN(d.getTime()))return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  }
-  return '';
-}
-function cafeOrderTotal(o){
-  const direct=Number(o&&o.total);
-  if(Number.isFinite(direct))return direct;
-  return (o&&o.items||[]).reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||0),0);
-}
-function cafeOrdersFor(date){
-  const exact=orders.filter(o=>cafeOrderDate(o)===date);
-  if(exact.length)return exact;
-  const dated=orders.map(o=>cafeOrderDate(o)).filter(Boolean).sort();
-  const newest=dated.length?dated[dated.length-1]:date;
-  return orders.filter(o=>cafeOrderDate(o)===newest);
-}
+function orderDate(o){return normalizeCafeDate(o&&o.date)||(Number(o&&o.id)>100000000000?normalizeCafeDate(Number(o.id)):'');}
+function orderTotal(o){const n=Number(o&&o.total);return Number.isFinite(n)?n:(o&&o.items||[]).reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||0),0);}
+function dashboardDate(){const t=today();if(orders.some(o=>orderDate(o)===t))return t;const ds=orders.map(orderDate).filter(Boolean).sort();return ds.length?ds[ds.length-1]:t;}
 function stats(date){
-  const os=cafeOrdersFor(date);
-  const revenue=os.reduce((s,o)=>s+cafeOrderTotal(o),0);
+  const d=date||dashboardDate();
+  const os=orders.filter(o=>orderDate(o)===d);
+  const revenue=os.reduce((s,o)=>s+orderTotal(o),0);
   const cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0);
-  const ex=expenses.filter(e=>normalizeCafeDate(e.date)===date).reduce((s,e)=>s+Number(e.amount||0),0);
+  const ex=expenses.filter(e=>normalizeCafeDate(e.date)===d).reduce((s,e)=>s+Number(e.amount||0),0);
   const orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);
   return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount};
 }
-
 function monthStats(m){
   const ds=orders.filter(o=>orderDate(o).startsWith(m));
   const revenue=ds.reduce((s,o)=>s+orderTotal(o),0);
   const cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0);
-  const ex=expenses.filter(e=>normalizeDate(e.date).startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);
+  const ex=expenses.filter(e=>normalizeCafeDate(e.date).startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);
   return {revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)};
 }
 
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){
-  const date=today();
-  const t=stats(date);
-  const it=itemStats(t.orders);
-  const avg=t.orderCount?t.revenue/t.orderCount:0;
-  if($('dashDate'))$('dashDate').textContent=normalizeCafeDate(date);
+  const d=dashboardDate(),t=stats(d),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;
+  if($('dashDate'))$('dashDate').textContent=new Date(d+'T12:00:00').toLocaleDateString('vi-VN');
   if($('dashRevenue'))$('dashRevenue').textContent=money(t.revenue);
   if($('dashItems'))$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');
   if($('dashOrders'))$('dashOrders').textContent=t.orderCount.toLocaleString('vi-VN');
   if($('dashAverage'))$('dashAverage').textContent=money(avg);
   if($('dashItemsNote'))$('dashItemsNote').textContent=it.totalItems+' món đã bán';
   if($('dashOrdersNote'))$('dashOrdersNote').textContent=t.orderCount+' đơn';
-  const c={};
-  t.orders.forEach(o=>(o.items||[]).forEach(i=>{
-    const n=String(i.name||'Không tên');
-    c[n]=(c[n]||0)+Number(i.qty||0);
-  }));
-  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4);
-  const icons=['☕','🧋','🥤','🍵'];
-  if($('popularItems'))$('popularItems').innerHTML=top.length
-    ?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${icons[i%icons.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join('')
-    :'<div class="empty">Chưa có dữ liệu bán hàng.</div>';
+  const c={};t.orders.forEach(o=>(o.items||[]).forEach(i=>{let n=String(i.name||'Không tên');c[n]=(c[n]||0)+Number(i.qty||0)}));
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4),icons=['☕','🧋','🥤','🍵'];
+  if($('popularItems'))$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${icons[i%icons.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng hôm nay.</div>';
   const recent=t.orders.slice().reverse().slice(0,5);
-  if($('recentOrders'))$('recentOrders').innerHTML=recent.length
-    ?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(cafeOrderTotal(o))}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`
-    :'<div class="empty">Chưa có order.</div>';
+  if($('recentOrders'))$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(orderTotal(o))}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order hôm nay.</div>';
 }
 
 function renderMenuCatalog(){const el=$('menuCatalog');if(!el)return;el.innerHTML=menu.length?menu.map(m=>`<div class="menu-catalog-item"><div><div class="menu-name">${esc(m.name)}</div><small>Giá vốn: ${money(m.cost)}</small></div><div class="menu-price">${money(m.price)}</div></div>`).join(''):'<div class="empty">Chưa có món trong menu.</div>'}
 function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','🌱','✿'];menu.forEach((m,i)=>{let q=Number(cart[i]||0);let deco=botanicals[i%botanicals.length];h+=`<div class="item"><div><div class="name">${deco} ${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});$('menuList').innerHTML=h;if($('menuListOrder'))$('menuListOrder').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
 function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
 function renderToday(){
-  const os=cafeOrdersFor(today()).slice().reverse();
+  const os=dashboardOrders(today()).slice().reverse();
   if($('todayOrders'))$('todayOrders').innerHTML=os.length?os.map(o=>`<div class="summaryline"><span>${o.time||''} • ${(o.items||[]).map(i=>`${esc(i.name)} x${i.qty}`).join(', ')}<br><small>${money(orderTotal(o))}</small></span><button class="btn danger" type="button" data-del-order="${o.id}">Xóa</button></div>`).join(''):'<div class="empty">Chưa có đơn hôm nay.</div>';
   document.querySelectorAll('[data-del-order]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.delOrder));
 }
