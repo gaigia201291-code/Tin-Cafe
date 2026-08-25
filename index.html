@@ -150,12 +150,51 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
 .menu-catalog-item small{display:block;color:#81766b;margin-top:4px}
 .menu-catalog-item .menu-price{font-size:18px;font-weight:900;color:var(--brown)}
 @media(max-width:620px){.overview-logo-card{padding:12px;margin-bottom:10px}.overview-logo-card img{width:105px;height:105px}.page-heading{font-size:22px;margin-bottom:10px}.menu-catalog{grid-template-columns:1fr}.menu-catalog-item{padding:14px}.menu-catalog-item .menu-name{font-size:16px}.menu-catalog-item .menu-price{font-size:17px}}
-
-.mobile-brand-logo{display:none;justify-content:center;align-items:center;padding:2px 0 4px}.mobile-brand-logo img{width:62px;height:62px;object-fit:contain;border-radius:14px}.mobile-brand-logo + .side-brand{padding-top:0}
-@media(max-width:620px){.mobile-brand-logo{display:flex}.side-brand .cafe{font-size:14px}.side-brand .tin{font-size:27px}.side-brand{padding-bottom:8px}.overview-logo-card{display:none}}
 </style></head>
-<body><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="overview"><span class="navico">⌂</span><span>Tổng quan</span></button><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="overview"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
-<section id="overview" class="tab active dashboard"><div class="dashboard-grid"><div class="dash-stat"><div class="stat-head"><span class="stat-icon">💰</span>Doanh thu hôm nay</div><b id="dashRevenue">0đ</b><small class="up">Theo dữ liệu hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🛍️</span>Tổng số món</div><b id="dashItems">0</b><small id="dashItemsNote">Món đã bán hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">👥</span>Số order</div><b id="dashOrders">0</b><small id="dashOrdersNote">Đơn hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🧾</span>Đơn trung bình</div><b id="dashAverage">0đ</b><small>Doanh thu / order</small></div></div><div class="dashboard-main"><div class="dash-card"><div class="dash-card-head"><h2>Món bán chạy</h2><button class="text-link" data-go="stats">Xem tất cả</button></div><div id="popularItems"></div></div></div><div class="dash-card recent"><div class="dash-card-head"><h2>Order gần đây</h2><button class="text-link" data-go="order">Xem tất cả</button></div><div id="recentOrders"></div></div></section>
+<body>
+<script>
+/* Cafe Tin V5 recovery: restore old data automatically only when the app is empty. */
+(function(){
+  const REC={
+    tinMenu:[
+      {name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},
+      {name:'Americano',price:12000,cost:5000},{name:'Matcha latte',price:15000,cost:7000},{name:'Matcha latte km',price:17000,cost:9000},
+      {name:'Cacao latte',price:15000,cost:5000},{name:'Cacao latte km',price:17000,cost:7000},{name:'Bạc xỉu',price:18000,cost:7000},{name:'Sữa chua',price:15000,cost:5000}
+    ],
+    tinOrders:[
+      {id:1787562028556,date:'2026-08-24',time:'16:00',items:[{name:'Cà phê đen',qty:5,price:12000,cost:5000}],total:60000},
+      {id:1787562543218,date:'2026-08-23',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:154000,cost:64000}],total:154000},
+      {id:1787562580233,date:'2026-08-22',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:105000,cost:0}],total:105000},
+      {id:1787562627951,date:'2026-08-21',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:318000,cost:131000}],total:318000},
+      {id:1787562666989,date:'2026-08-20',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:244000,cost:103000}],total:244000},
+      {id:1787562700133,date:'2026-08-19',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:196000,cost:180000}],total:196000},
+      {id:1787562769075,date:'2026-08-18',time:'',manual:true,orderCount:1,items:[{name:'Doanh thu nhập tay',qty:1,price:277000,cost:0}],total:277000},
+      {id:1787562842443,date:'2026-08-24',time:'16:14',items:[{name:'Cà phê đen',qty:1,price:12000,cost:5000},{name:'Cà phê sữa',qty:2,price:15000,cost:6000},{name:'Cà phê muối',qty:2,price:17000,cost:8000},{name:'Cacao latte',qty:5,price:15000,cost:5000},{name:'Bạc xỉu',qty:3,price:18000,cost:7000}],total:205000}
+    ],
+    tinExpenses:[
+      {id:1787561918881,date:'2026-08-17',name:'Nl',amount:333000},{id:1787561944841,date:'2026-08-18',name:'Nl',amount:308000},
+      {id:1787561962567,date:'2026-08-22',name:'ly',amount:36000},{id:1787561969633,date:'2026-08-22',name:'Cafe',amount:66000},
+      {id:1787561981350,date:'2026-08-24',name:'ly',amount:48000},{id:1787563328716,date:'2026-08-24',name:'NL',amount:205000},
+      {id:1787563461080,date:'2026-08-24',name:'Shhn',amount:20000},{id:1787563467864,date:'2026-08-24',name:'Đá',amount:5000}
+    ],
+    tinSetup:[{id:1787561872644,name:'Tổng',amount:6000000}],tinCash:0,tinBank:0
+  };
+  try{
+    const keys=['tin2_menu','tin2_orders','tin2_expenses','tin2_setup'];
+    const empty=keys.every(k=>!localStorage.getItem(k));
+    if(empty){
+      localStorage.setItem('tin2_menu',JSON.stringify(REC.tinMenu));
+      localStorage.setItem('tin2_orders',JSON.stringify(REC.tinOrders));
+      localStorage.setItem('tin2_expenses',JSON.stringify(REC.tinExpenses));
+      localStorage.setItem('tin2_setup',JSON.stringify(REC.tinSetup));
+      localStorage.setItem('tin2_cash','0'); localStorage.setItem('tin2_bank','0');
+      localStorage.setItem('tin2_recovery_done',JSON.stringify({at:new Date().toISOString(),source:'Tin Cafe V5 2026-08-24'}));
+    }
+  }catch(e){}
+})();
+</script>
+<div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="overview"><span class="navico">⌂</span><span>Tổng quan</span></button><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="overview"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
+<section id="overview" class="tab active dashboard"><div class="overview-logo-card"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="dashboard-grid"><div class="dash-stat"><div class="stat-head"><span class="stat-icon">💰</span>Doanh thu hôm nay</div><b id="dashRevenue">0đ</b><small class="up">Theo dữ liệu hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🛍️</span>Tổng số món</div><b id="dashItems">0</b><small id="dashItemsNote">Món đã bán hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">👥</span>Số order</div><b id="dashOrders">0</b><small id="dashOrdersNote">Đơn hôm nay</small></div><div class="dash-stat"><div class="stat-head"><span class="stat-icon">🧾</span>Đơn trung bình</div><b id="dashAverage">0đ</b><small>Doanh thu / order</small></div></div><div class="dashboard-main"><div class="dash-card"><div class="dash-card-head"><h2>Món bán chạy</h2><button class="text-link" data-go="stats">Xem tất cả</button></div><div id="popularItems"></div></div></div><div class="dash-card recent"><div class="dash-card-head"><h2>Order gần đây</h2><button class="text-link" data-go="order">Xem tất cả</button></div><div id="recentOrders"></div></div></section>
 <section id="menuView" class="tab"><h2 class="page-heading">Menu</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div></section>
 <section id="order" class="tab"><div class="card"><div class="section-title">Tạo đơn</div><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div></section>
 <section id="stats" class="tab">
@@ -208,43 +247,12 @@ function snapshot(){return{version:4,exportedAt:new Date().toISOString(),tinMenu
 function downloadBackup(){let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`TinCafe-sao-luu-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:menu;menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=Array.isArray(d.tinSetup)?d.tinSetup:[];cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);save();render();alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`)}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
-function recoverFromExistingBackup(){
-  try{
-    // If the current keys are empty, look for the newest automatic backup that still contains data.
-    const currentOrders=Array.isArray(orders)?orders:[];
-    const currentExpenses=Array.isArray(expenses)?expenses:[];
-    const currentMenu=Array.isArray(menu)?menu:[];
-    if(currentOrders.length||currentExpenses.length||currentMenu.length>5)return false;
-    const b=load(K.auto,{});
-    const dates=Object.keys(b||{}).sort().reverse();
-    for(const d of dates){
-      const snap=b[d];
-      if(!snap||!Array.isArray(snap.tinOrders)||snap.tinOrders.length===0) continue;
-      orders=snap.tinOrders;
-      expenses=Array.isArray(snap.tinExpenses)?snap.tinExpenses:expenses;
-      setup=Array.isArray(snap.tinSetup)?snap.tinSetup:setup;
-      if(Array.isArray(snap.tinMenu)&&snap.tinMenu.length) menu=snap.tinMenu;
-      cash=Number(snap.tinCash||0); bank=Number(snap.tinBank||0);
-      localStorage.setItem(K.menu,JSON.stringify(menu));
-      localStorage.setItem(K.orders,JSON.stringify(orders));
-      localStorage.setItem(K.expenses,JSON.stringify(expenses));
-      localStorage.setItem(K.setup,JSON.stringify(setup));
-      localStorage.setItem(K.cash,JSON.stringify(cash));
-      localStorage.setItem(K.bank,JSON.stringify(bank));
-      return true;
-    }
-  }catch(e){}
-  return false;
-}
-
 function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
 
 function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};$('saveOrderOrder').onclick=addOrder;$('clearCartOrder').onclick=()=>{cart={};renderMenu()};$('addExpense').onclick=addExpense;$('addManualRevenue').onclick=addManualRevenue;$('addSetup').onclick=addSetup;$('monthPick').value=today().slice(0,7);$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=()=>{menu.push({name:'Món mới',price:0,cost:0});save();render()};if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
 $('expenseDate').value=today();$('manualDate').value=today();
-// Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
-const recoveredExistingData=recoverFromExistingBackup();
+// Hỗ trợ nhập file sao lưu cũ của Cafe Tin.
 window.addEventListener('beforeunload',autoBackup);autoBackup();render();
-if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
 </script>
 
 
