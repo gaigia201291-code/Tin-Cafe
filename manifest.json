@@ -1,1 +1,2 @@
-{"name":"Tin Cafe","short_name":"Tin Cafe","start_url":"./","display":"standalone","background_color":"#f7f3ee","theme_color":"#8b4513","lang":"vi","icons":[]}
+{
+"name":"Cafe Tin","short_name":"Cafe Tin","start_url":"./","display":"standalone","background_color":"#fbf7ef","theme_color":"#6f4328","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
