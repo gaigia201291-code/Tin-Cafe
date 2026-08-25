@@ -193,71 +193,17 @@ const __tinDummy={style:{},classList:{add(){},remove(){},toggle(){}},parentEleme
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }, money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
 let menu=load(K.menu,[]),orders=load(K.orders,[]),expenses=load(K.expenses,[]),setup=load(K.setup,[]),cash=Number(load(K.cash,0)||0),bank=Number(load(K.bank,0)||0),cart={};
+const __tinHashLoaded=tinHashLoad();
 if(!menu.length) menu=[{name:'Cà phê đen',price:12000,cost:5000},{name:'Cà phê sữa',price:15000,cost:6000},{name:'Cà phê muối',price:17000,cost:8000},{name:'Mì trộn full topping',price:25000,cost:15000},{name:'Matcha latte',price:15000,cost:7000}];
 function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
 
-/* Cafe Tin: persistent storage layer */
-const TIN_DB_NAME='CafeTinDataDB', TIN_DB_VERSION=1, TIN_DB_STORE='state';
-function tinDBOpen(){
-  return new Promise((resolve,reject)=>{
-    if(!window.indexedDB) return resolve(null);
-    const r=indexedDB.open(TIN_DB_NAME,TIN_DB_VERSION);
-    r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(TIN_DB_STORE))r.result.createObjectStore(TIN_DB_STORE)};
-    r.onsuccess=()=>resolve(r.result);
-    r.onerror=()=>resolve(null);
-  });
-}
-async function tinDBGet(){
-  try{
-    const db=await tinDBOpen(); if(!db)return null;
-    return await new Promise(resolve=>{
-      const tx=db.transaction(TIN_DB_STORE,'readonly'), req=tx.objectStore(TIN_DB_STORE).get('main');
-      req.onsuccess=()=>resolve(req.result||null); req.onerror=()=>resolve(null);
-    });
-  }catch(e){return null}
-}
-async function tinDBPut(state){
-  try{
-    const db=await tinDBOpen(); if(!db)return;
-    await new Promise(resolve=>{
-      const tx=db.transaction(TIN_DB_STORE,'readwrite');
-      tx.objectStore(TIN_DB_STORE).put(state,'main');
-      tx.oncomplete=()=>resolve(); tx.onerror=()=>resolve(); tx.onabort=()=>resolve();
-    });
-  }catch(e){}
-}
-function tinState(){
-  return {version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank};
-}
-function tinPersist(){
-  const s=tinState();
-  try{
-    localStorage.setItem(K.menu,JSON.stringify(s.tinMenu));
-    localStorage.setItem(K.orders,JSON.stringify(s.tinOrders));
-    localStorage.setItem(K.expenses,JSON.stringify(s.tinExpenses));
-    localStorage.setItem(K.setup,JSON.stringify(s.tinSetup));
-    localStorage.setItem(K.cash,JSON.stringify(s.tinCash));
-    localStorage.setItem(K.bank,JSON.stringify(s.tinBank));
-  }catch(e){}
-  tinDBPut(s);
-}
-async function tinLoadPersistent(){
-  const s=await tinDBGet();
-  if(!s || !Array.isArray(s.tinOrders) || !Array.isArray(s.tinMenu)) return false;
-  menu=s.tinMenu; orders=s.tinOrders; expenses=Array.isArray(s.tinExpenses)?s.tinExpenses:[];
-  setup=Array.isArray(s.tinSetup)?s.tinSetup:[]; cash=Number(s.tinCash||0); bank=Number(s.tinBank||0);
-  try{
-    localStorage.setItem(K.menu,JSON.stringify(menu));
-    localStorage.setItem(K.orders,JSON.stringify(orders));
-    localStorage.setItem(K.expenses,JSON.stringify(expenses));
-    localStorage.setItem(K.setup,JSON.stringify(setup));
-    localStorage.setItem(K.cash,JSON.stringify(cash));
-    localStorage.setItem(K.bank,JSON.stringify(bank));
-  }catch(e){}
-  return true;
-}
+/* Persistence fallback: URL hash, works even when browser storage is unavailable. */
+function tinHashEncode(s){try{const b=new TextEncoder().encode(JSON.stringify(s));let x='';for(let i=0;i<b.length;i++)x+=String.fromCharCode(b[i]);return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}catch(e){return''}}
+function tinHashDecode(){try{let h=location.hash||'';if(!h.startsWith('#tin='))return null;let b=h.slice(5).replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';let x=atob(b),u=new Uint8Array(x.length);for(let i=0;i<x.length;i++)u[i]=x.charCodeAt(i);return JSON.parse(new TextDecoder().decode(u))}catch(e){return null}}
+function tinHashSave(){try{let s={version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank},h=tinHashEncode(s);if(h)history.replaceState(null,'',location.pathname+location.search+'#tin='+h)}catch(e){}}
+function tinHashLoad(){let s=tinHashDecode();if(!s||!Array.isArray(s.tinMenu)||!Array.isArray(s.tinOrders))return false;menu=s.tinMenu;orders=s.tinOrders;expenses=Array.isArray(s.tinExpenses)?s.tinExpenses:[];setup=Array.isArray(s.tinSetup)?s.tinSetup:[];cash=Number(s.tinCash||0);bank=Number(s.tinBank||0);return true}
 
-function save(){localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));tinDBPut(tinState());autoBackup()}
+function save(){localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));try{tinHashSave()}catch(e){}autoBackup()}
 function stats(date){let os=orders.filter(o=>o.date===date), revenue=os.reduce((s,o)=>s+Number(o.total||0),0),cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date===date).reduce((s,e)=>s+Number(e.amount||0),0),orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount}}
 function monthStats(m){let ds=orders.filter(o=>o.date?.startsWith(m)), revenue=ds.reduce((s,o)=>s+Number(o.total||0),0),cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);return{revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)}}
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
@@ -282,7 +228,7 @@ function delExpense(id){expenses=expenses.filter(x=>String(x.id)!==String(id));s
 function autoBackup(){let d=today(),b=load(K.auto,{});b[d]=snapshot();let keys=Object.keys(b).sort();if(keys.length>30)delete b[keys[0]];localStorage.setItem(K.auto,JSON.stringify(b));localStorage.setItem(K.last,JSON.stringify({date:d,time:new Date().toLocaleString('vi-VN')}))}
 function snapshot(){return{version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank}}
 function downloadBackup(){let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`TinCafe-sao-luu-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:[], importedSetup=Array.isArray(d.tinSetup)?d.tinSetup:[]; menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=importedSetup;cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));tinDBPut(tinState());alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`);location.reload()}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file,'UTF-8')} function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
+function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:[], importedSetup=Array.isArray(d.tinSetup)?d.tinSetup:[]; menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=importedSetup;cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`);location.reload()}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file,'UTF-8')} function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
 function recoverFromExistingBackup(){
   try{
     // If the current keys are empty, look for the newest automatic backup that still contains data.
@@ -318,16 +264,8 @@ function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.cl
 $('expenseDate').value=today();$('manualDate').value=today();
 // Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
 const recoveredExistingData=recoverFromExistingBackup();
-window.addEventListener('beforeunload',autoBackup);
-(async function(){
-  const hadDB=await tinLoadPersistent();
-  if(!hadDB){
-    await tinDBPut(tinState());
-  }
-  autoBackup();
-  render();
-  if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
-})();
+if(!__tinHashLoaded)tinHashSave();
+window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
 </script>
 
