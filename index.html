@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f4328"><link rel="manifest" href="manifest.json">
-<title>Cafe Tin</title>
+<title>Cafe Tin - Dashboard Fix</title>
 <style>
 :root{--bg:#edf8ec;--card:rgba(255,255,255,.94);--ink:#24452d;--muted:#718273;--accent:#78b982;--accent-dark:#5d9f68;--line:#d7ead5;--good:#68ad78;--danger:#dc7777;--blue:#a7d8c1;--lav:#c9dcb7;--cream:#fff9ed;--leaf:#8fbd79;--flower:#e7a8b8}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
@@ -274,10 +274,17 @@ function normalizeCafeDate(v){
 }
 function orderDate(o){return normalizeCafeDate(o&&o.date)||(Number(o&&o.id)>100000000000?normalizeCafeDate(Number(o.id)):'');}
 function orderTotal(o){const n=Number(o&&o.total);return Number.isFinite(n)?n:(o&&o.items||[]).reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||0),0);}
-function dashboardDate(){const t=today();if(orders.some(o=>orderDate(o)===t))return t;const ds=orders.map(orderDate).filter(Boolean).sort();return ds.length?ds[ds.length-1]:t;}
+function dashboardDate(){
+  const t=today();
+  const todayOrders=dashboardOrders(t);
+  if(todayOrders.length)return t;
+  const ds=orders.map(orderDate).filter(Boolean).sort();
+  if(ds.length)return ds[ds.length-1];
+  return t;
+}
 function stats(date){
   const d=date||dashboardDate();
-  const os=orders.filter(o=>orderDate(o)===d);
+  const os=dashboardOrders(d);
   const revenue=os.reduce((s,o)=>s+orderTotal(o),0);
   const cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0);
   const ex=expenses.filter(e=>normalizeCafeDate(e.date)===d).reduce((s,e)=>s+Number(e.amount||0),0);
@@ -294,7 +301,12 @@ function monthStats(m){
 
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){
-  const d=dashboardDate(),t=stats(d),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;
+  let d=dashboardDate(), t=stats(d);
+  if(!t.orders.length && orders.length){
+    const dated=orders.map(o=>({o,d:orderDate(o)})).filter(x=>x.d).sort((a,b)=>a.d.localeCompare(b.d));
+    if(dated.length){d=dated[dated.length-1].d;t=stats(d);}
+  }
+  const it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;
   if($('dashDate'))$('dashDate').textContent=new Date(d+'T12:00:00').toLocaleDateString('vi-VN');
   if($('dashRevenue'))$('dashRevenue').textContent=money(t.revenue);
   if($('dashItems'))$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');
