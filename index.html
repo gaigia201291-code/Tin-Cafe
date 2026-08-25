@@ -203,9 +203,35 @@ function tinHashDecode(){try{let h=location.hash||'';if(!h.startsWith('#tin='))r
 function tinHashSave(){try{let s={version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank},h=tinHashEncode(s);if(h)history.replaceState(null,'',location.pathname+location.search+'#tin='+h)}catch(e){}}
 function tinHashLoad(){let s=tinHashDecode();if(!s||!Array.isArray(s.tinMenu)||!Array.isArray(s.tinOrders))return false;menu=s.tinMenu;orders=s.tinOrders;expenses=Array.isArray(s.tinExpenses)?s.tinExpenses:[];setup=Array.isArray(s.tinSetup)?s.tinSetup:[];cash=Number(s.tinCash||0);bank=Number(s.tinBank||0);return true}
 
-function save(){localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));try{tinHashSave()}catch(e){}autoBackup()}
-function stats(date){let os=orders.filter(o=>o.date===date), revenue=os.reduce((s,o)=>s+Number(o.total||0),0),cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date===date).reduce((s,e)=>s+Number(e.amount||0),0),orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount}}
-function monthStats(m){let ds=orders.filter(o=>o.date?.startsWith(m)), revenue=ds.reduce((s,o)=>s+Number(o.total||0),0),cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>e.date?.startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);return{revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)}}
+function save(){
+  try{localStorage.setItem(K.menu,JSON.stringify(menu));}catch(e){}
+  try{localStorage.setItem(K.orders,JSON.stringify(orders));}catch(e){}
+  try{localStorage.setItem(K.expenses,JSON.stringify(expenses));}catch(e){}
+  try{localStorage.setItem(K.setup,JSON.stringify(setup));}catch(e){}
+  try{localStorage.setItem(K.cash,JSON.stringify(cash));}catch(e){}
+  try{localStorage.setItem(K.bank,JSON.stringify(bank));}catch(e){}
+  try{tinHashSave();}catch(e){}
+  try{autoBackup();}catch(e){}
+}
+function normalizeDate(v){
+  if(!v)return '';
+  const s=String(v);
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  const m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+  if(m)return m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');
+  const d=new Date(v);
+  if(!isNaN(d))return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  return s.slice(0,10);
+}
+function stats(date){
+  let os=orders.filter(o=>normalizeDate(o.date)===date),
+  revenue=os.reduce((s,o)=>s+Number(o.total||0),0),
+  cogs=os.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),
+  ex=expenses.filter(e=>normalizeDate(e.date)===date).reduce((s,e)=>s+Number(e.amount||0),0),
+  orderCount=os.reduce((s,o)=>s+Number(o.orderCount||1),0);
+  return {revenue,cogs,ex,profit:revenue-cogs-ex,orders:os,orderCount};
+}
+function monthStats(m){let ds=orders.filter(o=>normalizeDate(o.date).startsWith(m)), revenue=ds.reduce((s,o)=>s+Number(o.total||0),0),cogs=ds.reduce((s,o)=>s+(o.items||[]).reduce((a,i)=>a+Number(i.cost||0)*Number(i.qty||0),0),0),ex=expenses.filter(e=>normalizeDate(e.date).startsWith(m)).reduce((s,e)=>s+Number(e.amount||0),0);return{revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)}}
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){const t=stats(today()),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;$('dashDate').textContent=new Date().toLocaleDateString('vi-VN');$('dashRevenue').textContent=money(t.revenue);$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');$('dashOrders').textContent=t.orderCount.toLocaleString('vi-VN');$('dashAverage').textContent=money(avg);$('dashItemsNote').textContent=it.totalItems+' món đã bán hôm nay';$('dashOrdersNote').textContent=t.orderCount+' đơn hôm nay';const c={};t.orders.forEach(o=>(o.items||[]).forEach(i=>{let n=String(i.name||'Không tên');c[n]=(c[n]||0)+Number(i.qty||0)}));const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4),d=['☕','🧋','🥤','🍵'];$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${d[i%d.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng hôm nay.</div>';const recent=t.orders.slice().reverse().slice(0,5);$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(o.total)}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order hôm nay.</div>'}
 function renderMenuCatalog(){const el=$('menuCatalog');if(!el)return;el.innerHTML=menu.length?menu.map(m=>`<div class="menu-catalog-item"><div><div class="menu-name">${esc(m.name)}</div><small>Giá vốn: ${money(m.cost)}</small></div><div class="menu-price">${money(m.price)}</div></div>`).join(''):'<div class="empty">Chưa có món trong menu.</div>'}
