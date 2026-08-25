@@ -215,6 +215,70 @@ label{font-size:14px}
  .section-title{font-size:19px!important}
 }
 </style>
+<style id="cafe-tin-thu-phap-va-mon-noi-bat">
+/* Lời chúc thư pháp + tên món trong Order nổi bật */
+.side-brand .brand-slogan{
+  font-family:"URW Chancery L","Segoe Print","Bradley Hand","Comic Sans MS",cursive!important;
+  font-size:22px!important;
+  font-weight:700!important;
+  line-height:1.45!important;
+  color:#704124!important;
+  letter-spacing:.2px!important;
+  text-shadow:0 1px 0 #fff8ee, 0 2px 5px rgba(112,65,36,.14)!important;
+  margin:10px -2px 0!important;
+  padding:5px 2px!important;
+}
+/* Làm từng tên món trong phần Tạo đơn thật dễ thấy */
+#menuListOrder .item{
+  background:linear-gradient(90deg,#fff8ed 0%,#fffdf9 78%)!important;
+  border:1px solid #ead8c2!important;
+  border-left:5px solid #8b5a38!important;
+  box-shadow:0 4px 12px rgba(89,57,35,.08)!important;
+  margin:7px 0!important;
+  padding:14px 9px!important;
+}
+#menuListOrder .item .name{
+  display:inline-block!important;
+  font-size:19px!important;
+  font-weight:950!important;
+  color:#4a2b1b!important;
+  line-height:1.35!important;
+  letter-spacing:.1px!important;
+  text-shadow:0 .5px 0 #fff!important;
+}
+#menuListOrder .item small{
+  font-size:15px!important;
+  font-weight:700!important;
+  color:#8a6a53!important;
+  margin-top:3px!important;
+}
+#menuListOrder .item .btn{
+  font-size:18px!important;
+  font-weight:950!important;
+  min-width:42px!important;
+  min-height:42px!important;
+}
+#menuListOrder .item > strong{
+  font-size:18px!important;
+  font-weight:950!important;
+  color:#4a2b1b!important;
+}
+@media(max-width:620px){
+  .side-brand .brand-slogan{
+    font-size:19px!important;
+    line-height:1.45!important;
+    margin-top:8px!important;
+  }
+  #menuListOrder .item{
+    border-left-width:4px!important;
+    padding:13px 7px!important;
+  }
+  #menuListOrder .item .name{font-size:18px!important}
+  #menuListOrder .item small{font-size:14px!important}
+  #menuListOrder .item .btn{min-width:40px!important;min-height:40px!important}
+}
+</style>
+
 </head>
 <body><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
