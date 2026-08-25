@@ -187,7 +187,7 @@ function monthStats(m){let ds=orders.filter(o=>o.date?.startsWith(m)), revenue=d
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){const t=stats(today()),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;$('dashDate').textContent=new Date().toLocaleDateString('vi-VN');$('dashRevenue').textContent=money(t.revenue);$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');$('dashOrders').textContent=t.orderCount.toLocaleString('vi-VN');$('dashAverage').textContent=money(avg);$('dashItemsNote').textContent=it.totalItems+' món đã bán hôm nay';$('dashOrdersNote').textContent=t.orderCount+' đơn hôm nay';const c={};t.orders.forEach(o=>(o.items||[]).forEach(i=>{let n=String(i.name||'Không tên');c[n]=(c[n]||0)+Number(i.qty||0)}));const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4),d=['☕','🧋','🥤','🍵'];$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${d[i%d.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng hôm nay.</div>';const recent=t.orders.slice().reverse().slice(0,5);$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(o.total)}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order hôm nay.</div>'}
 function renderMenuCatalog(){const el=$('menuCatalog');if(!el)return;el.innerHTML=menu.length?menu.map(m=>`<div class="menu-catalog-item"><div><div class="menu-name">${esc(m.name)}</div><small>Giá vốn: ${money(m.cost)}</small></div><div class="menu-price">${money(m.price)}</div></div>`).join(''):'<div class="empty">Chưa có món trong menu.</div>'}
-function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','🌱','✿'];menu.forEach((m,i)=>{let q=Number(cart[i]||0);let deco=botanicals[i%botanicals.length];h+=`<div class="item"><div><div class="name">${deco} ${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});if($('menuList'))$('menuList').innerHTML=h;if($('menuListOrder'))$('menuListOrder').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
+function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','🌱','✿'];menu.forEach((m,i)=>{let q=Number(cart[i]||0);let deco=botanicals[i%botanicals.length];h+=`<div class="item"><div><div class="name">${deco} ${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});$('menuList').innerHTML=h;if($('menuListOrder'))$('menuListOrder').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
 function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
 function renderToday(){let os=orders.filter(o=>o.date===today()).slice().reverse();$('todayOrders').innerHTML=os.length?os.map(o=>`<div class="summaryline"><span>${o.time||''} • ${(o.items||[]).map(i=>`${esc(i.name)} x${i.qty}`).join(', ')}<br><small>${money(o.total)}</small></span><button class="btn danger" type="button" data-del-order="${o.id}">Xóa</button></div>`).join(''):'<div class="empty"><img class="empty-illustration" src="cafe-tin-empty.png" alt="Minh họa chưa có đơn"><b>Chưa có đơn hôm nay.</b><br><small>Hãy tạo đơn đầu tiên nhé!</small></div>';document.querySelectorAll('[data-del-order]').forEach(b=>b.onclick=()=>deleteOrder(b.dataset.delOrder))}
 function itemStats(os){const counts={};(os||[]).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');counts[name]=(counts[name]||0)+Number(i.qty||0)}));let best='—',bestQty=0;Object.entries(counts).forEach(([name,qty])=>{if(qty>bestQty){best=name;bestQty=qty}});return{totalItems:Object.values(counts).reduce((a,b)=>a+b,0),best,bestQty}}
@@ -286,4 +286,76 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
+<script>
+/* Cafe Tin - robust JSON restore patch */
+(function(){
+  function tinSafeRender(){
+    try { if (typeof render === 'function') render(); } catch(e) { console.warn('Render after restore skipped:', e); }
+    try { if (typeof renderMenu === 'function') renderMenu(); } catch(e) {}
+    try { if (typeof renderMenuOrder === 'function') renderMenuOrder(); } catch(e) {}
+    try { if (typeof renderExpenses === 'function') renderExpenses(); } catch(e) {}
+    try { if (typeof renderSetup === 'function') renderSetup(); } catch(e) {}
+  }
+
+  window.tinRestoreBackup = function(file){
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try {
+        var x = JSON.parse(ev.target.result);
+        if(!x || typeof x !== 'object') throw new Error('File JSON không hợp lệ');
+
+        var menuData = Array.isArray(x.tinMenu) ? x.tinMenu : [];
+        var ordersData = Array.isArray(x.tinOrders) ? x.tinOrders : [];
+        var expensesData = Array.isArray(x.tinExpenses) ? x.tinExpenses : [];
+        var setupData = Array.isArray(x.tinSetup) ? x.tinSetup : [];
+        var cashData = Number(x.tinCash || 0);
+        var bankData = Number(x.tinBank || 0);
+
+        /* Ghi đúng các biến của ứng dụng nếu chúng tồn tại. */
+        if (typeof menu !== 'undefined') menu = menuData;
+        if (typeof orders !== 'undefined') orders = ordersData;
+        if (typeof expenses !== 'undefined') expenses = expensesData;
+        if (typeof setup !== 'undefined') setup = setupData;
+        if (typeof cash !== 'undefined') cash = cashData;
+        if (typeof bank !== 'undefined') bank = bankData;
+
+        /* Ghi trực tiếp localStorage, độc lập với giao diện DOM. */
+        localStorage.setItem('tin2_menu', JSON.stringify(menuData));
+        localStorage.setItem('tin2_orders', JSON.stringify(ordersData));
+        localStorage.setItem('tin2_expenses', JSON.stringify(expensesData));
+        localStorage.setItem('tin2_setup', JSON.stringify(setupData));
+        localStorage.setItem('tin2_cash', String(cashData));
+        localStorage.setItem('tin2_bank', String(bankData));
+        localStorage.setItem('tin2_last_backup', JSON.stringify(x));
+
+        alert('Đã khôi phục: ' + ordersData.length + ' đơn, ' + expensesData.length + ' khoản chi.');
+        location.reload();
+      } catch(err) {
+        alert('Không thể khôi phục: ' + (err && err.message ? err.message : err));
+      }
+    };
+    reader.onerror = function(){ alert('Không thể đọc file backup.'); };
+    reader.readAsText(file, 'UTF-8');
+  };
+})();
+</script>
+
+
+<script>
+(function(){
+  document.addEventListener('change', function(e){
+    var el=e.target;
+    if(!el || el.tagName!=='INPUT' || el.type!=='file' || !el.files || !el.files[0]) return;
+    var name=(el.id||'')+' '+(el.accept||'');
+    if(/json|restore|backup|khôi|phuc/i.test(name) || el.files[0].name.toLowerCase().endsWith('.json')){
+      if(typeof window.tinRestoreBackup==='function'){
+        window.tinRestoreBackup(el.files[0]);
+      }
+    }
+  }, true);
+})();
+</script>
+
 </body></html>
