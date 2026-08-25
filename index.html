@@ -244,18 +244,23 @@ function orderTotal(o){
   }
   return (o.items||[]).reduce((sum,i)=>sum+Number(i.price||0)*Number(i.qty||0),0);
 }
+function dashboardDate(){
+  const local=today();
+  if(orders.some(o=>orderDate(o)===local)) return local;
+  const dated=orders.map(o=>orderDate(o)).filter(Boolean).sort();
+  return dated.length ? dated[dated.length-1] : local;
+}
 function dashboardOrders(date){
-  const todayOrders=orders.filter(o=>orderDate(o)===date);
-  if(todayOrders.length)return todayOrders;
-  /* Nếu order mới không có trường ngày hợp lệ, nhận order có ID là timestamp của hôm nay. */
-  const d0=new Date(date+'T00:00:00');
-  const d1=new Date(d0); d1.setDate(d1.getDate()+1);
+  const target=date||dashboardDate();
+  const byDate=orders.filter(o=>orderDate(o)===target);
+  if(byDate.length)return byDate;
+  const d0=new Date(target+'T00:00:00'), d1=new Date(target+'T00:00:00');
+  d1.setDate(d1.getDate()+1);
   const a=d0.getTime(),b=d1.getTime();
-  const recent=orders.filter(o=>{
+  return orders.filter(o=>{
     const n=Number(o&&o.id);
     return Number.isFinite(n)&&n>=a&&n<b;
   });
-  return recent;
 }
 function stats(date){
   const os=dashboardOrders(date);
@@ -275,21 +280,33 @@ function monthStats(m){
 
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();updateBackupStatus()}
 function renderOverview(){
-  const t=stats(today()),it=itemStats(t.orders),avg=t.orderCount?t.revenue/t.orderCount:0;
-  if($('dashDate'))$('dashDate').textContent=new Date().toLocaleDateString('vi-VN');
+  try{
+    // Re-read the persisted state so Overview never depends on a stale variable.
+    const hs=tinHashDecode();
+    if(hs && Array.isArray(hs.tinOrders)) orders=hs.tinOrders;
+    else{
+      const persisted=load(K.orders,orders);
+      if(Array.isArray(persisted)) orders=persisted;
+    }
+  }catch(e){}
+  const d=dashboardDate(), t=stats(d), it=itemStats(t.orders), avg=t.orderCount?t.revenue/t.orderCount:0;
+  if($('dashDate'))$('dashDate').textContent=d;
   if($('dashRevenue'))$('dashRevenue').textContent=money(t.revenue);
   if($('dashItems'))$('dashItems').textContent=it.totalItems.toLocaleString('vi-VN');
   if($('dashOrders'))$('dashOrders').textContent=t.orderCount.toLocaleString('vi-VN');
   if($('dashAverage'))$('dashAverage').textContent=money(avg);
-  if($('dashItemsNote'))$('dashItemsNote').textContent=it.totalItems+' món đã bán hôm nay';
-  if($('dashOrdersNote'))$('dashOrdersNote').textContent=t.orderCount+' đơn hôm nay';
-  const c={};t.orders.forEach(o=>(o.items||[]).forEach(i=>{let n=String(i.name||'Không tên');c[n]=(c[n]||0)+Number(i.qty||0)}));
-  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4),d=['☕','🧋','🥤','🍵'];
-  if($('popularItems'))$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${d[i%d.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng hôm nay.</div>';
+  if($('dashItemsNote'))$('dashItemsNote').textContent=it.totalItems+' món đã bán';
+  if($('dashOrdersNote'))$('dashOrdersNote').textContent=t.orderCount+' đơn';
+  const c={};
+  t.orders.forEach(o=>(o.items||[]).forEach(i=>{
+    const n=String(i.name||'Không tên');
+    c[n]=(c[n]||0)+Number(i.qty||0);
+  }));
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,4), icons=['☕','🧋','🥤','🍵'];
+  if($('popularItems'))$('popularItems').innerHTML=top.length?top.map((x,i)=>`<div class="popular-row"><span class="rank">${i+1}</span><span class="drink">${icons[i%icons.length]}</span><div><b>${esc(x[0])}</b><small>${money((menu.find(m=>m.name===x[0])||{}).price||0)}</small></div><span class="qty">${x[1]} ly</span></div>`).join(''):'<div class="empty">Chưa có dữ liệu bán hàng.</div>';
   const recent=t.orders.slice().reverse().slice(0,5);
-  if($('recentOrders'))$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(orderTotal(o))}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order hôm nay.</div>';
+  if($('recentOrders'))$('recentOrders').innerHTML=recent.length?`<table class="recent-table"><thead><tr><th>#</th><th>Thời gian</th><th>Món</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>${recent.map(o=>`<tr><td>#${String(o.id).slice(-5)}</td><td>${esc(o.time||'—')}</td><td>${(o.items||[]).reduce((n,x)=>n+Number(x.qty||0),0)} món</td><td><b>${money(orderTotal(o))}</b></td><td><span class="status">Đã chốt</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty">Chưa có order.</div>';
 }
-
 function renderMenuCatalog(){const el=$('menuCatalog');if(!el)return;el.innerHTML=menu.length?menu.map(m=>`<div class="menu-catalog-item"><div><div class="menu-name">${esc(m.name)}</div><small>Giá vốn: ${money(m.cost)}</small></div><div class="menu-price">${money(m.price)}</div></div>`).join(''):'<div class="empty">Chưa có món trong menu.</div>'}
 function renderMenu(){let h='';const botanicals=['🌿','🌸','🍃','🌼','🌱','✿'];menu.forEach((m,i)=>{let q=Number(cart[i]||0);let deco=botanicals[i%botanicals.length];h+=`<div class="item"><div><div class="name">${deco} ${esc(m.name)}</div><small>${money(m.price)}</small></div><button class="btn" type="button" data-minus="${i}">−</button><strong style="text-align:center">${q}</strong><button class="btn primary" type="button" data-plus="${i}">+</button></div>`});$('menuList').innerHTML=h;if($('menuListOrder'))$('menuListOrder').innerHTML=h;document.querySelectorAll('[data-plus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.plus;cart[i]=Number(cart[i]||0)+1;renderMenu()});document.querySelectorAll('[data-minus]').forEach(x=>x.onclick=()=>{let i=+x.dataset.minus;cart[i]=Math.max(0,Number(cart[i]||0)-1);renderMenu()});updateCartTotal()}
 function updateCartTotal(){$('cartTotal').textContent=money(menu.reduce((s,m,i)=>s+(cart[i]||0)*m.price,0))}
@@ -300,14 +317,20 @@ function renderToday(){
 }
 
 function itemStats(os){const counts={};(os||[]).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');counts[name]=(counts[name]||0)+Number(i.qty||0)}));let best='—',bestQty=0;Object.entries(counts).forEach(([name,qty])=>{if(qty>bestQty){best=name;bestQty=qty}});return{totalItems:Object.values(counts).reduce((a,b)=>a+b,0),best,bestQty}}
-function renderStats(){let balances=load('tinCafeDailyBalances',{}),todayBalance=balances[today()];if($('cashNow'))$('cashNow').textContent=money(cash);if($('bankNow'))$('bankNow').textContent=money(bank);let todayEnd=todayBalance?Number(todayBalance.cash||0)+Number(todayBalance.bank||0):Number(cash||0)+Number(bank||0);if($('todayEndMoney'))$('todayEndMoney').textContent=money(todayEnd);let t=stats(today()),ti=itemStats(t.orders);$('todayRevenue').textContent=money(t.revenue);$('todayCogs').textContent=money(t.cogs);$('todayExpense').textContent=money(t.ex);$('todayProfit').textContent=money(t.profit);if($('todayItemsSold'))$('todayItemsSold').textContent=ti.totalItems.toLocaleString('vi-VN');if($('todayBestItem'))$('todayBestItem').textContent=ti.best==='—'?'—':`${ti.best} (${ti.bestQty})`;let m=$('monthPick').value||today().slice(0,7),ms=monthStats(m),mos=orders.filter(o=>orderDate(o).startsWith(m)),mi=itemStats(mos);$('monthRevenue').textContent=money(ms.revenue);$('monthCogs').textContent=money(ms.cogs);$('monthExpense').textContent=money(ms.ex);$('monthProfit').textContent=money(ms.profit);if($('monthItemsSold'))$('monthItemsSold').textContent=mi.totalItems.toLocaleString('vi-VN');if($('monthBestItem'))$('monthBestItem').textContent=mi.best==='—'?'—':`${mi.best} (${mi.bestQty})`;let days=[...new Set([...orders.map(o=>o.date),...expenses.map(e=>e.date),...Object.keys(balances)])].filter(Boolean).sort().reverse();$('dailyHistory').innerHTML=days.length?days.map(d=>{let ds=stats(d),b=balances[d],end=b?Number(b.cash||0)+Number(b.bank||0):null,di=itemStats(ds.orders);return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Lợi nhuận <b>${money(ds.profit)}</b><br>Tiền mặt <b>${b?money(b.cash):'—'}</b> • Bank <b>${b?money(b.bank):'—'}</b><br>Tổng tiền cuối ngày <b>${end===null?'—':money(end)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu.</div>'}
+function renderStats(){let balances=load('tinCafeDailyBalances',{}),todayBalance=balances[today()];if($('cashNow'))$('cashNow').textContent=money(cash);if($('bankNow'))$('bankNow').textContent=money(bank);let todayEnd=todayBalance?Number(todayBalance.cash||0)+Number(todayBalance.bank||0):Number(cash||0)+Number(bank||0);if($('todayEndMoney'))$('todayEndMoney').textContent=money(todayEnd);let t=stats(dashboardDate()),ti=itemStats(t.orders);$('todayRevenue').textContent=money(t.revenue);$('todayCogs').textContent=money(t.cogs);$('todayExpense').textContent=money(t.ex);$('todayProfit').textContent=money(t.profit);if($('todayItemsSold'))$('todayItemsSold').textContent=ti.totalItems.toLocaleString('vi-VN');if($('todayBestItem'))$('todayBestItem').textContent=ti.best==='—'?'—':`${ti.best} (${ti.bestQty})`;let m=$('monthPick').value||today().slice(0,7),ms=monthStats(m),mos=orders.filter(o=>orderDate(o).startsWith(m)),mi=itemStats(mos);$('monthRevenue').textContent=money(ms.revenue);$('monthCogs').textContent=money(ms.cogs);$('monthExpense').textContent=money(ms.ex);$('monthProfit').textContent=money(ms.profit);if($('monthItemsSold'))$('monthItemsSold').textContent=mi.totalItems.toLocaleString('vi-VN');if($('monthBestItem'))$('monthBestItem').textContent=mi.best==='—'?'—':`${mi.best} (${mi.bestQty})`;let days=[...new Set([...orders.map(o=>o.date),...expenses.map(e=>e.date),...Object.keys(balances)])].filter(Boolean).sort().reverse();$('dailyHistory').innerHTML=days.length?days.map(d=>{let ds=stats(d),b=balances[d],end=b?Number(b.cash||0)+Number(b.bank||0):null,di=itemStats(ds.orders);return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Lợi nhuận <b>${money(ds.profit)}</b><br>Tiền mặt <b>${b?money(b.cash):'—'}</b> • Bank <b>${b?money(b.bank):'—'}</b><br>Tổng tiền cuối ngày <b>${end===null?'—':money(end)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`}).join(''):'<div class="empty">Chưa có dữ liệu.</div>'}
 function renderExpenses(){let all=expenses.slice().reverse();$('expenseList').innerHTML=all.length?all.map((e,idx)=>`<div class="summaryline"><span>${e.date} • ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí.</div>'}
 function renderSetup(){let total=setup.reduce((s,e)=>s+Number(e.amount||0),0);$('setupTotal').textContent=money(total);$('setupList')?.remove();let box=document.createElement('div');box.id='setupList';box.innerHTML=setup.length?setup.slice().reverse().map(e=>`<div class="summaryline"><span>${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delSetup('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí mở quầy.</div>';$('setupTotal').parentElement.parentElement.appendChild(box)}
 function renderMenuAdmin(){$('menuAdmin').innerHTML=menu.map((m,i)=>`<div class="item"><div><input value="${escAttr(m.name)}" data-name="${i}"></div><input type="number" value="${m.price}" data-price="${i}"><input type="number" value="${m.cost}" data-cost="${i}"><button class="btn danger" type="button" data-del-menu="${i}">Xóa</button></div>`).join('');document.querySelectorAll('[data-del-menu]').forEach(x=>x.onclick=()=>deleteMenu(+x.dataset.delMenu));document.querySelectorAll('[data-name],[data-price],[data-cost]').forEach(x=>x.onchange=()=>{let i=x.dataset.name??x.dataset.price??x.dataset.cost; if(x.dataset.name!==undefined)menu[i].name=x.value; if(x.dataset.price!==undefined)menu[i].price=Number(x.value)||0;if(x.dataset.cost!==undefined)menu[i].cost=Number(x.value)||0;save();render()})}
 function deleteMenu(i){if(!confirm('Xóa món này khỏi menu?'))return;delete cart[i];menu.splice(i,1);let nc={};Object.keys(cart).forEach(k=>{let n=+k;if(n>i)nc[n-1]=cart[k];else if(n<i)nc[n]=cart[k]});cart=nc;save();render()}
 function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Bank hiện có:',bank));if(!Number.isFinite(b)||b<0)return;cash=c;bank=b;save();render()}
 function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
-function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render();alert('Đã chốt đơn.')}
+function addOrder(){
+  let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);
+  if(!items.length)return alert('Chưa chọn món.');
+  let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};
+  orders.push(o); cart={}; save(); render();
+  alert('Đã chốt đơn.');
+}
 function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
 function addExpense(){let n=$('expenseName').value.trim(),a=Number($('expenseAmount').value),d=$('expenseDate').value||today();if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');expenses.push({id:Date.now(),date:d,name:n,amount:a});$('expenseName').value='';$('expenseAmount').value='';save();render()}
 function addSetup(){let n=$('setupName').value.trim(),a=Number($('setupAmount').value);if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');setup.push({id:Date.now(),name:n,amount:a});$('setupName').value='';$('setupAmount').value='';save();render()}
