@@ -45,10 +45,68 @@ input,select,textarea{border-radius:9px !important}
  .brand small{font-size:11px}
 }
 </style>
+
+<style id="cafe-tin-brown-theme">
+:root{
+ --bg:#f6efe4;--card:rgba(255,253,248,.96);--ink:#4a2d1d;--muted:#806f61;
+ --accent:#8a5738;--accent-dark:#6f422a;--line:#ead9c6;--good:#7b9b68;
+ --danger:#c96f6f;--blue:#d9c0a5;--lav:#e8d7c2;--cream:#fffaf0;--leaf:#8d9d6f;--flower:#c99168
+}
+html{background:#f6efe4}
+body{
+ background:
+ radial-gradient(circle at 8% 4%,#fffdf8 0 8%,transparent 27%),
+ radial-gradient(circle at 94% 10%,#ead9c4 0 11%,transparent 30%),
+ linear-gradient(180deg,#f4eadc 0%,#fbf7f0 48%,#f2e7d8 100%);
+ color:var(--ink)
+}
+body:before{background:#e8d4bc}
+body:after{background:#ead8c8}
+.app:before{content:"☕  ✦  ♡";color:#8a5738;opacity:.12}
+.app:after{content:"✦  ☕  ♡";color:#8a5738;opacity:.10}
+.brand{
+ background:linear-gradient(135deg,#fffaf0,#f2e2cd);
+ color:#4a2d1d;border:1px solid #ead8c2;
+ box-shadow:0 8px 24px rgba(89,57,35,.10)
+}
+.brand:after{content:"☕  ✦  ♡";color:#8a5738;opacity:.10}
+.brand-cafe{color:#8a725f}
+.brand-tin{color:#704124}
+.brand-heart{color:#b85e62}
+.brand small{color:#806f61}
+.brand .cup-art{
+ background:#fffaf0;box-shadow:0 4px 14px rgba(89,57,35,.12);border:1px solid #ead8c2
+}
+.hero-art{display:none}
+.hero-glow{background:rgba(255,255,255,.48)}
+.tabs{background:rgba(246,239,228,.88)}
+.tabs button,.btn{border-color:#e3d2bd;background:rgba(255,253,248,.94);color:#4a2d1d;box-shadow:0 3px 10px rgba(89,57,35,.06)}
+.tabs button.active,.btn.primary{background:linear-gradient(135deg,#93603f,#704124);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(112,65,36,.22)}
+.btn.good{background:#7b9b68;color:#fff}
+.card{background:var(--card);border-color:#ead8c2;box-shadow:0 7px 22px rgba(89,57,35,.075)}
+.card:after{content:"✦  ♡";color:#9b6b48;opacity:.10}
+.stat{border-color:#ead9c6;background:linear-gradient(145deg,#fffdf8,#f7eee3);box-shadow:0 3px 12px rgba(89,57,35,.04)}
+.stat:nth-child(4n+1){background:linear-gradient(145deg,#fffdf8,#f5eadc)}
+.stat:nth-child(4n+2){background:linear-gradient(145deg,#fffaf0,#f3e2d0)}
+.stat:nth-child(4n+3){background:linear-gradient(145deg,#fbf8f1,#efe5d9)}
+.stat:nth-child(4n){background:linear-gradient(145deg,#fff7f2,#f5e8df)}
+.stat b{color:#4a2d1d}
+input,select{border-color:#ddcbb5;background:rgba(255,253,248,.98);color:#4a2d1d}
+input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,75,.13)}
+.item{border-bottom-color:#ead9c6;background:linear-gradient(90deg,rgba(252,247,239,.82),rgba(255,253,248,.5))}
+.item:after{content:"✦";color:#b9855e}
+.item:nth-child(2n):after{content:"♡";color:#b85e62}
+.section-title{color:#6f422a}
+.section-title:before{content:"☕ ";color:#93603f}
+.total{color:#704124}
+#dailyBalanceBox{background:var(--card)!important;border-color:#ead8c2!important;box-shadow:0 8px 24px rgba(89,57,35,.075)!important}
+.empty-illustration{border:1px solid #ead8c2}
+</style>
+
 </head>
 <body><div class="app">
 <header class="brand">
-<div class="hero-glow"></div><img class="hero-art" src="cafe-tin-storefront.png" alt="Minh họa quán Cafe Tin"><div class="brand-copy"><div class="brand-main"><img class="cup-art" src="cafe-tin-coffee.png" alt="Cà phê Tin"><div><div class="brand-title"><span class="brand-cafe">Cà Phê</span> <span class="brand-tin">Tin</span><span class="brand-heart">♥</span></div><small>Đơn giản • Offline • Dữ liệu trên máy</small></div></div></div><small id="backupStatus">Đang sao lưu…</small></header>
+<div class="hero-glow"></div><img class="hero-art" src="cafe-tin-coffee.png" alt="Minh họa quán Cafe Tin"><div class="brand-copy"><div class="brand-main"><img class="cup-art" src="cafe-tin-coffee.png" alt="Cà phê Tin"><div><div class="brand-title"><span class="brand-cafe">Cà Phê</span> <span class="brand-tin">Tin</span><span class="brand-heart">♥</span></div><small>Đơn giản • Offline • Dữ liệu trên máy</small></div></div></div><small id="backupStatus">Đang sao lưu…</small></header>
 <nav class="tabs no-print"><button class="active" data-tab="order">Order</button><button data-tab="stats">Thống kê</button><button data-tab="cost">Chi phí</button><button data-tab="data">Dữ liệu</button></nav>
 <section id="order" class="tab active">
 <div class="card"><div class="section-title">Tạo đơn</div><div id="menuList"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotal">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrder">Chốt đơn</button><button class="btn" id="clearCart">Xóa đơn</button></div></div>
