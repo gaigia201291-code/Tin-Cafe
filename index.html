@@ -180,17 +180,18 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
     tinSetup:[{id:1787561872644,name:'Tổng',amount:6000000}],tinCash:0,tinBank:0
   };
   try{
-    const keys=['tin2_menu','tin2_orders','tin2_expenses','tin2_setup'];
-    const empty=keys.every(k=>!localStorage.getItem(k));
-    if(empty){
+    const recoveryKey='tin2_recovery_done_v2';
+    const done=localStorage.getItem(recoveryKey);
+    if(!done){
       localStorage.setItem('tin2_menu',JSON.stringify(REC.tinMenu));
       localStorage.setItem('tin2_orders',JSON.stringify(REC.tinOrders));
       localStorage.setItem('tin2_expenses',JSON.stringify(REC.tinExpenses));
       localStorage.setItem('tin2_setup',JSON.stringify(REC.tinSetup));
-      localStorage.setItem('tin2_cash','0'); localStorage.setItem('tin2_bank','0');
-      localStorage.setItem('tin2_recovery_done',JSON.stringify({at:new Date().toISOString(),source:'Tin Cafe V5 2026-08-24'}));
+      localStorage.setItem('tin2_cash','0');
+      localStorage.setItem('tin2_bank','0');
+      localStorage.setItem(recoveryKey,JSON.stringify({at:new Date().toISOString(),source:'Cafe Tin khoi phuc du lieu 2026-08-25',orders:REC.tinOrders.length,expenses:REC.tinExpenses.length}));
     }
-  }catch(e){}
+  }catch(e){console.error('Recovery seed error',e)}
 })();
 </script>
 <div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="overview"><span class="navico">⌂</span><span>Tổng quan</span></button><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="overview"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
