@@ -9,7 +9,7 @@
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
 body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(2px);opacity:.6;pointer-events:none}body:before{width:190px;height:190px;left:-85px;top:170px;background:#cfe8c7}body:after{width:230px;height:230px;right:-105px;bottom:80px;background:#e7dce9}.app{max-width:980px;margin:auto;padding:14px 14px 44px}
 .app:before,.app:after{position:fixed;z-index:-1;pointer-events:none;font-size:42px;opacity:.45}.app:before{content:"🌿  🌸  🍃";left:5px;top:110px;transform:rotate(-8deg)}.app:after{content:"🌱  🌼  🍃";right:2px;bottom:25px;transform:rotate(7deg)}
-.brand{background:linear-gradient(135deg,#91c98b,#72b987);color:#fff;border-radius:24px;padding:20px 22px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 10px 28px rgba(74,126,78,.16);position:relative;overflow:hidden}.brand:after{content:"🌿  ✿  🍃  🌸";position:absolute;right:18px;bottom:-8px;font-size:45px;opacity:.16;letter-spacing:7px}.brand b{font-size:27px;letter-spacing:.2px}.brand small{opacity:.92}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:sticky;top:0;z-index:3;background:rgba(237,248,236,.86);backdrop-filter:blur(12px);padding:7px 0}.tabs button,.btn{border:1px solid #d4e6d1;border-radius:15px;padding:11px 10px;font-weight:750;background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 3px 10px rgba(70,111,72,.06);transition:.18s}.tabs button:hover,.btn:hover{transform:translateY(-1px)}.tabs button.active,.btn.primary{background:linear-gradient(135deg,#79b985,#69aa74);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(104,169,115,.24)}.btn.good{background:#68ad78;color:#fff;border-color:transparent}.btn.danger{background:#fff0f0;color:#c45b5b;border-color:#efd0d0}.tab{display:none}.tab.active{display:block}
+.brand{background:linear-gradient(135deg,#91c98b,#72b987);color:#fff;border-radius:24px;padding:20px 22px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 10px 28px rgba(74,126,78,.16);position:relative;overflow:hidden}.brand:after{content:"🌿  ✿  🍃  🌸";position:absolute;right:18px;bottom:-8px;font-size:45px;opacity:.16;letter-spacing:7px}.brand b{font-size:27px;letter-spacing:.2px}.brand small{opacity:.92}.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;position:sticky;top:0;z-index:3;background:rgba(237,248,236,.86);backdrop-filter:blur(12px);padding:7px 0}.tabs button,.btn{border:1px solid #d4e6d1;border-radius:15px;padding:11px 10px;font-weight:750;background:rgba(255,255,255,.88);color:var(--ink);box-shadow:0 3px 10px rgba(70,111,72,.06);transition:.18s}.tabs button:hover,.btn:hover{transform:translateY(-1px)}.tabs button.active,.btn.primary{background:linear-gradient(135deg,#79b985,#69aa74);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(104,169,115,.24)}.btn.good{background:#68ad78;color:#fff;border-color:transparent}.btn.danger{background:#fff0f0;color:#c45b5b;border-color:#efd0d0}.tab{display:none}.tab.active{display:block}
 .card{background:var(--card);border:1px solid rgba(196,220,191,.9);border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(70,111,72,.09);backdrop-filter:blur(10px);position:relative;overflow:hidden}.card:after{content:"🌿  ✿";position:absolute;right:10px;top:4px;font-size:22px;opacity:.13;pointer-events:none}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#fbfffa,#f1f8ed);box-shadow:0 3px 12px rgba(70,111,72,.04)}.stat:nth-child(4n+1){background:linear-gradient(145deg,#f5fff4,#ebf7e9)}.stat:nth-child(4n+2){background:linear-gradient(145deg,#fffaf1,#fff5e8)}.stat:nth-child(4n+3){background:linear-gradient(145deg,#f3fbf4,#edf7ee)}.stat:nth-child(4n){background:linear-gradient(145deg,#fff6f8,#f9eef2)}.stat small{display:block;color:var(--muted);font-weight:600}.stat b{font-size:22px;color:#24452d}.row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:8px 0}.row>*{min-width:0}input,select{width:100%;padding:11px;border:1px solid #cfe0cb;border-radius:12px;background:rgba(255,255,255,.96);font-size:16px;color:var(--ink);outline:none}input:focus,select:focus{border-color:#8abd83;box-shadow:0 0 0 3px rgba(139,189,131,.14)}label{font-size:13px;color:var(--muted);display:block;margin:7px 0 4px}
 .menu-admin-row{grid-template-columns:minmax(0,1.5fr) minmax(110px,1fr) minmax(110px,1fr) minmax(80px,.8fr) auto;overflow:visible}.menu-admin-row .btn.danger{min-width:88px;white-space:nowrap}.menu-admin-row:after{display:none}.menu-admin-wrap{margin:10px 0 16px;padding:12px;border:2px solid #f0c4c4;border-radius:14px;background:#fffafa}.menu-delete-visible{display:block!important;width:100%!important;margin-top:10px!important;background:#d92d20!important;color:#fff!important;font-size:15px!important;font-weight:800!important;min-height:44px!important}
 .item{display:grid;grid-template-columns:1fr auto 70px 86px;gap:7px;align-items:center;padding:11px 6px;border-bottom:1px dashed #d7e6d3;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(247,252,244,.7),rgba(255,255,255,.4));border-radius:13px;margin:3px 0}.item:last-child{border-bottom:0}.item:after{content:"✿";position:absolute;right:80px;top:3px;font-size:23px;color:var(--flower);opacity:.16;pointer-events:none}.item:nth-child(2n):after{content:"🍃";color:var(--leaf);font-size:25px}.item .name{font-weight:750}.item small{display:block;color:var(--muted)}.money{font-weight:800;text-align:right}.list{max-height:390px;overflow:auto}.empty{color:var(--muted);text-align:center;padding:28px 12px}.section-title{font-size:19px;font-weight:850;margin:4px 0 11px;color:#31563a}.section-title:before{content:"🌿 ";color:#75ae72}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1;min-width:130px}.total{font-size:25px;font-weight:900;color:#477b4e}.note{color:var(--muted);font-size:13px}.success{color:var(--good);font-weight:700}.danger{color:var(--danger);font-weight:700}.monthnav{display:flex;gap:8px;align-items:center}.monthnav input{max-width:170px}.summaryline{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}#dailyBalanceBox{background:var(--card)!important;border-color:var(--line)!important;box-shadow:0 8px 24px rgba(70,111,72,.09)}
@@ -307,7 +307,7 @@ html,body{min-height:100%;background:#eef6fb!important;}
 .tabs{background:transparent!important;}
 </style>
 </head>
-<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
+<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button><button data-tab="music"><span class="navico">🎵</span><span>Nhạc</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
 <section id="order" class="tab active"><div class="card"><div class="section-title">Tạo đơn</div><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div></section>
@@ -322,7 +322,34 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div></div>
 <div class="card"><div class="section-title">Chi phí mở quầy</div><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
 <div class="card"><div class="section-title">Danh sách chi phí</div><div id="expenseList"></div></div>
-</section><section id="data" class="tab">
+</section>
+<section id="music" class="tab">
+  <div class="card">
+    <div class="section-title">🎵 Nhạc Cafe Tin</div>
+    <div class="note" style="margin-bottom:12px">
+      Chọn thư mục nhạc để Cafe Tin quét các file âm thanh và tự đưa vào danh sách.
+      Bạn cũng có thể thêm từng bài riêng lẻ hoặc xóa bài khỏi danh sách.
+    </div>
+    <div class="actions" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+      <button class="btn primary" id="musicPickFolder">📁 Quét thư mục nhạc</button>
+      <button class="btn" id="musicAddFiles">➕ Thêm bài hát</button>
+      <input id="musicFiles" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" multiple hidden>
+    </div>
+    <div id="musicStatus" class="note" style="margin:8px 0">Chưa có bài hát nào.</div>
+    <div id="musicList"></div>
+  </div>
+  <div class="card">
+    <div class="section-title">▶️ Trình phát</div>
+    <div id="musicNowPlaying" style="font-weight:800;margin-bottom:8px">Chưa chọn bài</div>
+    <audio id="musicPlayer" controls preload="metadata" style="width:100%"></audio>
+    <div class="note" style="margin-top:8px">
+      Nhạc được lưu trong bộ nhớ của trình duyệt trên thiết bị này. Nếu xóa dữ liệu trang web/app,
+      các bài đã thêm có thể bị mất.
+    </div>
+  </div>
+</section>
+
+<section id="data" class="tab">
 <div class="card"><div class="section-title">Sao lưu & khôi phục</div><p class="note">Web tự động lưu một bản sao trong bộ nhớ máy mỗi ngày. Bạn vẫn nên tải file sao lưu xuống để phòng mất dữ liệu khi đổi/xóa trình duyệt.</p><div id="autoInfo" class="note"></div><div class="actions" style="margin-top:10px"><button class="btn good" id="downloadBackup">Tải sao lưu</button><button class="btn" id="restoreBtn">Khôi phục file</button><input id="restoreFile" type="file" accept=".json,application/json" hidden></div><div class="actions" style="margin-top:10px"><button class="btn" id="clearData">Xóa toàn bộ dữ liệu</button></div></div>
 
 </section></main></div>
@@ -617,6 +644,29 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 })();
 </script>
 
+
+<style id="cafe-tin-music">
+.music-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:11px 8px;
+  margin:5px 0;
+  border:1px solid #e1eadf;
+  border-radius:14px;
+  background:linear-gradient(135deg,#fff,#f4faf1);
+}
+.music-title{font-weight:850;color:#4a2b1b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.music-meta{font-size:12px;color:#718273;margin-top:2px}
+.music-actions{display:flex;gap:6px;align-items:center}
+.music-actions .btn{padding:8px 10px;min-width:44px}
+@media(max-width:620px){
+  .music-row{grid-template-columns:minmax(0,1fr);gap:7px}
+  .music-actions{justify-content:flex-end}
+}
+</style>
+
 <style id="cafe-tin-lucky-cat">
 .tin-logo-row{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:96px!important;position:relative!important}
 .lucky-cat{width:78px!important;height:96px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;position:relative!important;z-index:3!important;touch-action:manipulation!important;transition:transform .15s ease!important}
@@ -661,6 +711,157 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupLuckyCat);else setupLuckyCat();
 })();
 </script>
+
+<script id="cafe-tin-music-script">
+(function(){
+  const DB_NAME='CafeTinMusicDB';
+  const STORE='tracks';
+  const player=document.getElementById('musicPlayer');
+  const list=document.getElementById('musicList');
+  const status=document.getElementById('musicStatus');
+  const now=document.getElementById('musicNowPlaying');
+  const pickFolder=document.getElementById('musicPickFolder');
+  const addFiles=document.getElementById('musicAddFiles');
+  const fileInput=document.getElementById('musicFiles');
+  let tracks=[];
+  let currentUrl=null;
+
+  function openDB(){
+    return new Promise((resolve,reject)=>{
+      const req=indexedDB.open(DB_NAME,1);
+      req.onupgradeneeded=()=>req.result.createObjectStore(STORE,{keyPath:'id'});
+      req.onsuccess=()=>resolve(req.result);
+      req.onerror=()=>reject(req.error);
+    });
+  }
+  async function putTrack(t){
+    const db=await openDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,'readwrite');
+      tx.objectStore(STORE).put(t);
+      tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+    });
+    db.close();
+  }
+  async function getTracks(){
+    const db=await openDB();
+    const data=await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,'readonly');
+      const req=tx.objectStore(STORE).getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>reject(req.error);
+    });
+    db.close();
+    return data.sort((a,b)=>String(a.name).localeCompare(String(b.name),'vi'));
+  }
+  async function deleteTrack(id){
+    const db=await openDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,'readwrite');
+      tx.objectStore(STORE).delete(id);
+      tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+    });
+    db.close();
+  }
+  function fmtSize(n){
+    if(!n) return '';
+    const u=['B','KB','MB','GB']; let i=0, x=n;
+    while(x>=1024 && i<u.length-1){x/=1024;i++}
+    return x.toFixed(i?1:0)+' '+u[i];
+  }
+  function safeName(name){return String(name||'Bài hát').replace(/[<>]/g,'')}
+  function idFor(file){
+    return [file.name,file.size,file.lastModified].join('::');
+  }
+  async function addFile(file){
+    if(!file || !file.type.startsWith('audio/') && !/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(file.name)) return false;
+    await putTrack({
+      id:idFor(file),
+      name:file.name,
+      size:file.size,
+      type:file.type||'audio/mpeg',
+      blob:file,
+      addedAt:Date.now()
+    });
+    return true;
+  }
+  async function refresh(){
+    tracks=await getTracks();
+    render();
+  }
+  function render(){
+    if(!list) return;
+    status.textContent=tracks.length ? ('Đã có '+tracks.length+' bài hát trong danh sách.') :
+      'Chưa có bài hát nào. Hãy chọn thư mục nhạc hoặc thêm từng bài.';
+    list.innerHTML='';
+    tracks.forEach(t=>{
+      const row=document.createElement('div');
+      row.className='music-row';
+      row.innerHTML='<div><div class="music-title"></div><div class="music-meta"></div></div><div class="music-actions"><button class="btn">▶️ Phát</button><button class="btn danger">🗑 Xóa</button></div>';
+      row.querySelector('.music-title').textContent=safeName(t.name);
+      row.querySelector('.music-meta').textContent=fmtSize(t.size);
+      row.querySelector('.music-actions .btn').onclick=()=>play(t);
+      row.querySelector('.music-actions .btn.danger').onclick=async()=>{
+        if(confirm('Xóa "'+safeName(t.name)+'" khỏi danh sách nhạc?')){
+          await deleteTrack(t.id);
+          await refresh();
+          if(now.textContent===t.name){ player.pause(); player.removeAttribute('src'); now.textContent='Chưa chọn bài'; }
+        }
+      };
+      list.appendChild(row);
+    });
+  }
+  function play(t){
+    if(currentUrl) URL.revokeObjectURL(currentUrl);
+    currentUrl=URL.createObjectURL(t.blob);
+    player.src=currentUrl;
+    now.textContent=t.name;
+    player.play().catch(()=>{});
+  }
+  async function addFilesToLibrary(files){
+    let count=0;
+    for(const f of files){ if(await addFile(f)) count++; }
+    await refresh();
+    if(count) status.textContent='Đã thêm '+count+' bài hát.';
+  }
+
+  addFiles.onclick=()=>fileInput.click();
+  fileInput.onchange=async e=>{
+    await addFilesToLibrary(Array.from(e.target.files||[]));
+    e.target.value='';
+  };
+
+  pickFolder.onclick=async()=>{
+    if(!window.showDirectoryPicker){
+      alert('Trình duyệt này chưa hỗ trợ chọn thư mục trực tiếp. Hãy bấm “Thêm bài hát” để chọn nhiều file nhạc cùng lúc.');
+      return;
+    }
+    try{
+      const dir=await window.showDirectoryPicker({mode:'read'});
+      let files=[];
+      async function walk(handle){
+        for await(const entry of handle.values()){
+          if(entry.kind==='file'){
+            const f=await entry.getFile();
+            if(f.type.startsWith('audio/') || /\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(f.name)) files.push(f);
+          }else if(entry.kind==='directory'){
+            await walk(entry);
+          }
+        }
+      }
+      status.textContent='Đang quét thư mục nhạc…';
+      await walk(dir);
+      await addFilesToLibrary(files);
+      status.textContent='Đã quét xong: tìm thấy '+files.length+' file nhạc.';
+    }catch(e){
+      if(e && e.name!=='AbortError') alert('Không thể quét thư mục: '+e.message);
+    }
+  };
+
+  refresh().catch(()=>{status.textContent='Không thể mở bộ nhớ nhạc trên thiết bị.'});
+})();
+</script>
+
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
