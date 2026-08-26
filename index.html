@@ -295,6 +295,17 @@ body{background:#eef6fb!important;position:relative;}
 .tabs{background:transparent!important;}
 body:before,body:after{z-index:-1!important;}
 </style>
+<style id="cafe-tin-floral-bg-visible">
+/* Nền hoa xanh hiển thị rõ phía sau giao diện */
+html,body{min-height:100%;background:#eef6fb!important;}
+.app-bg-image{position:fixed!important;inset:0!important;z-index:0!important;display:block!important;visibility:visible!important;opacity:.92!important;background-image:url("cafe-tin-background.jpg")!important;background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important;filter:none!important;}
+.app{position:relative!important;z-index:1!important;background:transparent!important;}
+.content{background:rgba(255,255,255,.10)!important;}
+.sidebar{background:rgba(255,253,249,.72)!important;backdrop-filter:blur(3px)!important;}
+.card,.dash-card,.dash-stat{background:rgba(255,253,249,.62)!important;backdrop-filter:blur(4px)!important;}
+.overview-logo-card,.menu-catalog-item,.quick{background:rgba(255,250,244,.62)!important;}
+.tabs{background:transparent!important;}
+</style>
 </head>
 <body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin">Tin</span><span class="heart">♥</span><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
