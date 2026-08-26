@@ -326,10 +326,23 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <section id="music" class="tab">
   <div class="card">
     <div class="section-title">🎵 Nhạc Cafe Tin</div>
-    <div class="note" style="margin-bottom:12px">
-      Chọn thư mục nhạc để Cafe Tin quét các file âm thanh và tự đưa vào danh sách.
-      Bạn cũng có thể thêm từng bài riêng lẻ hoặc xóa bài khỏi danh sách.
+
+    <!-- PLAYER ALWAYS ABOVE THE PLAYLIST -->
+    <div class="music-player-card">
+      <div id="musicNowPlaying" class="music-now">Chưa chọn bài hát</div>
+      <audio id="musicPlayer" controls preload="metadata"></audio>
+      <div class="music-controls">
+        <button class="btn primary" id="musicPrev">⏮ Trước</button>
+        <button class="btn primary" id="musicPlayPause">▶️ Phát</button>
+        <button class="btn primary" id="musicNext">Sau ⏭</button>
+        <button class="btn" id="musicPlayAll">▶️ Phát tất cả</button>
+        <button class="btn" id="musicShuffle">🔀 Ngẫu nhiên</button>
+        <button class="btn" id="musicRepeat">🔁 Lặp: Tắt</button>
+        <button class="btn" id="musicStopAll">⏹ Dừng</button>
+      </div>
     </div>
+
+    <div class="section-title" style="margin-top:16px">📋 Danh sách nhạc</div>
     <div class="actions" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
       <button class="btn primary" id="musicPickFolder">📁 Quét thư mục nhạc</button>
       <button class="btn" id="musicAddFiles">➕ Thêm bài hát</button>
@@ -337,14 +350,19 @@ html,body{min-height:100%;background:#eef6fb!important;}
     </div>
     <div id="musicStatus" class="note" style="margin:8px 0">Chưa có bài hát nào.</div>
     <div id="musicList"></div>
-  </div>
-  <div class="card">
-    <div class="section-title">▶️ Trình phát</div>
-    <div id="musicNowPlaying" style="font-weight:800;margin-bottom:8px">Chưa chọn bài</div>
-    <audio id="musicPlayer" controls preload="metadata" style="width:100%"></audio>
-    <div class="note" style="margin-top:8px">
-      Nhạc được lưu trong bộ nhớ của trình duyệt trên thiết bị này. Nếu xóa dữ liệu trang web/app,
-      các bài đã thêm có thể bị mất.
+
+    <div class="section-title" style="margin-top:18px">▶️ YouTube</div>
+    <div class="note" style="margin-bottom:10px">
+      Dán link YouTube để phát trực tuyến. YouTube cần Internet.
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="youtubeUrl" class="input" type="url" placeholder="Dán link YouTube..." style="flex:1;min-width:220px">
+      <button class="btn primary" id="youtubePlay">▶️ Phát</button>
+    </div>
+    <div id="youtubeBox" style="display:none;margin-top:12px;position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#111">
+      <iframe id="youtubeFrame" src="" title="YouTube player"
+        style="position:absolute;inset:0;width:100%;height:100%;border:0"
+        allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
 </section>
@@ -667,6 +685,53 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 }
 </style>
 
+
+<style id="cafe-tin-music-youtube-css">
+#music .input{box-sizing:border-box;padding:11px 12px;border:1px solid #d9e4d6;border-radius:12px;background:#fff;font:inherit}
+</style>
+
+
+<style id="cafe-tin-music-final-css">
+.music-player-card{
+  padding:14px;
+  border:1px solid #dfe9dc;
+  border-radius:16px;
+  background:linear-gradient(135deg,#fff,#f5faf2);
+}
+.music-now{
+  font-weight:900;
+  font-size:16px;
+  color:#4a2b1b;
+  margin-bottom:9px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#musicPlayer{width:100%;margin:2px 0 10px}
+.music-controls{display:flex;flex-wrap:wrap;gap:7px}
+.music-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:11px 8px;
+  margin:5px 0;
+  border:1px solid #e1eadf;
+  border-radius:14px;
+  background:#fff;
+}
+.music-title{font-weight:850;color:#4a2b1b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.music-meta{font-size:12px;color:#718273;margin-top:2px}
+.music-actions{display:flex;gap:6px;align-items:center}
+.music-actions .btn{padding:8px 10px;min-width:44px}
+#music .input{box-sizing:border-box;padding:11px 12px;border:1px solid #d9e4d6;border-radius:12px;background:#fff;font:inherit}
+@media(max-width:620px){
+  .music-row{grid-template-columns:minmax(0,1fr);gap:7px}
+  .music-actions{justify-content:flex-end}
+  .music-controls .btn{flex:1;min-width:110px}
+}
+</style>
+
 <style id="cafe-tin-lucky-cat">
 .tin-logo-row{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:96px!important;position:relative!important}
 .lucky-cat{width:78px!important;height:96px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;position:relative!important;z-index:3!important;touch-action:manipulation!important;transition:transform .15s ease!important}
@@ -714,151 +779,178 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 
 <script id="cafe-tin-music-script">
 (function(){
-  const DB_NAME='CafeTinMusicDB';
-  const STORE='tracks';
+  const DB_NAME='CafeTinMusicDB', STORE='tracks';
   const player=document.getElementById('musicPlayer');
   const list=document.getElementById('musicList');
   const status=document.getElementById('musicStatus');
   const now=document.getElementById('musicNowPlaying');
-  const pickFolder=document.getElementById('musicPickFolder');
-  const addFiles=document.getElementById('musicAddFiles');
   const fileInput=document.getElementById('musicFiles');
-  let tracks=[];
+  const tracksState={items:[],index:-1,shuffle:false,repeat:false,playing:false};
   let currentUrl=null;
 
-  function openDB(){
+  function db(){
     return new Promise((resolve,reject)=>{
-      const req=indexedDB.open(DB_NAME,1);
-      req.onupgradeneeded=()=>req.result.createObjectStore(STORE,{keyPath:'id'});
-      req.onsuccess=()=>resolve(req.result);
-      req.onerror=()=>reject(req.error);
+      const r=indexedDB.open(DB_NAME,1);
+      r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});
+      r.onsuccess=()=>resolve(r.result); r.onerror=()=>reject(r.error);
     });
   }
-  async function putTrack(t){
-    const db=await openDB();
-    await new Promise((resolve,reject)=>{
-      const tx=db.transaction(STORE,'readwrite');
-      tx.objectStore(STORE).put(t);
-      tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+  async function all(){
+    const d=await db();
+    const a=await new Promise((res,rej)=>{
+      const tx=d.transaction(STORE,'readonly'), r=tx.objectStore(STORE).getAll();
+      r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error);
     });
-    db.close();
+    d.close();
+    return a.sort((x,y)=>String(x.name).localeCompare(String(y.name),'vi'));
   }
-  async function getTracks(){
-    const db=await openDB();
-    const data=await new Promise((resolve,reject)=>{
-      const tx=db.transaction(STORE,'readonly');
-      const req=tx.objectStore(STORE).getAll();
-      req.onsuccess=()=>resolve(req.result||[]);
-      req.onerror=()=>reject(req.error);
-    });
-    db.close();
-    return data.sort((a,b)=>String(a.name).localeCompare(String(b.name),'vi'));
+  async function put(t){
+    const d=await db(); await new Promise((res,rej)=>{
+      const tx=d.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(t);
+      tx.oncomplete=res; tx.onerror=()=>rej(tx.error);
+    }); d.close();
   }
-  async function deleteTrack(id){
-    const db=await openDB();
-    await new Promise((resolve,reject)=>{
-      const tx=db.transaction(STORE,'readwrite');
-      tx.objectStore(STORE).delete(id);
-      tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
-    });
-    db.close();
+  async function del(id){
+    const d=await db(); await new Promise((res,rej)=>{
+      const tx=d.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id);
+      tx.oncomplete=res; tx.onerror=()=>rej(tx.error);
+    }); d.close();
   }
-  function fmtSize(n){
-    if(!n) return '';
-    const u=['B','KB','MB','GB']; let i=0, x=n;
-    while(x>=1024 && i<u.length-1){x/=1024;i++}
+  const fmt=n=>{
+    if(!n)return '';
+    const u=['B','KB','MB','GB'];let i=0,x=n;
+    while(x>=1024&&i<u.length-1){x/=1024;i++}
     return x.toFixed(i?1:0)+' '+u[i];
-  }
-  function safeName(name){return String(name||'Bài hát').replace(/[<>]/g,'')}
-  function idFor(file){
-    return [file.name,file.size,file.lastModified].join('::');
-  }
-  async function addFile(file){
-    if(!file || !file.type.startsWith('audio/') && !/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(file.name)) return false;
-    await putTrack({
-      id:idFor(file),
-      name:file.name,
-      size:file.size,
-      type:file.type||'audio/mpeg',
-      blob:file,
-      addedAt:Date.now()
-    });
-    return true;
+  };
+  const id=f=>[f.name,f.size,f.lastModified].join('::');
+
+  async function addFile(f){
+    if(!f)return;
+    if(!(f.type||'').startsWith('audio/')&&!/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(f.name))return;
+    await put({id:id(f),name:f.name,size:f.size,type:f.type||'audio/mpeg',blob:f,addedAt:Date.now()});
   }
   async function refresh(){
-    tracks=await getTracks();
+    tracksState.items=await all();
     render();
   }
   function render(){
-    if(!list) return;
-    status.textContent=tracks.length ? ('Đã có '+tracks.length+' bài hát trong danh sách.') :
-      'Chưa có bài hát nào. Hãy chọn thư mục nhạc hoặc thêm từng bài.';
     list.innerHTML='';
-    tracks.forEach(t=>{
-      const row=document.createElement('div');
-      row.className='music-row';
-      row.innerHTML='<div><div class="music-title"></div><div class="music-meta"></div></div><div class="music-actions"><button class="btn">▶️ Phát</button><button class="btn danger">🗑 Xóa</button></div>';
-      row.querySelector('.music-title').textContent=safeName(t.name);
-      row.querySelector('.music-meta').textContent=fmtSize(t.size);
-      row.querySelector('.music-actions .btn').onclick=()=>play(t);
-      row.querySelector('.music-actions .btn.danger').onclick=async()=>{
-        if(confirm('Xóa "'+safeName(t.name)+'" khỏi danh sách nhạc?')){
-          await deleteTrack(t.id);
-          await refresh();
-          if(now.textContent===t.name){ player.pause(); player.removeAttribute('src'); now.textContent='Chưa chọn bài'; }
-        }
-      };
-      list.appendChild(row);
+    status.textContent=tracksState.items.length
+      ? 'Đã có '+tracksState.items.length+' bài hát.'
+      : 'Chưa có bài hát nào.';
+    tracksState.items.forEach((t,i)=>{
+      const row=document.createElement('div');row.className='music-row';
+      const info=document.createElement('div');
+      const title=document.createElement('div');title.className='music-title';title.textContent=t.name;
+      const meta=document.createElement('div');meta.className='music-meta';meta.textContent=fmt(t.size);
+      info.append(title,meta);
+      const acts=document.createElement('div');acts.className='music-actions';
+      const p=document.createElement('button');p.className='btn';p.textContent='▶️ Phát';
+      p.onclick=()=>playIndex(i);
+      const x=document.createElement('button');x.className='btn danger';x.textContent='🗑 Xóa';
+      x.onclick=async()=>{if(confirm('Xóa "'+t.name+'" khỏi danh sách?')){await del(t.id);await refresh();}};
+      acts.append(p,x);row.append(info,acts);list.append(row);
     });
   }
-  function play(t){
-    if(currentUrl) URL.revokeObjectURL(currentUrl);
+  function playIndex(i){
+    if(i<0||i>=tracksState.items.length)return;
+    tracksState.index=i;
+    const t=tracksState.items[i];
+    if(currentUrl)URL.revokeObjectURL(currentUrl);
     currentUrl=URL.createObjectURL(t.blob);
-    player.src=currentUrl;
-    now.textContent=t.name;
-    player.play().catch(()=>{});
+    player.src=currentUrl;now.textContent=t.name;
+    player.play().then(()=>tracksState.playing=true).catch(()=>{});
   }
-  async function addFilesToLibrary(files){
-    let count=0;
-    for(const f of files){ if(await addFile(f)) count++; }
-    await refresh();
-    if(count) status.textContent='Đã thêm '+count+' bài hát.';
+  function next(){
+    if(!tracksState.items.length)return;
+    let i;
+    if(tracksState.shuffle && tracksState.items.length>1){
+      do{i=Math.floor(Math.random()*tracksState.items.length)}while(i===tracksState.index);
+    }else i=tracksState.index+1;
+    if(i>=tracksState.items.length){
+      if(tracksState.repeat)i=0; else {tracksState.playing=false;return;}
+    }
+    playIndex(i);
+  }
+  function prev(){
+    if(!tracksState.items.length)return;
+    let i=tracksState.index-1;
+    if(i<0)i=tracksState.items.length-1;
+    playIndex(i);
   }
 
-  addFiles.onclick=()=>fileInput.click();
+  document.getElementById('musicAddFiles').onclick=()=>fileInput.click();
   fileInput.onchange=async e=>{
-    await addFilesToLibrary(Array.from(e.target.files||[]));
-    e.target.value='';
+    for(const f of Array.from(e.target.files||[]))await addFile(f);
+    e.target.value='';await refresh();
   };
-
-  pickFolder.onclick=async()=>{
-    if(!window.showDirectoryPicker){
-      alert('Trình duyệt này chưa hỗ trợ chọn thư mục trực tiếp. Hãy bấm “Thêm bài hát” để chọn nhiều file nhạc cùng lúc.');
+  document.getElementById('musicPlayAll').onclick=()=>{
+    if(!tracksState.items.length){alert('Danh sách nhạc chưa có bài nào.');return;}
+    tracksState.shuffle=false;playIndex(0);
+  };
+  document.getElementById('musicShuffle').onclick=()=>{
+    tracksState.shuffle=!tracksState.shuffle;
+    document.getElementById('musicShuffle').textContent=tracksState.shuffle?'🔀 Ngẫu nhiên: Bật':'🔀 Ngẫu nhiên';
+  };
+  document.getElementById('musicRepeat').onclick=()=>{
+    tracksState.repeat=!tracksState.repeat;
+    document.getElementById('musicRepeat').textContent=tracksState.repeat?'🔁 Lặp: Bật':'🔁 Lặp: Tắt';
+  };
+  document.getElementById('musicPrev').onclick=prev;
+  document.getElementById('musicNext').onclick=next;
+  document.getElementById('musicStopAll').onclick=()=>{
+    player.pause();player.currentTime=0;tracksState.playing=false;
+  };
+  document.getElementById('musicPlayPause').onclick=()=>{
+    if(!player.src){
+      if(tracksState.items.length)playIndex(0);
       return;
     }
+    if(player.paused){player.play();tracksState.playing=true}
+    else{player.pause();tracksState.playing=false}
+  };
+  player.onplay=()=>document.getElementById('musicPlayPause').textContent='⏸ Tạm dừng';
+  player.onpause=()=>document.getElementById('musicPlayPause').textContent='▶️ Phát';
+  player.onended=next;
+
+  document.getElementById('musicPickFolder').onclick=async()=>{
+    if(!window.showDirectoryPicker){
+      alert('Trình duyệt chưa hỗ trợ chọn thư mục trực tiếp. Hãy dùng “Thêm bài hát”.');return;
+    }
     try{
-      const dir=await window.showDirectoryPicker({mode:'read'});
-      let files=[];
-      async function walk(handle){
-        for await(const entry of handle.values()){
-          if(entry.kind==='file'){
-            const f=await entry.getFile();
-            if(f.type.startsWith('audio/') || /\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(f.name)) files.push(f);
-          }else if(entry.kind==='directory'){
-            await walk(entry);
-          }
+      const dir=await window.showDirectoryPicker({mode:'read'}), files=[];
+      async function walk(h){
+        for await(const e of h.values()){
+          if(e.kind==='file'){
+            const f=await e.getFile();
+            if((f.type||'').startsWith('audio/')||/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(f.name))files.push(f);
+          }else if(e.kind==='directory')await walk(e);
         }
       }
-      status.textContent='Đang quét thư mục nhạc…';
-      await walk(dir);
-      await addFilesToLibrary(files);
-      status.textContent='Đã quét xong: tìm thấy '+files.length+' file nhạc.';
-    }catch(e){
-      if(e && e.name!=='AbortError') alert('Không thể quét thư mục: '+e.message);
-    }
+      status.textContent='Đang quét thư mục…';await walk(dir);
+      for(const f of files)await addFile(f);
+      await refresh();status.textContent='Đã quét xong: '+files.length+' file nhạc.';
+    }catch(e){if(e.name!=='AbortError')alert('Không thể quét thư mục.');}
   };
 
-  refresh().catch(()=>{status.textContent='Không thể mở bộ nhớ nhạc trên thiết bị.'});
+  function youtubeId(url){
+    try{
+      const u=new URL(url);
+      if(u.hostname.includes('youtu.be'))return u.pathname.slice(1).split('/')[0];
+      if(u.hostname.includes('youtube.com')){
+        if(u.searchParams.get('v'))return u.searchParams.get('v');
+        const m=u.pathname.match(/\/(?:shorts|embed|live)\/([^/?]+)/);if(m)return m[1];
+      }
+    }catch(e){} return null;
+  }
+  document.getElementById('youtubePlay').onclick=()=>{
+    const id=youtubeId(document.getElementById('youtubeUrl').value.trim());
+    if(!id){alert('Link YouTube không hợp lệ.');return;}
+    document.getElementById('youtubeFrame').src='https://www.youtube.com/embed/'+encodeURIComponent(id)+'?autoplay=1';
+    document.getElementById('youtubeBox').style.display='block';
+  };
+
+  refresh().catch(()=>status.textContent='Không thể mở bộ nhớ nhạc.');
 })();
 </script>
 
