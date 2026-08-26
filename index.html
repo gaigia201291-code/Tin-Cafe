@@ -306,21 +306,8 @@ html,body{min-height:100%;background:#eef6fb!important;}
 .overview-logo-card,.menu-catalog-item,.quick{background:rgba(255,250,244,.62)!important;}
 .tabs{background:transparent!important;}
 </style>
-
-<style id="lucky-cat-tin-animation">
-/* Mèo thần tài vẫy tay trước chữ Tin */
-.tin-wrap{display:inline-flex;align-items:center;vertical-align:middle;gap:3px}
-.lucky-cat{display:inline-flex;width:38px;height:38px;vertical-align:middle;transform-origin:50% 100%;animation:cat-bob 2.8s ease-in-out infinite}
-.lucky-cat svg{width:100%;height:100%;overflow:visible}
-.lucky-cat .cat-paw{transform-box:fill-box;transform-origin:85% 90%;animation:cat-wave .72s ease-in-out infinite alternate}
-@keyframes cat-wave{0%{transform:rotate(-13deg)}100%{transform:rotate(22deg)}}
-@keyframes cat-bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}}
-@media(max-width:900px){.lucky-cat{width:34px;height:34px}}
-@media(max-width:620px){.lucky-cat{width:32px;height:32px}.tin-wrap{gap:2px}}
-@media(prefers-reduced-motion:reduce){.lucky-cat,.lucky-cat .cat-paw{animation:none}}
-</style>
 </head>
-<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span> <span class="tin-wrap"><span class="lucky-cat" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><ellipse cx="32" cy="55" rx="20" ry="5" fill="rgba(111,67,40,.12)"/><path d="M18 24 L15 9 L27 17 Q32 14 37 17 L49 9 L46 25" fill="#fff7e7" stroke="#c88a3d" stroke-width="2"/><path d="M20 25 Q32 17 44 25 L45 47 Q32 57 19 47Z" fill="#fffaf0" stroke="#c88a3d" stroke-width="2"/><path d="M22 20 Q32 16 42 20" fill="none" stroke="#e7b85a" stroke-width="4"/><circle cx="26" cy="31" r="2" fill="#3f3025"/><circle cx="38" cy="31" r="2" fill="#3f3025"/><path d="M29 37 Q32 40 35 37" fill="none" stroke="#b86b54" stroke-width="2" stroke-linecap="round"/><path d="M25 25 Q20 23 19 27" fill="none" stroke="#e99b87" stroke-width="2"/><path d="M39 25 Q44 23 45 27" fill="none" stroke="#e99b87" stroke-width="2"/><path class="cat-paw" d="M44 29 Q57 22 54 12 Q52 7 48 10 Q45 12 47 17 Q49 20 44 22Z" fill="#fffaf0" stroke="#c88a3d" stroke-width="2"/><circle cx="32" cy="45" r="6" fill="#e9b84e" stroke="#c88a3d" stroke-width="1.5"/><text x="32" y="47.5" text-anchor="middle" font-size="6" font-weight="800" fill="#9a5b24">福</text></svg></span><span class="tin">Tin</span></span><span class="heart">♥</span><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
+<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
 <section id="order" class="tab active"><div class="card"><div class="section-title">Tạo đơn</div><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div></section>
@@ -627,6 +614,51 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
     fill();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<style id="cafe-tin-lucky-cat">
+.tin-logo-row{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:96px!important;position:relative!important}
+.lucky-cat{width:78px!important;height:96px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;position:relative!important;z-index:3!important;touch-action:manipulation!important;transition:transform .15s ease!important}
+.lucky-cat:hover{transform:translateY(-2px) scale(1.03)!important}
+.lucky-cat:active{transform:scale(.94)!important}
+.lucky-cat svg{width:100%!important;height:100%!important;display:block!important;overflow:visible!important}
+.cat-paw{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
+.cat-paw-outline{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
+@keyframes manekiWave{from{transform:rotate(-10deg)}to{transform:rotate(13deg)}}
+.falling-coin{position:fixed!important;z-index:99999!important;pointer-events:none!important;font-size:22px!important;font-weight:900!important;color:#e6ad22!important;text-shadow:0 1px 2px rgba(117,76,12,.35)!important;animation:coinFall .95s cubic-bezier(.2,.75,.35,1) forwards!important}
+@keyframes coinFall{0%{transform:translate(0,0) scale(.6) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(var(--rot));opacity:0}}
+.lucky-cat.coin-pop{animation:catPop .28s ease!important}
+@keyframes catPop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media(max-width:620px){.tin-logo-row{min-height:82px!important}.lucky-cat{width:66px!important;height:82px!important}.side-brand .tin{font-size:32px!important}.tin-logo-row{gap:2px!important}}
+</style>
+<script>
+(function(){
+  function setupLuckyCat(){
+    const cat=document.getElementById('luckyCat');
+    if(!cat||cat.dataset.ready)return;
+    cat.dataset.ready='1';
+    cat.addEventListener('click',function(e){
+      cat.classList.remove('coin-pop'); void cat.offsetWidth; cat.classList.add('coin-pop');
+      const r=cat.getBoundingClientRect();
+      for(let i=0;i<12;i++){
+        const coin=document.createElement('span');
+        coin.className='falling-coin';
+        coin.textContent=i%3===0?'🪙':'$';
+        const dx=(Math.random()-.5)*170;
+        const dy=95+Math.random()*170;
+        coin.style.left=(r.left+r.width*.62+(Math.random()-.5)*18)+'px';
+        coin.style.top=(r.top+r.height*.34)+'px';
+        coin.style.setProperty('--dx',dx+'px');
+        coin.style.setProperty('--dy',dy+'px');
+        coin.style.setProperty('--rot',((Math.random()-.5)*420)+'deg');
+        coin.style.animationDelay=(i*35)+'ms';
+        document.body.appendChild(coin);
+        setTimeout(()=>coin.remove(),1300);
+      }
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupLuckyCat);else setupLuckyCat();
 })();
 </script>
 </body></html>
