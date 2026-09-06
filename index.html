@@ -325,10 +325,29 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <div id="allTimeItemStats" style="margin-top:10px"></div>
 </div>
 </section><section id="cost" class="tab">
-<div class="card"><div class="section-title">Chi phí trong ngày</div><label>Ngày</label><input type="date" id="expenseDate"><label>Nội dung</label><input id="expenseName" placeholder="Ví dụ: tiền điện, nguyên liệu..."><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
+<div class="cost-accordion">
+<details class="cost-fold">
+<summary>💰 Chi phí trong ngày <span class="fold-hint">Bấm để mở</span></summary>
+<div class="cost-fold-body">
+<div class="card"><div class="section-title">Thêm chi phí</div><label>Ngày</label><input type="date" id="expenseDate"><label>Nội dung</label><input id="expenseName" placeholder="Ví dụ: tiền điện, nguyên liệu..."><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
 <div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div></div>
-<div class="card"><div class="section-title">Chi phí mở quầy</div><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
+</div>
+</details>
+
+<details class="cost-fold">
+<summary>🏪 Chi phí mở quầy <span class="fold-hint">Bấm để mở</span></summary>
+<div class="cost-fold-body">
+<div class="card"><div class="note">Khoản này được theo dõi riêng, không gộp vào chi phí vận hành hằng ngày.</div><label>Nội dung</label><input id="setupName" placeholder="Ví dụ: bàn ghế, máy móc..."><label>Số tiền</label><input id="setupAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addSetup">Thêm chi phí mở quầy</button><div class="summaryline"><span>Tổng chi phí mở quầy</span><b id="setupTotal">0đ</b></div></div>
+</div>
+</details>
+
+<details class="cost-fold">
+<summary>📋 Danh sách chi phí <span class="fold-hint">Bấm để xem</span></summary>
+<div class="cost-fold-body">
 <div class="card"><div class="section-title">Danh sách chi phí</div><div id="expenseList"></div></div>
+</div>
+</details>
+</div>
 </section>
 <section id="music" class="tab">
   <div class="card">
@@ -992,4 +1011,17 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
  .section-title{font-size:20px!important}
  .item .name{font-size:16px!important}
 }
+</style>
+
+<style id="cafe-tin-cost-accordion">
+.cost-accordion{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.cost-fold{background:rgba(255,255,255,.94);border:1px solid #d7ead5;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(70,100,70,.06)}
+.cost-fold summary{list-style:none;cursor:pointer;padding:17px 18px;font-size:18px;font-weight:900;color:#493224;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
+.cost-fold summary::-webkit-details-marker{display:none}
+.cost-fold summary:after{content:"＋";font-size:22px;color:#6f3f21;transition:transform .2s}
+.cost-fold[open] summary:after{content:"−"}
+.fold-hint{font-size:12px;font-weight:700;color:#8a978b;margin-left:auto}
+.cost-fold-body{padding:0 8px 8px;border-top:1px solid #e5eee3}
+.cost-fold-body .card{box-shadow:none;margin:8px 0;border-radius:12px}
+@media(max-width:700px){.cost-fold summary{padding:15px 14px;font-size:17px}.fold-hint{font-size:11px}}
 </style>
