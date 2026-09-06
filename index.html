@@ -344,7 +344,7 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <details class="cost-fold">
 <summary>📋 Danh sách chi phí <span class="fold-hint">Bấm để xem</span></summary>
 <div class="cost-fold-body">
-<div class="card"><div class="section-title">Danh sách chi phí</div><div id="expenseList"></div></div>
+<div class="card"><div class="section-title">Danh sách chi phí theo ngày</div><div class="note">Mỗi ngày được gộp thành một dòng. Bấm vào ngày để xem từng khoản chi tiết.</div><div id="expenseList"></div></div>
 </div>
 </details>
 </div>
@@ -604,7 +604,19 @@ function renderStats(){
   }).join(''):'<div class="empty">Chưa có dữ liệu.</div>'
 }
 function renderExpenseDailySummary(){const d=$('expenseDate')?.value||today();const total=expenses.filter(e=>normalizeCafeDate(e.date)===normalizeCafeDate(d)).reduce((s,e)=>s+Number(e.amount||0),0);if($('expenseSummaryDate'))$('expenseSummaryDate').textContent=normalizeCafeDate(d);if($('dailyExpenseTotal'))$('dailyExpenseTotal').textContent=money(total)}
-function renderExpenses(){renderExpenseDailySummary();let all=expenses.slice().reverse();$('expenseList').innerHTML=all.length?all.map((e,idx)=>`<div class="summaryline"><span>${e.date} • ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí.</div>'}
+function renderExpenses(){
+  renderExpenseDailySummary();
+  const box=$('expenseList'); if(!box)return;
+  const groups={};
+  expenses.forEach(e=>{const d=normalizeCafeDate(e.date)||today();(groups[d]||(groups[d]=[])).push(e)});
+  const days=Object.keys(groups).sort().reverse();
+  box.innerHTML=days.length?days.map(d=>{
+    const items=groups[d].slice().sort((a,b)=>Number(b.id||0)-Number(a.id||0));
+    const total=items.reduce((s,e)=>s+Number(e.amount||0),0);
+    const detail=items.map(e=>`<div class="summaryline"><span>• ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join('');
+    return `<details class="expense-day-fold"><summary><span>📅 ${d}<small>${items.length} khoản chi</small></span><b>${money(total)}</b></summary><div class="expense-day-detail">${detail}</div></details>`;
+  }).join(''):'<div class="empty">Chưa có chi phí.</div>';
+}
 function renderSetup(){let total=setup.reduce((s,e)=>s+Number(e.amount||0),0);$('setupTotal').textContent=money(total);$('setupList')?.remove();let box=document.createElement('div');box.id='setupList';box.innerHTML=setup.length?setup.slice().reverse().map(e=>`<div class="summaryline"><span>${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delSetup('${e.id}')">Xóa</button></span></div>`).join(''):'<div class="empty">Chưa có chi phí mở quầy.</div>';$('setupTotal').parentElement.parentElement.appendChild(box)}
 function renderMenuAdmin(){
   const el=$('menuAdmin'); if(!el)return;
@@ -1015,6 +1027,7 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 
 <style id="cafe-tin-cost-accordion">
 .cost-accordion{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.expense-day-fold{border:1px solid #e2eadf;border-radius:12px;margin:8px 0;background:#fff;overflow:hidden}.expense-day-fold summary{list-style:none;cursor:pointer;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:900;color:#493224}.expense-day-fold summary::-webkit-details-marker{display:none}.expense-day-fold summary:after{content:"＋";font-size:20px;color:#6f3f21;order:3}.expense-day-fold[open] summary:after{content:"−"}.expense-day-fold summary span{display:flex;flex-direction:column;gap:3px}.expense-day-fold summary small{font-size:11px;font-weight:600;opacity:.65}.expense-day-detail{padding:0 10px 8px;border-top:1px solid #edf1ea}.expense-day-detail .summaryline{margin:6px 0;font-size:14px}.expense-day-detail .btn{padding:5px 8px;font-size:11px}
 .cost-fold{background:rgba(255,255,255,.94);border:1px solid #d7ead5;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(70,100,70,.06)}
 .cost-fold summary{list-style:none;cursor:pointer;padding:17px 18px;font-size:18px;font-weight:900;color:#493224;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
 .cost-fold summary::-webkit-details-marker{display:none}
