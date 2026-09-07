@@ -306,7 +306,15 @@ html,body{min-height:100%;background:#eef6fb!important;}
 .overview-logo-card,.menu-catalog-item,.quick{background:rgba(255,250,244,.62)!important;}
 .tabs{background:transparent!important;}
 </style>
-</head>
+<style>
+.expense-category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:7px 0}
+.expense-category-btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 8px;color:var(--ink);font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;min-height:52px}
+.expense-category-btn span{font-size:14px}
+.expense-category-btn.active{border:2px solid var(--accent-dark);background:#eef8ea;box-shadow:0 2px 8px rgba(80,130,80,.12)}
+.expense-category-hint{font-size:12px;color:var(--muted);margin:-2px 0 9px}
+.expense-category-label{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:#eef6e9;color:#5d805d;margin-right:6px}
+.expense-note{font-size:12px;color:var(--muted);margin-top:3px}
+</style></head>
 <body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="itemStats"><span class="navico">🥤</span><span>Món bán</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button>
 <button data-tab="music"><span class="navico">🎵</span><span>Nhạc</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
@@ -329,8 +337,21 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <details class="cost-fold">
 <summary>💰 Chi phí trong ngày <span class="fold-hint">Bấm để mở</span></summary>
 <div class="cost-fold-body">
-<div class="card"><div class="section-title">Thêm chi phí</div><label>Ngày</label><input type="date" id="expenseDate"><label>Nội dung</label><input id="expenseName" placeholder="Ví dụ: tiền điện, nguyên liệu..."><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="0"><button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
-<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div></div>
+<div class="card"><div class="section-title">Thêm chi phí trong ngày</div>
+<label>Ngày</label><input type="date" id="expenseDate">
+<label>Loại chi phí</label>
+<div class="expense-category-grid">
+<button type="button" class="expense-category-btn" data-expense-category="Ăn">🍚<span>Ăn</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Nguyên liệu">🥛<span>Nguyên liệu</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Ly">🥤<span>Ly</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Chi phí khác">📦<span>Chi phí khác</span></button>
+</div>
+<input type="hidden" id="expenseCategory" value="">
+<div id="expenseCategoryHint" class="expense-category-hint">Chọn một loại chi phí</div>
+<label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="Nhập số tiền">
+<label>Ghi chú</label><input id="expenseName" placeholder="Ví dụ: ăn sáng, mua cà phê, 100 ly...">
+<button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
+<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn, gồm Ăn, Nguyên liệu, Ly và Chi phí khác.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="dailyExpenseBreakdown" style="margin-top:7px"></div></div>
 </div>
 </details>
 
@@ -603,7 +624,15 @@ function renderStats(){
     return `<div class="summaryline"><span>${d}<br><small>${ds.orderCount} order • ${di.totalItems} món</small></span><span style="text-align:right">Doanh thu <b>${money(ds.revenue)}</b><br>Giá vốn <b>${money(ds.cogs)}</b><br>Lợi nhuận ngày <b>${money(ds.profit)}</b><br>Món bán chạy <b>${di.best==='—'?'—':di.best+' ('+di.bestQty+')'}</b></span></div>`
   }).join(''):'<div class="empty">Chưa có dữ liệu.</div>'
 }
-function renderExpenseDailySummary(){const d=$('expenseDate')?.value||today();const total=expenses.filter(e=>normalizeCafeDate(e.date)===normalizeCafeDate(d)).reduce((s,e)=>s+Number(e.amount||0),0);if($('expenseSummaryDate'))$('expenseSummaryDate').textContent=normalizeCafeDate(d);if($('dailyExpenseTotal'))$('dailyExpenseTotal').textContent=money(total)}
+function renderExpenseDailySummary(){
+  const d=$('expenseDate')?.value||today(), day=expenses.filter(e=>normalizeCafeDate(e.date)===normalizeCafeDate(d));
+  const total=day.reduce((s,e)=>s+Number(e.amount||0),0);
+  if($('expenseSummaryDate'))$('expenseSummaryDate').textContent=normalizeCafeDate(d);
+  if($('dailyExpenseTotal'))$('dailyExpenseTotal').textContent=money(total);
+  const sums={Ăn:0,'Nguyên liệu':0,Ly:0,'Chi phí khác':0};
+  day.forEach(e=>{const c=e.category||'Chi phí khác';sums[c]=(sums[c]||0)+Number(e.amount||0)});
+  if($('dailyExpenseBreakdown'))$('dailyExpenseBreakdown').innerHTML=Object.entries(sums).map(([c,v])=>`<div class="summaryline"><span>${c}</span><b>${money(v)}</b></div>`).join('');
+}
 function renderExpenses(){
   renderExpenseDailySummary();
   const box=$('expenseList'); if(!box)return;
@@ -613,7 +642,10 @@ function renderExpenses(){
   box.innerHTML=days.length?days.map(d=>{
     const items=groups[d].slice().sort((a,b)=>Number(b.id||0)-Number(a.id||0));
     const total=items.reduce((s,e)=>s+Number(e.amount||0),0);
-    const detail=items.map(e=>`<div class="summaryline"><span>• ${esc(e.name)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`).join('');
+    const detail=items.map(e=>{
+      const cat=e.category||'Chi phí khác', note=e.note||e.name||'';
+      return `<div class="summaryline"><span><span class="expense-category-label">${esc(cat)}</span>${esc(note)}</span><span><b>${money(e.amount)}</b> <button class="btn danger" onclick="delExpense('${e.id}')">Xóa</button></span></div>`;
+    }).join('');
     return `<details class="expense-day-fold"><summary><span>📅 ${d}<small>${items.length} khoản chi</small></span><b>${money(total)}</b></summary><div class="expense-day-detail">${detail}</div></details>`;
   }).join(''):'<div class="empty">Chưa có chi phí.</div>';
 }
@@ -631,7 +663,17 @@ function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(
 function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
 function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),items,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);cart={};save();render();alert('Đã chốt đơn.')}
 function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
-function addExpense(){let n=$('expenseName').value.trim(),a=Number($('expenseAmount').value),d=$('expenseDate').value||today();if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');expenses.push({id:Date.now(),date:d,name:n,amount:a});$('expenseName').value='';$('expenseAmount').value='';save();render()}
+function addExpense(){
+  let n=$('expenseName').value.trim(),a=Number($('expenseAmount').value),d=$('expenseDate').value||today(),c=$('expenseCategory').value;
+  if(!c)return alert('Chọn loại chi phí trước nhé.');
+  if(!a)return alert('Nhập số tiền nhé.');
+  expenses.push({id:Date.now(),date:d,name:n||c,amount:a,category:c,note:n});
+  $('expenseName').value='';$('expenseAmount').value='';
+  $('expenseCategory').value='';
+  document.querySelectorAll('.expense-category-btn').forEach(b=>b.classList.remove('active'));
+  if($('expenseCategoryHint'))$('expenseCategoryHint').textContent='Chọn một loại chi phí';
+  save();render()
+}
 function addSetup(){let n=$('setupName').value.trim(),a=Number($('setupAmount').value);if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');setup.push({id:Date.now(),name:n,amount:a});$('setupName').value='';$('setupAmount').value='';save();render()}
 function delExpense(id){expenses=expenses.filter(x=>String(x.id)!==String(id));save();render()} function delSetup(id){setup=setup.filter(x=>String(x.id)!==String(id));save();render()}
 function autoBackup(){let d=today(),b=load(K.auto,{});b[d]=snapshot();let keys=Object.keys(b).sort();if(keys.length>30)delete b[keys[0]];localStorage.setItem(K.auto,JSON.stringify(b));localStorage.setItem(K.last,JSON.stringify({date:d,time:new Date().toLocaleString('vi-VN')}))}
@@ -669,7 +711,7 @@ function recoverFromExistingBackup(){
 
 function updateBackupStatus(){let x=load(K.last,null);$('backupStatus').textContent=x?.date===today()?'Đã sao lưu hôm nay':'Sẽ tự sao lưu hôm nay';$('autoInfo').textContent=x?`Bản sao tự động gần nhất: ${x.time}. Lưu trong bộ nhớ của thiết bị.`:'Chưa có bản sao tự động.'}
 
-function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};if($('saveOrderOrder'))$('saveOrderOrder').onclick=addOrder;if($('clearCartOrder'))$('clearCartOrder').onclick=()=>{cart={};renderMenu()};if($('addExpense'))$('addExpense').onclick=addExpense;if($('addManualRevenue'))$('addManualRevenue').onclick=addManualRevenue;if($('addSetup'))$('addSetup').onclick=addSetup;if($('monthPick'))$('monthPick').value=today().slice(0,7);if($('monthPick'))$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{if($('monthPick'))$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=addMenuItem;if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
+function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.id===id));const main=document.querySelector('.content');if(main)main.dataset.activeTab=id;window.scrollTo(0,0)}document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>switchTab(b.dataset.go));if($('saveOrder'))$('saveOrder').onclick=addOrder;if($('clearCart'))$('clearCart').onclick=()=>{cart={};renderMenu()};if($('saveOrderOrder'))$('saveOrderOrder').onclick=addOrder;if($('clearCartOrder'))$('clearCartOrder').onclick=()=>{cart={};renderMenu()};if($('addExpense'))$('addExpense').onclick=addExpense; document.querySelectorAll('.expense-category-btn').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.expense-category-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('expenseCategory').value=btn.dataset.expenseCategory;if($('expenseCategoryHint'))$('expenseCategoryHint').textContent='Đã chọn: '+btn.dataset.expenseCategory;});if($('addManualRevenue'))$('addManualRevenue').onclick=addManualRevenue;if($('addSetup'))$('addSetup').onclick=addSetup;if($('monthPick'))$('monthPick').value=today().slice(0,7);if($('monthPick'))$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{if($('monthPick'))$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=addMenuItem;if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
 if($('expenseDate')){$('expenseDate').value=today();$('expenseDate').onchange=renderExpenseDailySummary;}if($('manualDate'))$('manualDate').value=today();
 // Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
 const recoveredExistingData=recoverFromExistingBackup();
