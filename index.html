@@ -333,7 +333,7 @@ html,body{min-height:100%;background:#eef6fb!important;}
 <div id="allTimeItemStats" style="margin-top:10px"></div>
 </div>
 </section><section id="cost" class="tab">
-<div class="card"><div class="section-title">🧾 Kết toán thu chi</div><div class="note">Bắt đầu kỳ dữ liệu mới từ ngày 17/10/2026. Dữ liệu cũ vẫn được giữ nguyên để tra cứu.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Thu tiền mặt hôm nay</small><b id="settleCashIn">0đ</b></div><div class="stat"><small>Thu chuyển khoản hôm nay</small><b id="settleBankIn">0đ</b></div><div class="stat"><small>Chi tiền mặt hôm nay</small><b id="settleCashOut">0đ</b></div><div class="stat"><small>Chi chuyển khoản hôm nay</small><b id="settleBankOut">0đ</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tiền mặt hiện có</small><b id="settleCashBalance">0đ</b></div><div class="stat"><small>Chuyển khoản hiện có</small><b id="settleBankBalance">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn" id="editBalances">✏️ Cập nhật tiền hiện có</button><button class="btn primary" id="settleNow">Kết toán thu chi hôm nay</button></div><div id="settleResult" class="note" style="margin-top:8px"></div></div>
+<div class="card"><div class="section-title">🧾 Kết toán thu chi</div><div class="note">Bắt đầu kỳ dữ liệu mới từ ngày 17/10/2026. Dữ liệu cũ vẫn được giữ nguyên để tra cứu.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Thu tiền mặt hôm nay</small><b id="settleCashIn">0đ</b></div><div class="stat"><small>Thu chuyển khoản hôm nay</small><b id="settleBankIn">0đ</b></div><div class="stat"><small>Chi tiền mặt hôm nay</small><b id="settleCashOut">0đ</b></div><div class="stat"><small>Chi chuyển khoản hôm nay</small><b id="settleBankOut">0đ</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tiền mặt đầu ngày</small><b id="settleCashOpening">0đ</b></div><div class="stat"><small>Chuyển khoản đầu ngày</small><b id="settleBankOpening">0đ</b></div><div class="stat"><small>Tiền mặt cuối ngày dự kiến</small><b id="settleCashBalance">0đ</b></div><div class="stat"><small>Chuyển khoản cuối ngày dự kiến</small><b id="settleBankBalance">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn" id="editBalances">✏️ Cập nhật số dư ban đầu</button><button class="btn primary" id="settleNow">Kết toán thu chi hôm nay</button></div><div id="settleResult" class="note" style="margin-top:8px"></div></div>
 <div class="card"><div class="section-title">🐷 Tiền tiết kiệm</div><div class="note">Theo dõi khoản tiền em dành riêng để tiết kiệm. Số tiền này được lưu trên thiết bị và không tự động trừ khỏi tiền mặt/chuyển khoản hiện có.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tổng tiền tiết kiệm</small><b id="savingsBalance">0đ</b></div><div><label>Cập nhật tiền tiết kiệm</label><input id="savingsAmount" type="number" min="0" step="1000" placeholder="Nhập số tiền tiết kiệm" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="saveSavings">Lưu tiền tiết kiệm</button></div><div id="savingsMsg" class="note" style="margin-top:8px"></div></div>
 <div class="cost-accordion">
 <details class="cost-fold">
@@ -546,14 +546,48 @@ function monthStats(m){
   return {revenue,cogs,ex,profit:revenue-cogs-ex,orderCount:ds.reduce((s,o)=>s+Number(o.orderCount||1),0)};
 }
 
+const LEDGER_START='2026-10-17';
+function getOpeningBalances(){
+ let x=load('tin2_opening_balances',null);
+ if(!x||typeof x!=='object'){
+   x={date:LEDGER_START,cash:Number(cash)||0,bank:Number(bank)||0,createdAt:new Date().toISOString()};
+   localStorage.setItem('tin2_opening_balances',JSON.stringify(x));
+ }
+ return {date:x.date||LEDGER_START,cash:Math.max(0,Number(x.cash)||0),bank:Math.max(0,Number(x.bank)||0)};
+}
+function moneyFlowForDate(d,method){
+ const os=orders.filter(o=>orderDate(o)===d), es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
+ const incoming=os.filter(o=>(o.paymentMethod||'cash')===method).reduce((s,o)=>s+orderTotal(o),0);
+ const outgoing=es.filter(e=>(e.paymentMethod||'cash')===method).reduce((s,e)=>s+Number(e.amount||0),0);
+ return {incoming,outgoing,net:incoming-outgoing};
+}
+function balanceAtDate(date,method){
+ const opening=getOpeningBalances(), field=method==='bank'?'bank':'cash';
+ if(date<opening.date)return 0;
+ let balance=opening[field];
+ const days=new Set([...orders.map(orderDate),...expenses.map(e=>normalizeCafeDate(e.date))].filter(d=>d>=opening.date&&d<=date));
+ days.add(date);
+ [...days].sort().forEach(d=>{const f=moneyFlowForDate(d,method);balance+=f.net;});
+ return balance;
+}
 function renderSettlement(){
  const d=today(), os=orders.filter(o=>orderDate(o)===d), es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
  const sum=(arr,method,fn)=>arr.filter(x=>(x.paymentMethod||'cash')===method).reduce((s,x)=>s+fn(x),0);
  const ci=sum(os,'cash',orderTotal), bi=sum(os,'bank',orderTotal), co=sum(es,'cash',e=>Number(e.amount||0)), bo=sum(es,'bank',e=>Number(e.amount||0));
+ const openCash=d>LEDGER_START?balanceAtDate(new Date(new Date(d+'T00:00:00').getTime()-86400000).toISOString().slice(0,10),'cash'):getOpeningBalances().cash;
+ const openBank=d>LEDGER_START?balanceAtDate(new Date(new Date(d+'T00:00:00').getTime()-86400000).toISOString().slice(0,10),'bank'):getOpeningBalances().bank;
+ const closeCash=balanceAtDate(d,'cash'), closeBank=balanceAtDate(d,'bank');
  $('settleCashIn').textContent=money(ci);$('settleBankIn').textContent=money(bi);$('settleCashOut').textContent=money(co);$('settleBankOut').textContent=money(bo);
- $('settleCashBalance').textContent=money(cash);$('settleBankBalance').textContent=money(bank);
+ if($('settleCashOpening'))$('settleCashOpening').textContent=money(openCash);if($('settleBankOpening'))$('settleBankOpening').textContent=money(openBank);
+ $('settleCashBalance').textContent=money(closeCash);$('settleBankBalance').textContent=money(closeBank);
 }
-function settleToday(){renderSettlement();renderSavings();$('settleResult').textContent='Đã tổng hợp thu chi ngày '+today()+'. Thu tiền mặt: '+$('settleCashIn').textContent+'; thu chuyển khoản: '+$('settleBankIn').textContent+'; chi tiền mặt: '+$('settleCashOut').textContent+'; chi chuyển khoản: '+$('settleBankOut').textContent+'. Số dư hiện có được giữ nguyên, không tự cộng trừ để tránh tính trùng.'}
+function settleToday(){
+ const d=today(); if(d<LEDGER_START){$('settleResult').textContent='Kỳ kết toán mới bắt đầu ngày 17/10/2026. Số dư ban đầu sẽ được dùng từ ngày này.';return;}
+ const c=balanceAtDate(d,'cash'),b=balanceAtDate(d,'bank');
+ cash=c;bank=b;save();
+ const all=load('tin2_daily_settlements',{});all[d]={date:d,cashOpening:d===LEDGER_START?getOpeningBalances().cash:balanceAtDate(new Date(new Date(d+'T00:00:00').getTime()-86400000).toISOString().slice(0,10),'cash'),bankOpening:d===LEDGER_START?getOpeningBalances().bank:balanceAtDate(new Date(new Date(d+'T00:00:00').getTime()-86400000).toISOString().slice(0,10),'bank'),cashClosing:c,bankClosing:b,settledAt:new Date().toISOString()};localStorage.setItem('tin2_daily_settlements',JSON.stringify(all));
+ renderSettlement();renderSavings();$('settleResult').textContent='Đã kết toán ngày '+d+'. Số dư cuối ngày sẽ là số dư đầu ngày kế tiếp; hệ thống tính từ số dư ban đầu cộng thu và trừ chi, không cộng trùng khi bấm kết toán nhiều lần.';
+}
 function render(){renderMenu();renderMenuCatalog();renderToday();renderStats();renderExpenses();renderSetup();renderMenuAdmin();renderOverview();renderSettlement();renderSavings();updateBackupStatus()}
 function renderOverview(){
   let d=dashboardDate(), t=stats(d);
@@ -695,7 +729,7 @@ function renderMenuAdmin(){
 
 function deleteMenu(i){if(!menu[i])return;if(!confirm(`Xóa món "${menu[i].name}" khỏi menu?\n\nCác order cũ vẫn được giữ nguyên.`))return;delete cart[i];menu.splice(i,1);let nc={};Object.keys(cart).forEach(k=>{let n=+k;if(n>i)nc[n-1]=cart[k];else if(n<i)nc[n]=cart[k]});cart=nc;save();render()}
 function addMenuItem(){const name=String($('newMenuName')?.value||'').trim();const price=Math.max(0,Number($('newMenuPrice')?.value)||0);const cost=Math.max(0,Number($('newMenuCost')?.value)||0);if(!name)return alert('Nhập tên món.');menu.push({name,price,cost});save();if($('newMenuName'))$('newMenuName').value='';if($('newMenuPrice'))$('newMenuPrice').value='';if($('newMenuCost'))$('newMenuCost').value='';render();alert(`Đã thêm món: ${name}`)}
-function updateMoney(){let c=Number(prompt('Tiền mặt hiện có:',cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Bank hiện có:',bank));if(!Number.isFinite(b)||b<0)return;cash=c;bank=b;save();render()}
+function updateMoney(){const op=getOpeningBalances();let c=Number(prompt('Nhập số dư TIỀN MẶT BAN ĐẦU (dùng từ 17/10/2026):',op.cash));if(!Number.isFinite(c)||c<0)return;let b=Number(prompt('Nhập số dư CHUYỂN KHOẢN BAN ĐẦU (dùng từ 17/10/2026):',op.bank));if(!Number.isFinite(b)||b<0)return;if(!confirm('Cập nhật số dư ban đầu sẽ tính lại số dư các ngày từ 17/10/2026. Tiếp tục nhé?'))return;localStorage.setItem('tin2_opening_balances',JSON.stringify({date:LEDGER_START,cash:c,bank:b,updatedAt:new Date().toISOString()}));cash=c;bank=b;save();render();}
 document.addEventListener('DOMContentLoaded',()=>{
   $('editBalances').onclick=updateMoney; $('settleNow').onclick=settleToday;
   if($('saveSavings'))$('saveSavings').onclick=()=>{
@@ -723,9 +757,9 @@ function addExpense(){
 function addSetup(){let n=$('setupName').value.trim(),a=Number($('setupAmount').value);if(!n||!a)return alert('Nhập đủ nội dung và số tiền.');setup.push({id:Date.now(),name:n,amount:a});$('setupName').value='';$('setupAmount').value='';save();render()}
 function delExpense(id){expenses=expenses.filter(x=>String(x.id)!==String(id));save();render()} function delSetup(id){setup=setup.filter(x=>String(x.id)!==String(id));save();render()}
 function autoBackup(){let d=today(),b=load(K.auto,{});b[d]=snapshot();let keys=Object.keys(b).sort();if(keys.length>30)delete b[keys[0]];localStorage.setItem(K.auto,JSON.stringify(b));localStorage.setItem(K.last,JSON.stringify({date:d,time:new Date().toLocaleString('vi-VN')}))}
-function snapshot(){return{version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank,tinSavings:savings}}
+function snapshot(){return{version:4,exportedAt:new Date().toISOString(),tinMenu:menu,tinOrders:orders,tinExpenses:expenses,tinSetup:setup,tinCash:cash,tinBank:bank,tinSavings:savings,tinOpeningBalances:load('tin2_opening_balances',null),tinDailySettlements:load('tin2_daily_settlements',{})}}
 function downloadBackup(){let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`TinCafe-sao-luu-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:[], importedSetup=Array.isArray(d.tinSetup)?d.tinSetup:[]; menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=importedSetup;cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);savings=Number(d.tinSavings||0);localStorage.setItem('tin2_savings',JSON.stringify(savings));localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`);location.reload()}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file,'UTF-8')} function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
+function restore(file){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d||typeof d!=='object')throw Error('File không hợp lệ');let importedOrders=Array.isArray(d.tinOrders)?d.tinOrders:[], importedExpenses=Array.isArray(d.tinExpenses)?d.tinExpenses:[], importedMenu=Array.isArray(d.tinMenu)?d.tinMenu:[], importedSetup=Array.isArray(d.tinSetup)?d.tinSetup:[]; menu=importedMenu.map(m=>({name:String(m.name||''),price:Number(m.price)||0,cost:Number(m.cost)||0})).filter(m=>m.name);orders=importedOrders;expenses=importedExpenses;setup=importedSetup;cash=Number(d.tinCash||0);bank=Number(d.tinBank||0);savings=Number(d.tinSavings||0);if(d.tinOpeningBalances)localStorage.setItem('tin2_opening_balances',JSON.stringify(d.tinOpeningBalances));if(d.tinDailySettlements)localStorage.setItem('tin2_daily_settlements',JSON.stringify(d.tinDailySettlements));localStorage.setItem('tin2_savings',JSON.stringify(savings));localStorage.setItem(K.menu,JSON.stringify(menu));localStorage.setItem(K.orders,JSON.stringify(orders));localStorage.setItem(K.expenses,JSON.stringify(expenses));localStorage.setItem(K.setup,JSON.stringify(setup));localStorage.setItem(K.cash,JSON.stringify(cash));localStorage.setItem(K.bank,JSON.stringify(bank));alert(`Đã khôi phục: ${orders.length} đơn, ${expenses.length} khoản chi.`);location.reload()}catch(e){alert('Không thể khôi phục: '+e.message)}};r.readAsText(file,'UTF-8')} function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s)}
 function recoverFromExistingBackup(){
   try{
     // If the current keys are empty, look for the newest automatic backup that still contains data.
