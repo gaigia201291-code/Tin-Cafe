@@ -1,1 +1,5 @@
-Thay index.html trong GitHub bang file nay. De hinh co chu hien dung, de cafe-tin-barista.jpg cung thu muc goc voi index.html. Ban nay giu lai cac nut DI CHUYEN MON LEN/XUONG trong Menu & gia von.
+BAN KHOI PHUC CAFE TIN
+
+Ban nay quay lai bo cuc an toan truoc khi chinh co gai chen len dau trang, giu lai hinh co gai va cac nut di chuyen mon.
+
+Tai ca 2 file index.html va cafe-tin-barista.jpg len thu muc goc GitHub, thay index.html cu, sau do Commit changes.
