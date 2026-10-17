@@ -757,7 +757,11 @@ function getOpeningBalances(){
  return {date:x.date||LEDGER_START,cash:Math.max(0,Number(x.cash)||0),bank:Math.max(0,Number(x.bank)||0)};
 }
 function moneyFlowForDate(d,method){
- const os=orders.filter(o=>orderDate(o)===d), es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
+ let os=orders.filter(o=>orderDate(o)===d);
+ // For today's settlement, also recognize orders whose stored date is missing/incorrect
+ // but whose ID is a timestamp from today (used by older app builds).
+ if(d===today() && os.length===0) os=dashboardOrders(d);
+ const es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
  const isMethod=x=>{const p=String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase();const bank=['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(p);return method==='bank'?bank:!bank;};
  const incoming=os.filter(isMethod).reduce((s,o)=>s+orderTotal(o),0);
  const outgoing=es.filter(isMethod).reduce((s,e)=>s+Number(e.amount||0),0);
@@ -783,7 +787,11 @@ function processDailySavingsTransfer(){
  localStorage.setItem('tin2_savings_transfers',JSON.stringify(transfers));localStorage.setItem('tin2_savings',JSON.stringify(savings));localStorage.setItem('tin2_savings_last_day',current);
 }
 function renderSettlement(){
- const d=today(), os=orders.filter(o=>orderDate(o)===d), es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
+ const d=today();
+ let os=orders.filter(o=>orderDate(o)===d);
+ // Compatibility fallback for orders created by older app versions whose date field differs.
+ if(os.length===0) os=dashboardOrders(d);
+ const es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
  const sum=(arr,method,fn)=>arr.filter(x=>{const p=String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase();return method==='cash'?(!['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(p)):(['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(p));}).reduce((s,x)=>s+fn(x),0);
  const ci=sum(os,'cash',orderTotal), bi=sum(os,'bank',orderTotal), co=sum(es,'cash',e=>Number(e.amount||0)), bo=sum(es,'bank',e=>Number(e.amount||0));
  const openCash=d>LEDGER_START?balanceAtDate(new Date(new Date(d+'T00:00:00').getTime()-86400000).toISOString().slice(0,10),'cash'):getOpeningBalances().cash;
