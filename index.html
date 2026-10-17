@@ -369,8 +369,52 @@ html,body{min-height:100%;background:#f4f7df;color:var(--text)}body{background:r
 @media(max-width:700px){.barista-buddy{width:min(100%,190px)!important;height:205px!important;margin:4px auto 8px!important}.brand-slogan{font-size:16px!important;max-width:190px}}
 </style>
 
+
+<style id="cafe-tin-character-update-v2">
+/* Cô gái được crop sát chủ thể, nền ảnh trong suốt để hòa vào nền trang */
+.barista-buddy{
+ position:absolute!important; left:clamp(4px,2vw,28px)!important; right:auto!important;
+ top:205px!important; transform:none!important;
+ width:clamp(330px,34vw,470px)!important; height:clamp(460px,59vw,650px)!important;
+ margin:0!important; padding:0!important; overflow:visible!important;
+ background:transparent!important; border:0!important; border-radius:0!important;
+ box-shadow:none!important; z-index:2!important; pointer-events:none!important; isolation:auto!important;
+}
+.barista-buddy img{
+ display:block!important; width:100%!important; height:100%!important;
+ object-fit:contain!important; object-position:left bottom!important;
+ mix-blend-mode:normal!important; filter:drop-shadow(0 4px 5px rgba(77,43,27,.08))!important;
+ animation:none!important;
+}
+.barista-buddy .float-heart,.barista-buddy .buddy-caption{display:none!important}
+.brand-slogan{
+ display:block!important; width:max-content!important; max-width:min(620px,70vw)!important;
+ margin:12px auto 8px!important; padding:9px 20px!important;
+ background:rgba(255,250,239,.88)!important; border:2px solid rgba(191,66,48,.24)!important;
+ border-radius:16px!important; color:#c51f25!important;
+ font-size:clamp(23px,2.5vw,36px)!important; font-weight:950!important;
+ line-height:1.2!important; letter-spacing:.2px!important; white-space:normal!important;
+ text-align:center!important; text-shadow:0 1px 0 #fff,0 2px 3px rgba(120,15,15,.12)!important;
+ box-shadow:0 5px 14px rgba(105,50,30,.08)!important;
+}
+.sidebar{position:relative!important; overflow:visible!important}
+.content{position:relative!important; z-index:1!important; padding-left:clamp(300px,30vw,410px)!important; background:transparent!important}
+@media(max-width:700px){
+ .barista-buddy{position:relative!important;left:auto!important;right:auto!important;top:auto!important;
+  width:min(76vw,270px)!important;height:min(106vw,380px)!important;margin:4px auto 8px!important;
+  z-index:1!important;}
+ .brand-slogan{width:auto!important;max-width:94%!important;font-size:clamp(21px,5.5vw,28px)!important;
+  padding:9px 12px!important;margin:10px auto 12px!important;}
+ .content{padding:16px 10px 28px!important}
+ .sidebar{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+ .side-brand{order:0!important}
+ .barista-buddy{order:1!important}
+ .side-nav{order:2!important}
+}
+</style>
+
 </head>
-<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="barista-buddy" aria-label="Cô chủ quán cà phê dễ thương đang bắn tim"><img src="cafe-tin-barista.jpg" alt="Cô chủ quán Cafe Tin nháy mắt và bắn tim"><span class="float-heart" style="--x:42%;--s:22px;--d:3.3s">♥</span><span class="float-heart">♥</span><span class="float-heart">♡</span><span class="buddy-caption">Gửi bạn một trái tim ♥</span></div><div class="side-nav"><nav class="tabs no-print"><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="itemStats"><span class="navico">🥤</span><span>Món bán</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button>
+<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="barista-buddy" aria-label="Cô chủ quán cà phê dễ thương đang bắn tim"><img src="cafe-tin-barista.png" alt="Cô chủ quán Cafe Tin nháy mắt và bắn tim"><span class="float-heart" style="--x:42%;--s:22px;--d:3.3s">♥</span><span class="float-heart">♥</span><span class="float-heart">♡</span><span class="buddy-caption">Gửi bạn một trái tim ♥</span></div><div class="side-nav"><nav class="tabs no-print"><button data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="itemStats"><span class="navico">🥤</span><span>Món bán</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button>
 <button data-tab="music"><span class="navico">🎵</span><span>Nhạc</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order">
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div><div><label>Phân loại món</label><select id="newMenuType"><option value="drink">🥤 Đồ uống (ly)</option><option value="food">🍜 Đồ ăn (phần)</option></select></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
