@@ -4,21 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f4328"><link rel="manifest" href="manifest.json">
 <title>Cafe Tin - Order</title>
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="cafe-tin-consolidated">
-/* Consolidated Cafe Tin stylesheet: original rules kept in cascade order */
-
+<style>
 :root{--bg:#edf8ec;--card:rgba(255,255,255,.94);--ink:#24452d;--muted:#718273;--accent:#78b982;--accent-dark:#5d9f68;--line:#d7ead5;--good:#68ad78;--danger:#dc7777;--blue:#a7d8c1;--lav:#c9dcb7;--cream:#fff9ed;--leaf:#8fbd79;--flower:#e7a8b8}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
 body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(2px);opacity:.6;pointer-events:none}body:before{width:190px;height:190px;left:-85px;top:170px;background:#cfe8c7}body:after{width:230px;height:230px;right:-105px;bottom:80px;background:#e7dce9}.app{max-width:980px;margin:auto;padding:14px 14px 44px}
@@ -31,8 +17,8 @@ body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;fi
 @media(max-width:700px){.app{padding:10px 10px 34px}.brand{padding:17px 18px;border-radius:21px}.brand b{font-size:23px}.brand:after{font-size:35px}.card{border-radius:19px;padding:14px}.grid{gap:8px}.stat{padding:12px}.stat b{font-size:20px}.app:before,.app:after{font-size:28px;opacity:.3}}@media(max-width:520px){.menu-admin-row{grid-template-columns:1fr 1fr}.menu-admin-row .btn.danger{grid-column:1 / -1;width:100%;margin-top:2px}.tabs button{font-size:12px;padding:10px 4px}.grid{grid-template-columns:1fr 1fr}.item{grid-template-columns:1fr auto 52px 68px}.item:after{right:65px;font-size:18px}.brand b{font-size:21px}.monthnav{align-items:stretch}.monthnav input{max-width:none}.monthnav .btn{white-space:nowrap}.hero-art{width:44%;opacity:.7}.brand-copy{max-width:72%}.brand .cup-art{width:52px;height:52px;margin-right:8px}.hero-glow{left:18%;width:150px;height:150px}.empty-illustration{height:105px}}
 
 .brand-slogan{font-size:11px;font-weight:500;line-height:1.3;margin-top:4px;color:#9a7259;white-space:nowrap;text-align:center}.side-brand{text-align:center}
-
-
+</style>
+<style>
 .brand{
   background:#fffdf8;
   color:#294437;
@@ -61,8 +47,9 @@ input,select,textarea{border-radius:9px !important}
  .brand-heart{font-size:16px}
  .brand small{font-size:11px}
 }
+</style>
 
-
+<style id="cafe-tin-brown-theme">
 :root{
  --bg:#f6efe4;--card:rgba(255,253,248,.96);--ink:#4a2d1d;--muted:#806f61;
  --accent:#8a5738;--accent-dark:#6f422a;--line:#ead9c6;--good:#7b9b68;
@@ -117,8 +104,9 @@ input:focus,select:focus{border-color:#9a6b4b;box-shadow:0 0 0 3px rgba(154,107,
 .total{color:#704124}
 #dailyBalanceBox{background:var(--card)!important;border-color:#ead8c2!important;box-shadow:0 8px 24px rgba(89,57,35,.075)!important}
 .empty-illustration{border:1px solid #ead8c2}
+</style>
 
-:root{--brown:#6f4328;--brown2:#8c5a38;--cream:#fbf7ef;--green:#6f9857;--text:#3d3028;--muted2:#7e746d;--border:#eadfd1;--white:#fffdf9;--shadow:0 7px 24px rgba(91,67,45,.08)}body{background:
+<style id="cafe-tin-dashboard">:root{--brown:#6f4328;--brown2:#8c5a38;--cream:#fbf7ef;--green:#6f9857;--text:#3d3028;--muted2:#7e746d;--border:#eadfd1;--white:#fffdf9;--shadow:0 7px 24px rgba(91,67,45,.08)}body{background:
 radial-gradient(circle at 12% 8%,rgba(255,250,238,.92) 0 9%,transparent 28%),
 radial-gradient(circle at 88% 18%,rgba(184,139,92,.16) 0 8%,transparent 27%),
 radial-gradient(circle at 18% 88%,rgba(126,82,49,.10) 0 7%,transparent 25%),
@@ -173,8 +161,8 @@ linear-gradient(135deg,#ead7bd 0%,#f6ecdd 42%,#e8d1b4 100%);color:var(--text)}bo
 
 .mobile-brand-logo{display:none;justify-content:center;align-items:center;padding:2px 0 4px}.mobile-brand-logo img{width:62px;height:62px;object-fit:contain;border-radius:14px}.mobile-brand-logo + .side-brand{padding-top:0}
 @media(max-width:620px){.mobile-brand-logo{display:flex}.side-brand .cafe{font-size:14px}.side-brand .tin{font-size:27px}.side-brand{padding-bottom:8px}.overview-logo-card{display:none}}
-
-
+</style>
+<style id="cafe-tin-readable-size">
 /* Tăng nhẹ cỡ chữ toàn trang, ưu tiên dễ đọc trên điện thoại */
 html{font-size:16px}
 body{font-size:16px;line-height:1.5}
@@ -204,8 +192,8 @@ label{font-size:14px}
   .stat b{font-size:21px}
   input,select,textarea{font-size:16px}
 }
-
-
+</style>
+<style id="cafe-tin-highlight-v2">
 /* Làm nổi bật thương hiệu, lời chúc, tên món và thanh điều hướng */
 .side-brand .cafe{font-size:16px!important;font-weight:800!important;letter-spacing:.3px;color:#765d4d!important}
 .side-brand .tin{font-size:34px!important;font-weight:900!important;letter-spacing:-.8px;color:#6f4328!important;text-shadow:0 1px 0 rgba(255,255,255,.7)}
@@ -231,8 +219,8 @@ label{font-size:14px}
  .item .name{font-size:15px!important}
  .section-title{font-size:19px!important}
 }
-
-
+</style>
+<style id="cafe-tin-thu-phap-va-mon-noi-bat">
 /* Lời chúc thư pháp + tên món trong Order nổi bật */
 .side-brand .brand-slogan{
   font-family:"URW Chancery L","Segoe Print","Bradley Hand","Comic Sans MS",cursive!important;
@@ -294,8 +282,9 @@ label{font-size:14px}
   #menuListOrder .item small{font-size:14px!important}
   #menuListOrder .item .btn{min-width:40px!important;min-height:40px!important}
 }
+</style>
 
-
+<style id="cafe-tin-blue-floral-bg">
 /* Hình nền hoa xanh: đặt ở lớp nền nhìn thấy được */
 body{background:#eef6fb!important;position:relative;}
 .app-bg-image{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("cafe-tin-background.jpg");background-position:center center;background-size:cover;background-repeat:no-repeat;opacity:.48;filter:saturate(.9) brightness(1.02);}
@@ -305,8 +294,8 @@ body{background:#eef6fb!important;position:relative;}
 .card,.dash-card,.dash-stat{background:rgba(255,253,249,.86)!important;backdrop-filter:blur(7px);}
 .tabs{background:transparent!important;}
 body:before,body:after{z-index:-1!important;}
-
-
+</style>
+<style id="cafe-tin-floral-bg-visible">
 /* Nền hoa xanh hiển thị rõ phía sau giao diện */
 html,body{min-height:100%;background:#eef6fb!important;}
 .app-bg-image{position:fixed!important;inset:0!important;z-index:0!important;display:block!important;visibility:visible!important;opacity:.92!important;background-image:url("cafe-tin-background.jpg")!important;background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important;filter:none!important;}
@@ -316,8 +305,8 @@ html,body{min-height:100%;background:#eef6fb!important;}
 .card,.dash-card,.dash-stat{background:rgba(255,253,249,.62)!important;backdrop-filter:blur(4px)!important;}
 .overview-logo-card,.menu-catalog-item,.quick{background:rgba(255,250,244,.62)!important;}
 .tabs{background:transparent!important;}
-
-
+</style>
+<style>
 .expense-category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:7px 0}
 .expense-category-btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 8px;color:var(--ink);font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;min-height:52px}
 .expense-category-btn span{font-size:14px}
@@ -325,171 +314,8 @@ html,body{min-height:100%;background:#eef6fb!important;}
 .expense-category-hint{font-size:12px;color:var(--muted);margin:-2px 0 9px}
 .expense-category-label{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:#eef6e9;color:#5d805d;margin-right:6px}
 .expense-note{font-size:12px;color:var(--muted);margin-top:3px}
-
-
-.music-player-card{padding:14px;border:1px solid #dfe9dc;border-radius:16px;background:linear-gradient(135deg,#fff,#f5faf2)}
-.music-now{font-weight:900;font-size:16px;color:#4a2b1b;margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#musicPlayer{width:100%;margin:2px 0 10px}
-.music-controls{display:flex;flex-wrap:wrap;gap:7px}
-.music-subtitle{font-weight:900;font-size:16px;color:#4a2b1b;margin:18px 0 9px}
-.youtube-input-row{display:flex;gap:8px;flex-wrap:wrap}
-#music .input{box-sizing:border-box;padding:11px 12px;border:1px solid #d9e4d6;border-radius:12px;background:#fff;font:inherit;flex:1;min-width:220px}
-.music-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:11px 8px;margin:5px 0;border:1px solid #e1eadf;border-radius:14px;background:#fff}
-.music-title{font-weight:850;color:#4a2b1b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.music-meta{font-size:12px;color:#718273;margin-top:2px}
-.music-actions{display:flex;gap:6px;align-items:center}
-.music-actions .btn{padding:8px 10px;min-width:44px}
-@media(max-width:620px){
-  .music-row{grid-template-columns:minmax(0,1fr);gap:7px}
-  .music-actions{justify-content:flex-end}
-  .music-controls .btn{flex:1;min-width:105px}
-}
-
-
-.tin-logo-row{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:96px!important;position:relative!important}
-.lucky-cat{width:78px!important;height:96px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;position:relative!important;z-index:3!important;touch-action:manipulation!important;transition:transform .15s ease!important}
-.lucky-cat:hover{transform:translateY(-2px) scale(1.03)!important}
-.lucky-cat:active{transform:scale(.94)!important}
-.lucky-cat svg{width:100%!important;height:100%!important;display:block!important;overflow:visible!important}
-.cat-paw{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
-.cat-paw-outline{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
-@keyframes manekiWave{from{transform:rotate(-10deg)}to{transform:rotate(13deg)}}
-.falling-coin{position:fixed!important;z-index:99999!important;pointer-events:none!important;font-size:22px!important;font-weight:900!important;color:#e6ad22!important;text-shadow:0 1px 2px rgba(117,76,12,.35)!important;animation:coinFall .95s cubic-bezier(.2,.75,.35,1) forwards!important}
-@keyframes coinFall{0%{transform:translate(0,0) scale(.6) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(var(--rot));opacity:0}}
-.lucky-cat.coin-pop{animation:catPop .28s ease!important}
-@keyframes catPop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@media(max-width:620px){.tin-logo-row{min-height:82px!important}.lucky-cat{width:66px!important;height:82px!important}.side-brand .tin{font-size:32px!important}.tin-logo-row{gap:2px!important}}
-
-
-/* ===== Cafe Tin - tăng độ nổi bật ===== */
-.side-brand{
-  padding:8px 6px 16px!important;
-  text-align:center!important;
-  border-bottom:2px solid #ead8c2!important;
-  margin-bottom:10px!important;
-}
-.side-brand .cafe{
-  display:block!important;
-  font-size:15px!important;
-  font-weight:900!important;
-  color:#7a5a43!important;
-  letter-spacing:2px!important;
-  text-transform:uppercase!important;
-  margin-bottom:1px!important;
-}
-.side-brand .tin{
-  display:inline-block!important;
-  font-family:Georgia,"Times New Roman",serif!important;
-  font-size:40px!important;
-  line-height:.95!important;
-  font-weight:900!important;
-  color:#6f3f21!important;
-  letter-spacing:-1.5px!important;
-  text-shadow:0 2px 0 #ead8c2, 0 4px 10px rgba(95,54,28,.16)!important;
-}
-.side-brand .heart{
-  font-size:24px!important;
-  font-weight:900!important;
-  color:#b94f57!important;
-  margin-left:3px!important;
-  text-shadow:0 2px 5px rgba(185,79,87,.2)!important;
-}
-.brand-slogan{
-  display:block!important;
-  margin:9px auto 0!important;
-  padding:8px 10px!important;
-  border-radius:10px!important;
-  background:linear-gradient(135deg,#fff3df,#f7e5cf)!important;
-  border:1px solid #e4c8aa!important;
-  color:#7a4728!important;
-  font-size:14px!important;
-  font-weight:900!important;
-  line-height:1.25!important;
-  letter-spacing:.2px!important;
-  white-space:normal!important;
-  text-align:center!important;
-  box-shadow:0 3px 9px rgba(110,68,37,.08)!important;
-}
-.tabs button{
-  font-size:17px!important;
-  font-weight:900!important;
-  letter-spacing:.15px!important;
-  color:#493224!important;
-}
-.tabs button .navico{font-size:23px!important;font-weight:900!important}
-.tabs button.active{
-  font-weight:950!important;
-  border-left:4px solid #704124!important;
-  padding-left:11px!important;
-  background:linear-gradient(90deg,#f0e4d5,#fffaf3)!important;
-  color:#6f3f21!important;
-}
-.section-title{font-size:21px!important;font-weight:950!important;letter-spacing:.1px!important}
-.item .name{font-size:17px!important;font-weight:950!important;color:#4a2b1b!important;letter-spacing:.05px!important}
-.item small{font-size:14px!important}
-.item{padding-top:13px!important;padding-bottom:13px!important}
-@media(max-width:900px){
- .side-brand .tin{font-size:36px!important}
- .tabs button{font-size:16px!important}
-}
-@media(max-width:620px){
- .side-brand{padding:5px 4px 10px!important;margin-bottom:6px!important}
- .side-brand .cafe{font-size:12px!important;letter-spacing:1.6px!important}
- .side-brand .tin{font-size:32px!important}
- .side-brand .heart{font-size:20px!important}
- .brand-slogan{font-size:13px!important;padding:7px 8px!important;margin-top:7px!important}
- .tabs button{font-size:14px!important;font-weight:950!important;min-width:88px!important;padding:10px 5px!important}
- .tabs button .navico{font-size:21px!important}
- .section-title{font-size:20px!important}
- .item .name{font-size:16px!important}
-}
-
-
-.cost-accordion{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-.expense-day-fold{border:1px solid #e2eadf;border-radius:12px;margin:8px 0;background:#fff;overflow:hidden}.expense-day-fold summary{list-style:none;cursor:pointer;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:900;color:#493224}.expense-day-fold summary::-webkit-details-marker{display:none}.expense-day-fold summary:after{content:"＋";font-size:20px;color:#6f3f21;order:3}.expense-day-fold[open] summary:after{content:"−"}.expense-day-fold summary span{display:flex;flex-direction:column;gap:3px}.expense-day-fold summary small{font-size:11px;font-weight:600;opacity:.65}.expense-day-detail{padding:0 10px 8px;border-top:1px solid #edf1ea}.expense-day-detail .summaryline{margin:6px 0;font-size:14px}.expense-day-detail .btn{padding:5px 8px;font-size:11px}
-.cost-fold{background:rgba(255,255,255,.94);border:1px solid #d7ead5;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(70,100,70,.06)}
-.cost-fold summary{list-style:none;cursor:pointer;padding:17px 18px;font-size:18px;font-weight:900;color:#493224;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
-.cost-fold summary::-webkit-details-marker{display:none}
-.cost-fold summary:after{content:"＋";font-size:22px;color:#6f3f21;transition:transform .2s}
-.cost-fold[open] summary:after{content:"−"}
-.fold-hint{font-size:12px;font-weight:700;color:#8a978b;margin-left:auto}
-.cost-fold-body{padding:0 8px 8px;border-top:1px solid #e5eee3}
-.cost-fold-body .card{box-shadow:none;margin:8px 0;border-radius:12px}
-@media(max-width:700px){.cost-fold summary{padding:15px 14px;font-size:17px}.fold-hint{font-size:11px}}
-
-
-/* ===== Cafe Tin: final layout cleanup ===== */
-:root{--ct-space:14px}
-html{scroll-behavior:smooth}
-body{line-height:1.48}
-.app{isolation:isolate}
-.sidebar{overflow-y:auto;overscroll-behavior:contain}
-.content{min-width:0}
-.card{overflow-wrap:anywhere}
-.section-title{display:flex;align-items:center;gap:6px;line-height:1.3}
-.section-title:before{flex:0 0 auto}
-.stat{min-width:0;overflow-wrap:anywhere}
-.stat b{display:block;line-height:1.25;overflow-wrap:anywhere}
-.actions .btn{min-height:44px}
-button,input,select{touch-action:manipulation}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(138,87,56,.35);outline-offset:2px}
-.list{overscroll-behavior:contain}
-/* The navigation has seven destinations; keep all reachable on compact screens. */
-@media(max-width:620px){
- .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding:5px 0 8px}
- .tabs button{flex:0 0 auto;min-width:78px;white-space:nowrap}
- .content{padding-left:10px;padding-right:10px}
- .card{margin:10px 0;padding:14px}
- .grid{gap:8px}
- .monthnav{flex-wrap:wrap}
- .monthnav input{flex:1 1 150px}
- .actions .btn{min-width:0}
- .menu-catalog-item{min-width:0}
-}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
-</style>
-</head>
-<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="itemStats"><span class="navico">🥤</span><span>Món bán</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button>
+</style></head>
+<body><div class="app-bg-image" aria-hidden="true"></div><div class="app"><aside class="sidebar"><div class="side-logo"><img src="cafe-tin-logo.png" alt="Cafe Tin"></div><div class="mobile-brand-logo"><img src="cafe-tin-logo.png" alt="Logo Cafe Tin"></div><div class="side-brand"><span class="cafe">Cà Phê</span><div class="tin-logo-row"><button class="lucky-cat" id="luckyCat" aria-label="Mèo thần tài - bấm để nhận tiền" type="button"><svg viewBox="0 0 100 120" role="img" aria-hidden="true"><ellipse cx="50" cy="111" rx="34" ry="6" fill="rgba(70,45,25,.12)"/><path d="M22 43V24l12 9c5-5 27-5 32 0l12-9v19c4 7 6 15 6 25 0 28-14 43-34 43S16 96 16 68c0-10 2-18 6-25Z" fill="#fff8e9" stroke="#c99542" stroke-width="3"/><path d="M26 42c6-9 42-9 48 0" fill="#d93d35"/><path d="M35 31l4-16 12 10 12-10 4 16" fill="#fff8e9" stroke="#c99542" stroke-width="3" stroke-linejoin="round"/><circle cx="38" cy="58" r="3" fill="#3d3028"/><circle cx="62" cy="58" r="3" fill="#3d3028"/><path d="M44 68q6 7 12 0" fill="none" stroke="#d93d35" stroke-width="3" stroke-linecap="round"/><path d="M32 67h-9m11 5-8 3m41-8h9m-11 5 8 3" stroke="#d93d35" stroke-width="2" stroke-linecap="round"/><ellipse cx="50" cy="89" rx="23" ry="17" fill="#d93d35"/><path d="M36 82q14 8 28 0" fill="none" stroke="#f2c14e" stroke-width="3"/><ellipse cx="50" cy="93" rx="12" ry="8" fill="#f4c94f" stroke="#bd8c27" stroke-width="2"/><text x="50" y="97" text-anchor="middle" font-size="8" font-weight="900" fill="#9b5f16">招財</text><path class="cat-paw" d="M78 52q15-10 12-29" fill="none" stroke="#fff8e9" stroke-width="12" stroke-linecap="round"/><path class="cat-paw-outline" d="M78 52q15-10 12-29" fill="none" stroke="#c99542" stroke-width="2.5" stroke-linecap="round"/><path d="M29 91q-8 9-2 16" fill="none" stroke="#fff8e9" stroke-width="9" stroke-linecap="round"/></svg></button><span class="tin">Tin</span><span class="heart">♥</span></div><div class="brand-slogan">Chúc bạn mua may bán đắt</div></div><div class="side-nav"><nav class="tabs no-print"><button class="active" data-tab="order"><span class="navico">🛒</span><span>Order</span></button><button data-tab="menuView"><span class="navico">☕</span><span>Menu</span></button><button data-tab="stats"><span class="navico">▥</span><span>Thống kê</span></button><button data-tab="itemStats"><span class="navico">🥤</span><span>Món bán</span></button><button data-tab="cost"><span class="navico">◫</span><span>Chi phí</span></button><button data-tab="data"><span class="navico">⚙</span><span>Cài đặt</span></button>
 <button data-tab="music"><span class="navico">🎵</span><span>Nhạc</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order"><div class="topbar"><div class="welcome"><h1>Chào buổi sáng, <strong>Chủ quán</strong> 🌿</h1><p>Chúc bạn một ngày làm việc hiệu quả! <span style="color:#8a5738">♥</span></p></div><div class="top-actions"><div class="date-pill">▣ <span id="dashDate"></span></div><button class="bell-pill">♧</button></div></div>
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
@@ -1037,9 +863,41 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 </script>
 
 
+<style id="cafe-tin-music-rebuild-css">
+.music-player-card{padding:14px;border:1px solid #dfe9dc;border-radius:16px;background:linear-gradient(135deg,#fff,#f5faf2)}
+.music-now{font-weight:900;font-size:16px;color:#4a2b1b;margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#musicPlayer{width:100%;margin:2px 0 10px}
+.music-controls{display:flex;flex-wrap:wrap;gap:7px}
+.music-subtitle{font-weight:900;font-size:16px;color:#4a2b1b;margin:18px 0 9px}
+.youtube-input-row{display:flex;gap:8px;flex-wrap:wrap}
+#music .input{box-sizing:border-box;padding:11px 12px;border:1px solid #d9e4d6;border-radius:12px;background:#fff;font:inherit;flex:1;min-width:220px}
+.music-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:11px 8px;margin:5px 0;border:1px solid #e1eadf;border-radius:14px;background:#fff}
+.music-title{font-weight:850;color:#4a2b1b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.music-meta{font-size:12px;color:#718273;margin-top:2px}
+.music-actions{display:flex;gap:6px;align-items:center}
+.music-actions .btn{padding:8px 10px;min-width:44px}
+@media(max-width:620px){
+  .music-row{grid-template-columns:minmax(0,1fr);gap:7px}
+  .music-actions{justify-content:flex-end}
+  .music-controls .btn{flex:1;min-width:105px}
+}
+</style>
 
-
-
+<style id="cafe-tin-lucky-cat">
+.tin-logo-row{display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:96px!important;position:relative!important}
+.lucky-cat{width:78px!important;height:96px!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;position:relative!important;z-index:3!important;touch-action:manipulation!important;transition:transform .15s ease!important}
+.lucky-cat:hover{transform:translateY(-2px) scale(1.03)!important}
+.lucky-cat:active{transform:scale(.94)!important}
+.lucky-cat svg{width:100%!important;height:100%!important;display:block!important;overflow:visible!important}
+.cat-paw{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
+.cat-paw-outline{transform-origin:89px 24px;animation:manekiWave .75s ease-in-out infinite alternate}
+@keyframes manekiWave{from{transform:rotate(-10deg)}to{transform:rotate(13deg)}}
+.falling-coin{position:fixed!important;z-index:99999!important;pointer-events:none!important;font-size:22px!important;font-weight:900!important;color:#e6ad22!important;text-shadow:0 1px 2px rgba(117,76,12,.35)!important;animation:coinFall .95s cubic-bezier(.2,.75,.35,1) forwards!important}
+@keyframes coinFall{0%{transform:translate(0,0) scale(.6) rotate(0deg);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(var(--rot));opacity:0}}
+.lucky-cat.coin-pop{animation:catPop .28s ease!important}
+@keyframes catPop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media(max-width:620px){.tin-logo-row{min-height:82px!important}.lucky-cat{width:66px!important;height:82px!important}.side-brand .tin{font-size:32px!important}.tin-logo-row{gap:2px!important}}
+</style>
 <script>
 (function(){
   function setupLuckyCat(){
@@ -1223,5 +1081,103 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
 })();
 </script>
 
-</body>
-</html>
+</body></html>
+
+<style id="cafe-tin-bold-visual-final">
+/* ===== Cafe Tin - tăng độ nổi bật ===== */
+.side-brand{
+  padding:8px 6px 16px!important;
+  text-align:center!important;
+  border-bottom:2px solid #ead8c2!important;
+  margin-bottom:10px!important;
+}
+.side-brand .cafe{
+  display:block!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  color:#7a5a43!important;
+  letter-spacing:2px!important;
+  text-transform:uppercase!important;
+  margin-bottom:1px!important;
+}
+.side-brand .tin{
+  display:inline-block!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:40px!important;
+  line-height:.95!important;
+  font-weight:900!important;
+  color:#6f3f21!important;
+  letter-spacing:-1.5px!important;
+  text-shadow:0 2px 0 #ead8c2, 0 4px 10px rgba(95,54,28,.16)!important;
+}
+.side-brand .heart{
+  font-size:24px!important;
+  font-weight:900!important;
+  color:#b94f57!important;
+  margin-left:3px!important;
+  text-shadow:0 2px 5px rgba(185,79,87,.2)!important;
+}
+.brand-slogan{
+  display:block!important;
+  margin:9px auto 0!important;
+  padding:8px 10px!important;
+  border-radius:10px!important;
+  background:linear-gradient(135deg,#fff3df,#f7e5cf)!important;
+  border:1px solid #e4c8aa!important;
+  color:#7a4728!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1.25!important;
+  letter-spacing:.2px!important;
+  white-space:normal!important;
+  text-align:center!important;
+  box-shadow:0 3px 9px rgba(110,68,37,.08)!important;
+}
+.tabs button{
+  font-size:17px!important;
+  font-weight:900!important;
+  letter-spacing:.15px!important;
+  color:#493224!important;
+}
+.tabs button .navico{font-size:23px!important;font-weight:900!important}
+.tabs button.active{
+  font-weight:950!important;
+  border-left:4px solid #704124!important;
+  padding-left:11px!important;
+  background:linear-gradient(90deg,#f0e4d5,#fffaf3)!important;
+  color:#6f3f21!important;
+}
+.section-title{font-size:21px!important;font-weight:950!important;letter-spacing:.1px!important}
+.item .name{font-size:17px!important;font-weight:950!important;color:#4a2b1b!important;letter-spacing:.05px!important}
+.item small{font-size:14px!important}
+.item{padding-top:13px!important;padding-bottom:13px!important}
+@media(max-width:900px){
+ .side-brand .tin{font-size:36px!important}
+ .tabs button{font-size:16px!important}
+}
+@media(max-width:620px){
+ .side-brand{padding:5px 4px 10px!important;margin-bottom:6px!important}
+ .side-brand .cafe{font-size:12px!important;letter-spacing:1.6px!important}
+ .side-brand .tin{font-size:32px!important}
+ .side-brand .heart{font-size:20px!important}
+ .brand-slogan{font-size:13px!important;padding:7px 8px!important;margin-top:7px!important}
+ .tabs button{font-size:14px!important;font-weight:950!important;min-width:88px!important;padding:10px 5px!important}
+ .tabs button .navico{font-size:21px!important}
+ .section-title{font-size:20px!important}
+ .item .name{font-size:16px!important}
+}
+</style>
+
+<style id="cafe-tin-cost-accordion">
+.cost-accordion{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.expense-day-fold{border:1px solid #e2eadf;border-radius:12px;margin:8px 0;background:#fff;overflow:hidden}.expense-day-fold summary{list-style:none;cursor:pointer;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:900;color:#493224}.expense-day-fold summary::-webkit-details-marker{display:none}.expense-day-fold summary:after{content:"＋";font-size:20px;color:#6f3f21;order:3}.expense-day-fold[open] summary:after{content:"−"}.expense-day-fold summary span{display:flex;flex-direction:column;gap:3px}.expense-day-fold summary small{font-size:11px;font-weight:600;opacity:.65}.expense-day-detail{padding:0 10px 8px;border-top:1px solid #edf1ea}.expense-day-detail .summaryline{margin:6px 0;font-size:14px}.expense-day-detail .btn{padding:5px 8px;font-size:11px}
+.cost-fold{background:rgba(255,255,255,.94);border:1px solid #d7ead5;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(70,100,70,.06)}
+.cost-fold summary{list-style:none;cursor:pointer;padding:17px 18px;font-size:18px;font-weight:900;color:#493224;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none}
+.cost-fold summary::-webkit-details-marker{display:none}
+.cost-fold summary:after{content:"＋";font-size:22px;color:#6f3f21;transition:transform .2s}
+.cost-fold[open] summary:after{content:"−"}
+.fold-hint{font-size:12px;font-weight:700;color:#8a978b;margin-left:auto}
+.cost-fold-body{padding:0 8px 8px;border-top:1px solid #e5eee3}
+.cost-fold-body .card{box-shadow:none;margin:8px 0;border-radius:12px}
+@media(max-width:700px){.cost-fold summary{padding:15px 14px;font-size:17px}.fold-hint{font-size:11px}}
+</style>
