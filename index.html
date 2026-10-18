@@ -1461,6 +1461,44 @@ window.addEventListener('pageshow',fix);
 )();
 </script>
 
+
+<style id="cafetin-fix-barista-overlap">
+/* Fix: keep the barista illustration inside the header and never over menu labels */
+.sidebar .barista-buddy{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+  transform:none!important;
+  grid-area:art!important;
+  width:100%!important;height:150px!important;max-width:320px!important;
+  margin:0 auto!important;padding:0!important;
+  overflow:visible!important;z-index:1!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  pointer-events:none!important;
+}
+.sidebar .barista-buddy img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center bottom!important;
+  mix-blend-mode:normal!important;animation:none!important;
+}
+.sidebar .side-nav{position:relative!important;z-index:5!important;grid-area:nav!important;clear:both!important}
+@media(max-width:700px){
+  .sidebar{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    gap:8px!important;overflow:visible!important;padding:14px 12px 12px!important;
+  }
+  .sidebar .side-brand{order:0!important;width:100%!important;min-height:0!important;padding:4px 0!important}
+  .sidebar .barista-buddy{
+    order:1!important;position:relative!important;inset:auto!important;
+    width:min(48vw,180px)!important;height:155px!important;max-width:180px!important;
+    margin:0 auto!important;flex:0 0 auto!important;
+  }
+  .sidebar .side-nav{order:2!important;width:100%!important;margin:0!important;z-index:5!important}
+  .sidebar .tabs{position:relative!important;top:auto!important}
+  .sidebar .side-brand .brand-slogan{max-width:100%!important}
+}
+</style>
+
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
