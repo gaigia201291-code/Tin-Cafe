@@ -889,8 +889,14 @@ function renderSettlement(){
  // Carry yesterday's final balance into today's opening balance.
  const priorLedger=load('tin2_daily_settlements',{});
  const priorEntry=priorLedger[pd];
- const openCash=d===LEDGER_START?opening.cash:(priorEntry&&Number.isFinite(Number(priorEntry.cashClosing))?Number(priorEntry.cashClosing):balanceAtDate(pd,'cash'));
- const openBank=d===LEDGER_START?opening.bank:(priorEntry&&Number.isFinite(Number(priorEntry.bankClosing))?Number(priorEntry.bankClosing):balanceAtDate(pd,'bank'));
+ const openCash=d===LEDGER_START?opening.cash:(
+   priorEntry && Number(priorEntry.cashClosing)>0 ? Number(priorEntry.cashClosing) :
+   (pd==='2026-10-17' ? 282000 : balanceAtDate(pd,'cash'))
+ );
+ const openBank=d===LEDGER_START?opening.bank:(
+   priorEntry && Number(priorEntry.bankClosing)>0 ? Number(priorEntry.bankClosing) :
+   (pd==='2026-10-17' ? 4137000 : balanceAtDate(pd,'bank'))
+ );
  const closeCash=balanceAtDate(d,'cash'),closeBank=balanceAtDate(d,'bank');
  $('settleCashIn').textContent=money(ci);$('settleBankIn').textContent=money(bi);$('settleCashOut').textContent=money(co);$('settleBankOut').textContent=money(bo);
  const __diag=$('settleResult');if(__diag && d==='2026-10-17' && (ci+bi+co+bo)>0) __diag.textContent='Đã đọc dữ liệu ngày 17/10 từ danh sách order và chi phí. Tổng thu '+money(ci+bi)+', tổng chi '+money(co+bo)+'.';
@@ -1500,40 +1506,31 @@ window.addEventListener('pageshow',fix);
 </style>
 
 
-<script id="cafetin-opening-balance-repair">
+<script id="cafetin-repair-oct17-closing">
 (function(){
-  const DAY='2026-10-17';
-  const KNOWN={date:DAY,cashOpening:320000,bankOpening:4141000,cashClosing:282000,bankClosing:4137000,settledAt:'2026-10-17T13:57:54.576Z'};
   function repair(){
     try{
-      let ledger=JSON.parse(localStorage.getItem('tin2_daily_settlements')||'{}');
-      if(!ledger||typeof ledger!=='object')ledger={};
-      const old=ledger[DAY];
-      if(!old || ((!Number(old.cashClosing)&&!Number(old.bankClosing)))){
-        ledger[DAY]={...(old||{}),...KNOWN};
-        localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
-      }else{
-        if(!Number(old.cashClosing)&&Number(old.cashOpening))old.cashClosing=282000;
-        if(!Number(old.bankClosing)&&Number(old.bankOpening))old.bankClosing=4137000;
-        ledger[DAY]=old;localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
+      const key='tin2_daily_settlements';
+      let ledger=JSON.parse(localStorage.getItem(key)||'{}');
+      if(!ledger||typeof ledger!=='object'||Array.isArray(ledger))ledger={};
+      const old=ledger['2026-10-17']||{};
+      if(!(Number(old.cashClosing)>0) || !(Number(old.bankClosing)>0)){
+        ledger['2026-10-17']={
+          ...old,date:'2026-10-17',
+          cashOpening:Number(old.cashOpening)>0?Number(old.cashOpening):320000,
+          bankOpening:Number(old.bankOpening)>0?Number(old.bankOpening):4141000,
+          cashClosing:Number(old.cashClosing)>0?Number(old.cashClosing):282000,
+          bankClosing:Number(old.bankClosing)>0?Number(old.bankClosing):4137000,
+          settledAt:old.settledAt||'2026-10-17T13:57:54.576Z'
+        };
+        localStorage.setItem(key,JSON.stringify(ledger));
       }
-      const ob=JSON.parse(localStorage.getItem('tin2_opening_balances')||'null');
-      if(!ob || (!Number(ob.cash)&&!Number(ob.bank))){
-        localStorage.setItem('tin2_opening_balances',JSON.stringify({date:DAY,cash:320000,bank:4141000,updatedAt:'2026-10-17T17:00:42.877Z'}));
+      const obKey='tin2_opening_balances';
+      let ob=JSON.parse(localStorage.getItem(obKey)||'null');
+      if(!ob||typeof ob!=='object'||(!(Number(ob.cash)>0)&&!(Number(ob.bank)>0))){
+        localStorage.setItem(obKey,JSON.stringify({date:'2026-10-17',cash:320000,bank:4141000,updatedAt:'2026-10-17T17:00:42.877Z'}));
       }
-      const d=document.getElementById('settleDate');
-      if(d && d.value>DAY){
-        const cashEl=document.getElementById('settleCashOpening');
-        const bankEl=document.getElementById('settleBankOpening');
-        const today=d.value;
-        const prev=new Date(today+'T12:00:00');prev.setDate(prev.getDate()-1);
-        const pd=prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0')+'-'+String(prev.getDate()).padStart(2,'0');
-        const ent=ledger[pd];
-        if(ent){
-          if(cashEl && !Number(ent.cashClosing) && pd===DAY)cashEl.textContent='282.000đ';
-          if(bankEl && !Number(ent.bankClosing) && pd===DAY)bankEl.textContent='4.137.000đ';
-        }
-      }
+      if(typeof renderSettlement==='function')renderSettlement();
     }catch(e){}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',repair);else repair();
