@@ -830,8 +830,11 @@ function renderSettlement(){
  const ci=sum(os,false,orderTotal),bi=sum(os,true,orderTotal),co=sum(es,false,e=>Number(e.amount||0)),bo=sum(es,true,e=>Number(e.amount||0));
  const prev=new Date(d+'T12:00:00');prev.setDate(prev.getDate()-1);const pd=prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0')+'-'+String(prev.getDate()).padStart(2,'0');
  const opening=getOpeningBalances();
- const openCash=d===LEDGER_START?opening.cash:balanceAtDate(pd,'cash');
- const openBank=d===LEDGER_START?opening.bank:balanceAtDate(pd,'bank');
+ // Carry yesterday's final balance into today's opening balance.
+ const priorLedger=load('tin2_daily_settlements',{});
+ const priorEntry=priorLedger[pd];
+ const openCash=d===LEDGER_START?opening.cash:(priorEntry&&Number.isFinite(Number(priorEntry.cashClosing))?Number(priorEntry.cashClosing):balanceAtDate(pd,'cash'));
+ const openBank=d===LEDGER_START?opening.bank:(priorEntry&&Number.isFinite(Number(priorEntry.bankClosing))?Number(priorEntry.bankClosing):balanceAtDate(pd,'bank'));
  const closeCash=balanceAtDate(d,'cash'),closeBank=balanceAtDate(d,'bank');
  $('settleCashIn').textContent=money(ci);$('settleBankIn').textContent=money(bi);$('settleCashOut').textContent=money(co);$('settleBankOut').textContent=money(bo);
  const __diag=$('settleResult');if(__diag && d==='2026-10-17' && (ci+bi+co+bo)>0) __diag.textContent='Đã đọc dữ liệu ngày 17/10 từ danh sách order và chi phí. Tổng thu '+money(ci+bi)+', tổng chi '+money(co+bo)+'.';
