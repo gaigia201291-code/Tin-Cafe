@@ -1365,7 +1365,7 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
   function render(){
     const dateEl=document.getElementById('settleDate');
     if(!dateEl)return;
-    if(!dateEl.value)dateEl.value='2026-10-17';
+    if(!dateEl.dataset.userPicked && (!dateEl.value || dateEl.value==='2026-10-17')){const now=new Date();dateEl.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');}
     const d=dateEl.value;
     if(d<'2026-10-17')return;
     const os=getRows('tin2_orders',BACKUP.orders).filter(o=>day(o.date||o.createdAt||o.created_at||o.timestamp)||String(o.id||'')==='').filter(o=>{
@@ -1386,9 +1386,20 @@ if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi 
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);
   else render();
-  document.addEventListener('change',function(e){if(e.target&&e.target.id==='settleDate')render();});
+  document.addEventListener('change',function(e){if(e.target&&e.target.id==='settleDate'){e.target.dataset.userPicked='1';render();}});
   setTimeout(render,500);
 })();
+</script>
+
+
+<script id="settlement-today-default-fix">
+(function(){
+function localISO(){var n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
+function fix(){var d=document.getElementById('settleDate');if(d&&!d.dataset.userPicked&&(d.value===''||d.value==='2026-10-17')){d.value=localISO();d.dispatchEvent(new Event('change',{bubbles:true}));}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();
+window.addEventListener('pageshow',fix);
+}
+)();
 </script>
 
 </body></html>
