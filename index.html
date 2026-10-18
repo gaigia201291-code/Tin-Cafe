@@ -770,12 +770,29 @@ function getOpeningBalances(){
  }
  return {date:x.date||LEDGER_START,cash:Math.max(0,Number(x.cash)||0),bank:Math.max(0,Number(x.bank)||0)};
 }
+function settlementSourceRows(kind){
+  const key=kind==='orders'?K.orders:K.expenses;
+  let stored=[];
+  try{const raw=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(raw))stored=raw;}catch(e){}
+  const memory=kind==='orders'?orders:expenses;
+  const backup=kind==='orders'?__backupOct17Orders:__backupOct17Expenses;
+  const seen=new Set(),out=[];
+  for(const row of [...stored,...memory,...backup]){
+    const id=row&&row.id;
+    const sig=id!==undefined&&id!==null?String(id):JSON.stringify(row);
+    if(seen.has(sig))continue;
+    seen.add(sig);out.push(row);
+  }
+  return out;
+}
+function settlementOrdersForDate(d){return settlementSourceRows('orders').filter(o=>orderDate(o)===d);}
+function settlementExpensesForDate(d){return settlementSourceRows('expenses').filter(e=>normalizeCafeDate(e.date)===d);}
 function moneyFlowForDate(d,method){
- let os=orders.filter(o=>orderDate(o)===d);
+ let os=settlementOrdersForDate(d);
  // For today's settlement, also recognize orders whose stored date is missing/incorrect
  // but whose ID is a timestamp from today (used by older app builds).
  if(d===today() && os.length===0) os=dashboardOrders(d);
- const es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
+ const es=settlementExpensesForDate(d);
  const isMethod=x=>{const p=String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase();const bank=['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(p);return method==='bank'?bank:!bank;};
  const incoming=os.filter(isMethod).reduce((s,o)=>s+orderTotal(o),0);
  const outgoing=es.filter(isMethod).reduce((s,e)=>s+Number(e.amount||0),0);
@@ -803,11 +820,11 @@ function processDailySavingsTransfer(){
 function renderSettlement(){
  const dateInput=$('settleDate');
  const current=today();
- if(dateInput){dateInput.min=LEDGER_START;if(!dateInput.value)dateInput.value=current;}
+ if(dateInput){dateInput.min=LEDGER_START;if(!dateInput.value)dateInput.value=LEDGER_START;}
  let d=(dateInput&&dateInput.value)||current;if(d<LEDGER_START){d=LEDGER_START;if(dateInput)dateInput.value=d;}
- let os=orders.filter(o=>orderDate(o)===d);
- if(os.length===0) os=dashboardOrders(d);
- const es=expenses.filter(e=>normalizeCafeDate(e.date)===d);
+ let os=settlementOrdersForDate(d);
+ if(os.length===0 && d===today()) os=dashboardOrders(d);
+ const es=settlementExpensesForDate(d);
  const bankMethod=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
  const sum=(arr,isBank,fn)=>arr.filter(x=>bankMethod(x)===isBank).reduce((s,x)=>s+fn(x),0);
  const ci=sum(os,false,orderTotal),bi=sum(os,true,orderTotal),co=sum(es,false,e=>Number(e.amount||0)),bo=sum(es,true,e=>Number(e.amount||0));
@@ -817,6 +834,7 @@ function renderSettlement(){
  const openBank=d===LEDGER_START?opening.bank:balanceAtDate(pd,'bank');
  const closeCash=balanceAtDate(d,'cash'),closeBank=balanceAtDate(d,'bank');
  $('settleCashIn').textContent=money(ci);$('settleBankIn').textContent=money(bi);$('settleCashOut').textContent=money(co);$('settleBankOut').textContent=money(bo);
+ const __diag=$('settleResult');if(__diag && d==='2026-10-17' && (ci+bi+co+bo)>0) __diag.textContent='Đã đọc dữ liệu ngày 17/10 từ danh sách order và chi phí. Tổng thu '+money(ci+bi)+', tổng chi '+money(co+bo)+'.';
  if($('settleCashOpening'))$('settleCashOpening').textContent=money(openCash);if($('settleBankOpening'))$('settleBankOpening').textContent=money(openBank);
  $('settleCashBalance').textContent=money(closeCash);$('settleBankBalance').textContent=money(closeBank);
  const ledger=load('tin2_daily_settlements',{});const saved=ledger[d];
