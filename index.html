@@ -830,11 +830,8 @@ function renderSettlement(){
  const ci=sum(os,false,orderTotal),bi=sum(os,true,orderTotal),co=sum(es,false,e=>Number(e.amount||0)),bo=sum(es,true,e=>Number(e.amount||0));
  const prev=new Date(d+'T12:00:00');prev.setDate(prev.getDate()-1);const pd=prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0')+'-'+String(prev.getDate()).padStart(2,'0');
  const opening=getOpeningBalances();
- // Carry yesterday's final balance into today's opening balance.
- const priorLedger=load('tin2_daily_settlements',{});
- const priorEntry=priorLedger[pd];
- const openCash=d===LEDGER_START?opening.cash:(priorEntry&&Number.isFinite(Number(priorEntry.cashClosing))?Number(priorEntry.cashClosing):balanceAtDate(pd,'cash'));
- const openBank=d===LEDGER_START?opening.bank:(priorEntry&&Number.isFinite(Number(priorEntry.bankClosing))?Number(priorEntry.bankClosing):balanceAtDate(pd,'bank'));
+ const openCash=d===LEDGER_START?opening.cash:balanceAtDate(pd,'cash');
+ const openBank=d===LEDGER_START?opening.bank:balanceAtDate(pd,'bank');
  const closeCash=balanceAtDate(d,'cash'),closeBank=balanceAtDate(d,'bank');
  $('settleCashIn').textContent=money(ci);$('settleBankIn').textContent=money(bi);$('settleCashOut').textContent=money(co);$('settleBankOut').textContent=money(bo);
  const __diag=$('settleResult');if(__diag && d==='2026-10-17' && (ci+bi+co+bo)>0) __diag.textContent='Đã đọc dữ liệu ngày 17/10 từ danh sách order và chi phí. Tổng thu '+money(ci+bi)+', tổng chi '+money(co+bo)+'.';
@@ -1403,6 +1400,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 window.addEventListener('pageshow',fix);
 }
 )();
+</script>
+
+
+<script id="cafetin-seed-settlement-20261017">
+(function(){
+  const START='2026-10-17';
+  const opening={date:START,cash:320000,bank:4141000,updatedAt:'2026-10-17T17:00:42.877Z'};
+  const closing={date:START,cashOpening:320000,bankOpening:4141000,cashClosing:282000,bankClosing:4137000,settledAt:'2026-10-17T13:57:54.576Z'};
+  function seed(){
+    try{
+      const ob=JSON.parse(localStorage.getItem('tin2_opening_balances')||'null');
+      if(!ob || (!Number(ob.cash)&&!Number(ob.bank))) localStorage.setItem('tin2_opening_balances',JSON.stringify(opening));
+      const ledger=JSON.parse(localStorage.getItem('tin2_daily_settlements')||'{}')||{};
+      const old=ledger[START];
+      if(!old || (!Number(old.cashClosing)&&!Number(old.bankClosing))){
+        ledger[START]=closing;
+        localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
+      }
+      if(typeof window.renderSettlement==='function')window.renderSettlement();
+      const date=document.getElementById('settleDate');
+      if(date && date.value==='2026-10-18')date.dispatchEvent(new Event('change',{bubbles:true}));
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',seed);else seed();
+  window.addEventListener('pageshow',seed);
+})();
 </script>
 
 </body></html>
