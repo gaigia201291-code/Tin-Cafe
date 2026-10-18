@@ -1499,6 +1499,48 @@ window.addEventListener('pageshow',fix);
 }
 </style>
 
+
+<script id="cafetin-opening-balance-repair">
+(function(){
+  const DAY='2026-10-17';
+  const KNOWN={date:DAY,cashOpening:320000,bankOpening:4141000,cashClosing:282000,bankClosing:4137000,settledAt:'2026-10-17T13:57:54.576Z'};
+  function repair(){
+    try{
+      let ledger=JSON.parse(localStorage.getItem('tin2_daily_settlements')||'{}');
+      if(!ledger||typeof ledger!=='object')ledger={};
+      const old=ledger[DAY];
+      if(!old || ((!Number(old.cashClosing)&&!Number(old.bankClosing)))){
+        ledger[DAY]={...(old||{}),...KNOWN};
+        localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
+      }else{
+        if(!Number(old.cashClosing)&&Number(old.cashOpening))old.cashClosing=282000;
+        if(!Number(old.bankClosing)&&Number(old.bankOpening))old.bankClosing=4137000;
+        ledger[DAY]=old;localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
+      }
+      const ob=JSON.parse(localStorage.getItem('tin2_opening_balances')||'null');
+      if(!ob || (!Number(ob.cash)&&!Number(ob.bank))){
+        localStorage.setItem('tin2_opening_balances',JSON.stringify({date:DAY,cash:320000,bank:4141000,updatedAt:'2026-10-17T17:00:42.877Z'}));
+      }
+      const d=document.getElementById('settleDate');
+      if(d && d.value>DAY){
+        const cashEl=document.getElementById('settleCashOpening');
+        const bankEl=document.getElementById('settleBankOpening');
+        const today=d.value;
+        const prev=new Date(today+'T12:00:00');prev.setDate(prev.getDate()-1);
+        const pd=prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0')+'-'+String(prev.getDate()).padStart(2,'0');
+        const ent=ledger[pd];
+        if(ent){
+          if(cashEl && !Number(ent.cashClosing) && pd===DAY)cashEl.textContent='282.000đ';
+          if(bankEl && !Number(ent.bankClosing) && pd===DAY)bankEl.textContent='4.137.000đ';
+        }
+      }
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',repair);else repair();
+  window.addEventListener('pageshow',repair);
+})();
+</script>
+
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
