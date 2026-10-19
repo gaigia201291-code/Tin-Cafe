@@ -603,7 +603,7 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 </section><section id="itemStats" class="tab">
 <div class="card">
 <div class="section-title">📊 Tổng kết món bán theo ngày</div>
-<div class="note">Chọn hai ngày để xem và đối chiếu số món bán. Số liệu lấy từ order đã chốt, không tính doanh thu nhập tay.</div>
+<div class="note">Hai cột tự chọn hôm nay và hôm qua khi mở ứng dụng; em vẫn có thể đổi ngày để đối chiếu. Hiển thị số món, doanh thu, giá vốn và lợi nhuận (doanh thu − giá vốn), lấy từ order đã chốt.</div>
 <div class="item-day-columns" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
   <div class="item-day-panel" style="border:1px solid #e6d5bd;border-radius:14px;padding:12px;background:#fffaf1;min-width:0">
     <label for="itemStatsDate1" style="font-weight:800">📅 Ngày thứ nhất</label><input type="date" id="itemStatsDate1" style="width:100%;box-sizing:border-box;margin:6px 0 10px">
@@ -1068,12 +1068,16 @@ function renderStats(){
     const target=$(targetId); if(!target)return;
     const os=realOrders.filter(o=>orderDate(o)===date), counts=countItems(os), rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
     const total=rows.reduce((sum,x)=>sum+x[1],0), ds=stats(date);
-    target.innerHTML=`<div style="background:#f3e5ce;border-radius:10px;padding:9px;margin-bottom:8px"><div style="font-size:12px;color:#765538">Tổng số món</div><strong style="font-size:22px;color:#633d22">${total.toLocaleString('vi-VN')}</strong><div style="font-size:12px;margin-top:4px">Doanh thu: <b>${money(ds.revenue)}</b></div><div style="font-size:12px">Giá vốn: <b>${money(ds.cogs)}</b></div></div>`+
+    target.innerHTML=`<div style="background:#f3e5ce;border-radius:10px;padding:9px;margin-bottom:8px"><div style="font-size:12px;color:#765538">Tổng số món</div><strong style="font-size:22px;color:#633d22">${total.toLocaleString('vi-VN')}</strong><div style="font-size:12px;margin-top:4px">Doanh thu: <b>${money(ds.revenue)}</b></div><div style="font-size:12px">Giá vốn: <b>${money(ds.cogs)}</b></div><div style="font-size:12px;color:#247344">Lợi nhuận (doanh thu − giá vốn): <b>${money(ds.revenue-ds.cogs)}</b></div></div>`+
       (rows.length?rows.map(([name,qty],i)=>`<div class="summaryline" style="gap:8px"><span style="overflow-wrap:anywhere">${esc(name)}</span><b style="white-space:nowrap">${qty.toLocaleString('vi-VN')} ${(menu.find(m=>m.name===name)?.type||'drink')==='food'?'phần':'ly'}</b></div>`).join(''):'<div class="empty">Ngày này chưa có order món bán.</div>');
   };
   const date1=$('itemStatsDate1'), date2=$('itemStatsDate2');
-  if(date1&&!date1.value)date1.value=today();
-  if(date2&&!date2.value){const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()-1);date2.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  const shiftDate=(value,days)=>{const d=new Date(value+'T12:00:00');d.setDate(d.getDate()+days);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+  const currentDay=today(), previousDay=shiftDate(currentDay,-1), twoDaysAgo=shiftDate(currentDay,-2);
+  // Nếu hai ô vẫn đang là cặp mặc định của hôm qua và hôm kia, tự chuyển sang hôm nay/hôm qua.
+  if(date1&&date2&&date1.value===previousDay&&date2.value===twoDaysAgo){date1.value=currentDay;date2.value=previousDay;}
+  if(date1&&!date1.value)date1.value=currentDay;
+  if(date2&&!date2.value)date2.value=previousDay;
   renderItemDay(date1?.value||today(),'itemDaySummary1'); renderItemDay(date2?.value||today(),'itemDaySummary2');
   const allCounts=countItems(realOrders);
   const drinkRows=Object.entries(allCounts).filter(([name])=>(menu.find(m=>m.name===name)?.type||'drink')==='drink').sort((a,b)=>b[1]-a[1]);
@@ -1600,7 +1604,23 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
-document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2')){const d1=$('itemStatsDate1')?.value||today(), d2=$('itemStatsDate2')?.value||today(); const os=orders.filter(o=>!o.manual && orderDate(o)>=REPORT_START); const draw=(date,targetId)=>{const target=$(targetId);if(!target)return;const counts={};os.filter(o=>orderDate(o)===date).forEach(o=>(o.items||[]).forEach(i=>{const n=String(i.name||'Không tên');counts[n]=(counts[n]||0)+Number(i.qty||0)}));const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]),total=rows.reduce((s,x)=>s+x[1],0),ds=stats(date);target.innerHTML=`<div style="background:#f3e5ce;border-radius:10px;padding:9px;margin-bottom:8px"><div style="font-size:12px;color:#765538">Tổng số món</div><strong style="font-size:22px;color:#633d22">${total.toLocaleString('vi-VN')}</strong><div style="font-size:12px;margin-top:4px">Doanh thu: <b>${money(ds.revenue)}</b></div><div style="font-size:12px">Giá vốn: <b>${money(ds.cogs)}</b></div></div>`+(rows.length?rows.map(([n,q])=>`<div class="summaryline" style="gap:8px"><span style="overflow-wrap:anywhere">${esc(n)}</span><b style="white-space:nowrap">${q.toLocaleString('vi-VN')} ${(menu.find(m=>m.name===n)?.type||'drink')==='food'?'phần':'ly'}</b></div>`).join(''):'<div class="empty">Ngày này chưa có order món bán.</div>')};draw(d1,'itemDaySummary1');draw(d2,'itemDaySummary2');}});
+document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2'))renderStats();});
+// Tự cập nhật cặp ngày Món bán đúng lúc sang ngày mới theo giờ địa phương của điện thoại.
+(function autoRefreshItemStatsAtMidnight(){
+  let lastDate=typeof today==='function'?today():new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(new Date().getDate()).padStart(2,'0');
+  function checkDateRollover(){
+    const now=new Date();
+    const current=typeof today==='function'?today():now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    if(current!==lastDate){
+      lastDate=current;
+      if(typeof renderStats==='function')renderStats();
+    }
+  }
+  // Kiểm tra thường xuyên để cập nhật ngay sau 00:00; trình duyệt có thể trì hoãn khi app chạy nền.
+  setInterval(checkDateRollover,15000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDateRollover();});
+  window.addEventListener('focus',checkDateRollover);
+})();
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
