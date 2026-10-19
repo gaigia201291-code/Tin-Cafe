@@ -1623,13 +1623,14 @@ window.addEventListener('pageshow',fix);
     const date=$id('settleDate'), card=$id('settleResult')?.closest('.card');
     if(!date||!card||$id('actualClosingCash'))return;
     const wrap=document.createElement('div');wrap.className='card';wrap.style.marginTop='12px';
-    wrap.innerHTML='<div class="section-title">💰 Nhập tiền thực tế cuối ngày</div><div class="note">Cuối ngày, em đếm tiền mặt thực tế và xem số dư chuyển khoản thực tế rồi nhập vào đây. Khi lưu, hai số dư này sẽ được dùng làm số dư đầu ngày kế tiếp, không tính thành doanh thu mới.</div><div class="grid" style="margin-top:10px"><div><label for="actualClosingCash">Tiền mặt cuối ngày thực tế</label><input id="actualClosingCash" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền mặt" style="width:100%;box-sizing:border-box"></div><div><label for="actualClosingBank">Tiền chuyển khoản cuối ngày thực tế</label><input id="actualClosingBank" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền chuyển khoản" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="saveActualClosing" type="button">💾 Lưu kết toán cuối ngày</button></div><div id="actualClosingMsg" class="note" style="margin-top:8px"></div>';
+    wrap.innerHTML='<div class="section-title">💰 Nhập tiền thực tế cuối ngày</div><div class="note">Cuối ngày, em chọn đúng ngày/tháng, đếm tiền mặt thực tế và xem số dư chuyển khoản thực tế rồi nhập vào đây. Khi lưu, hai số dư này sẽ được dùng làm số dư đầu ngày kế tiếp, không tính thành doanh thu mới.</div><div style="margin-top:10px"><label for="actualClosingDate">📅 Ngày kết toán thực tế</label><input id="actualClosingDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="grid" style="margin-top:10px"><div><label for="actualClosingCash">Tiền mặt cuối ngày thực tế</label><input id="actualClosingCash" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền mặt" style="width:100%;box-sizing:border-box"></div><div><label for="actualClosingBank">Tiền chuyển khoản cuối ngày thực tế</label><input id="actualClosingBank" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền chuyển khoản" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="saveActualClosing" type="button">💾 Lưu kết toán cuối ngày</button></div><div id="actualClosingMsg" class="note" style="margin-top:8px"></div>';
     card.insertAdjacentElement('afterend',wrap);
     const oldRender=window.renderSettlement;
     if(typeof oldRender==='function'){
       window.renderSettlement=function(){
         oldRender();
         const d=(date&&date.value)||'';if(!d)return;
+        if($id('actualClosingDate'))$id('actualClosingDate').value=d;
         const ledger=readLedger(),entry=ledger[d]||{};
         const prevDate=new Date(d+'T12:00:00');prevDate.setDate(prevDate.getDate()-1);const pd=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0')+'-'+String(prevDate.getDate()).padStart(2,'0');
         const prev=ledger[pd];
@@ -1652,8 +1653,10 @@ window.addEventListener('pageshow',fix);
         if(prev&&prev.manualClosing){ledger[d]={...entry,cashOpening:Number(prev.cashClosing)||0,bankOpening:Number(prev.bankClosing)||0};writeLedger(ledger)}
       };
     }
+    $id('actualClosingDate').addEventListener('change',()=>{const selected=$id('actualClosingDate').value;if(date&&selected){date.value=selected;if(typeof window.renderSettlement==='function')window.renderSettlement();}});
     $id('saveActualClosing').addEventListener('click',()=>{
-      const d=date.value;if(!d)return alert('Em chọn ngày kết toán trước nhé.');
+      const d=($id('actualClosingDate')&&$id('actualClosingDate').value)||date.value;
+      if(date&&d)date.value=d;if(!d)return alert('Em chọn ngày kết toán trước nhé.');
       const c=Number($id('actualClosingCash').value),b=Number($id('actualClosingBank').value);
       if($id('actualClosingCash').value===''||$id('actualClosingBank').value===''||!Number.isFinite(c)||!Number.isFinite(b)||c<0||b<0)return alert('Em nhập đủ số tiền mặt và chuyển khoản cuối ngày, từ 0 trở lên nhé.');
       const ledger=readLedger(),old=ledger[d]||{};
