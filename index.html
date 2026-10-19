@@ -1612,6 +1612,7 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
+<script id="cafetin-midnight-stats-refresh">
 document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2'))renderStats();});
 // Tự cập nhật cặp ngày Món bán đúng lúc sang ngày mới theo giờ địa phương của điện thoại.
 (function autoRefreshItemStatsAtMidnight(){
@@ -1629,6 +1630,7 @@ document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsD
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDateRollover();});
   window.addEventListener('focus',checkDateRollover);
 })();
+</script>
 
 <script id="cafetin-debt-ledger">
 (function(){
