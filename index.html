@@ -1612,25 +1612,7 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
-<script id="cafetin-midnight-stats-refresh">
-document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2'))renderStats();});
-// Tự cập nhật cặp ngày Món bán đúng lúc sang ngày mới theo giờ địa phương của điện thoại.
-(function autoRefreshItemStatsAtMidnight(){
-  let lastDate=typeof today==='function'?today():new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(new Date().getDate()).padStart(2,'0');
-  function checkDateRollover(){
-    const now=new Date();
-    const current=typeof today==='function'?today():now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-    if(current!==lastDate){
-      lastDate=current;
-      if(typeof renderStats==='function')renderStats();
-    }
-  }
-  // Kiểm tra thường xuyên để cập nhật ngay sau 00:00; trình duyệt có thể trì hoãn khi app chạy nền.
-  setInterval(checkDateRollover,15000);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDateRollover();});
-  window.addEventListener('focus',checkDateRollover);
-})();
-</script>
+
 
 <script id="cafetin-debt-ledger">
 (function(){
@@ -1645,6 +1627,18 @@ document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsD
  function add(){const date=$('debtDate').value||today(),name=$('debtName').value.trim(),amount=Number($('debtAmount').value);if(!name)return alert('Em nhập tên người nợ nhé.');if(!Number.isFinite(amount)||amount<=0)return alert('Em nhập số tiền nợ hợp lệ nhé.');const a=read();a.push({id:Date.now(),date,name,amount});write(a);$('debtName').value='';$('debtAmount').value='';alert('Đã lưu khoản nợ. Khoản này không ảnh hưởng đến doanh thu hay số dư tiền.');}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
  function init(){if($('debtDate'))$('debtDate').value=today();if($('debtAdd'))$('debtAdd').addEventListener('click',add);if($('debtList'))$('debtList').addEventListener('click',e=>{const b=e.target.closest('[data-debt-delete]');if(!b)return;const id=b.getAttribute('data-debt-delete');const x=read().find(v=>String(v.id)===String(id));if(!x)return;if(!confirm('Xóa khoản nợ của '+x.name+' ('+money(x.amount)+')? Nếu người đó đã trả thì bấm OK.'))return;write(read().filter(v=>String(v.id)!==String(id)));});render();}
+})();
+</script>
+
+<script id="cafetin-item-stats-midnight-refresh">
+document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2') && typeof renderStats==='function')renderStats();});
+(function autoRefreshItemStatsAtMidnight(){
+  function localDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  let lastDate=typeof today==='function'?today():localDate();
+  function checkDateRollover(){const current=typeof today==='function'?today():localDate();if(current!==lastDate){lastDate=current;if(typeof renderStats==='function')renderStats();}}
+  setInterval(checkDateRollover,15000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkDateRollover();});
+  window.addEventListener('focus',checkDateRollover);
 })();
 </script>
 </body></html>
