@@ -602,22 +602,8 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 <div class="card daily-money-card"><div class="section-title">💵 Tiền mặt & 🏦 Bank cuối tháng</div><p class="note">Chỉ cập nhật số dư thực tế vào cuối tháng. Số tiền mặt và Bank được lưu theo từng tháng, không làm thay đổi số món bán hoặc món bán chạy.</p><div class="grid"><div class="stat"><small>Tháng</small><input id="dbDate" type="month" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tiền mặt cuối tháng</small><input id="dbCash" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Bank cuối tháng</small><input id="dbBank" type="number" min="0" step="1000" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Tổng tiền cuối tháng</small><b id="dbTotal">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="dbSave">Lưu số dư cuối tháng</button></div><div id="dbMsg" class="note" style="margin-top:8px"></div></div>
 </section><section id="itemStats" class="tab">
 <div class="card">
-<div class="section-title">📊 Tổng kết món bán theo ngày</div>
-<div class="note">Chọn hai ngày để xem và đối chiếu số món bán. Số liệu lấy từ order đã chốt, không tính doanh thu nhập tay.</div>
-<div class="item-day-columns" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
-  <div class="item-day-panel" style="border:1px solid #e6d5bd;border-radius:14px;padding:12px;background:#fffaf1;min-width:0">
-    <label for="itemStatsDate1" style="font-weight:800">📅 Ngày thứ nhất</label><input type="date" id="itemStatsDate1" style="width:100%;box-sizing:border-box;margin:6px 0 10px">
-    <div id="itemDaySummary1"></div>
-  </div>
-  <div class="item-day-panel" style="border:1px solid #e6d5bd;border-radius:14px;padding:12px;background:#fffaf1;min-width:0">
-    <label for="itemStatsDate2" style="font-weight:800">📅 Ngày thứ hai</label><input type="date" id="itemStatsDate2" style="width:100%;box-sizing:border-box;margin:6px 0 10px">
-    <div id="itemDaySummary2"></div>
-  </div>
-</div>
-</div>
-<div class="card">
-<div class="section-title">🧾 Tổng cộng tất cả ngày</div>
-<div class="note">Cộng dồn số lượng từng món từ tất cả order đã chốt kể từ ngày bắt đầu thống kê.</div>
+<div class="section-title">📊 Tổng hợp món bán</div>
+<div class="note">Tổng số ly của từng món, cộng dồn từ tất cả các order đã chốt. Không tính các khoản doanh thu nhập tay.</div>
 <div id="allTimeItemStats" style="margin-top:10px"></div>
 </div>
 </section><section id="cost" class="tab">
@@ -1061,24 +1047,12 @@ function renderStats(){
   if($('monthCashFlow'))$('monthCashFlow').textContent=money(monthlyFlow.cash);
   if($('monthBankFlow'))$('monthBankFlow').textContent=money(monthlyFlow.bank);
 
-  // Thống kê món bán: hai ngày có thể chọn riêng và một phần cộng dồn.
-  const realOrders=orders.filter(o=>!o.manual && orderDate(o)>=REPORT_START);
-  const countItems=os=>{const counts={};(os||[]).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');counts[name]=(counts[name]||0)+Number(i.qty||0);}));return counts;};
-  const renderItemDay=(date,targetId)=>{
-    const target=$(targetId); if(!target)return;
-    const os=realOrders.filter(o=>orderDate(o)===date), counts=countItems(os), rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-    const total=rows.reduce((sum,x)=>sum+x[1],0), ds=stats(date);
-    target.innerHTML=`<div style="background:#f3e5ce;border-radius:10px;padding:9px;margin-bottom:8px"><div style="font-size:12px;color:#765538">Tổng số món</div><strong style="font-size:22px;color:#633d22">${total.toLocaleString('vi-VN')}</strong><div style="font-size:12px;margin-top:4px">Doanh thu: <b>${money(ds.revenue)}</b></div><div style="font-size:12px">Giá vốn: <b>${money(ds.cogs)}</b></div></div>`+
-      (rows.length?rows.map(([name,qty],i)=>`<div class="summaryline" style="gap:8px"><span style="overflow-wrap:anywhere">${esc(name)}</span><b style="white-space:nowrap">${qty.toLocaleString('vi-VN')} ${(menu.find(m=>m.name===name)?.type||'drink')==='food'?'phần':'ly'}</b></div>`).join(''):'<div class="empty">Ngày này chưa có order món bán.</div>');
-  };
-  const date1=$('itemStatsDate1'), date2=$('itemStatsDate2');
-  if(date1&&!date1.value)date1.value=today();
-  if(date2&&!date2.value){const d=new Date(today()+'T12:00:00');d.setDate(d.getDate()-1);date2.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-  renderItemDay(date1?.value||today(),'itemDaySummary1'); renderItemDay(date2?.value||today(),'itemDaySummary2');
-  const allCounts=countItems(realOrders);
+  // Thống kê món bán cộng dồn từ các order thực tế.
+  const allCounts={};
+  orders.filter(o=>!o.manual && orderDate(o)>=REPORT_START).forEach(o=>(o.items||[]).forEach(i=>{const name=String(i.name||'Không tên');allCounts[name]=(allCounts[name]||0)+Number(i.qty||0);}));
   const drinkRows=Object.entries(allCounts).filter(([name])=>(menu.find(m=>m.name===name)?.type||'drink')==='drink').sort((a,b)=>b[1]-a[1]);
   const foodRows=Object.entries(allCounts).filter(([name])=>(menu.find(m=>m.name===name)?.type||'drink')==='food').sort((a,b)=>b[1]-a[1]);
-  if($('allTimeItemStats')){$('allTimeItemStats').innerHTML=`<div class="summaryline" style="font-weight:900"><span>🥤 Tổng đồ uống</span><span>${drinkRows.reduce((s,x)=>s+x[1],0).toLocaleString('vi-VN')} ly</span></div>`+drinkRows.map((x,i)=>`<div class="summaryline"><span>${i+1}. ${esc(x[0])}</span><b>${x[1].toLocaleString('vi-VN')} ly</b></div>`).join('')+`<div class="summaryline" style="font-weight:900;margin-top:12px"><span>🍜 Tổng đồ ăn</span><span>${foodRows.reduce((s,x)=>s+x[1],0).toLocaleString('vi-VN')} phần</span></div>`+foodRows.map((x,i)=>`<div class="summaryline"><span>${i+1}. ${esc(x[0])}</span><b>${x[1].toLocaleString('vi-VN')} phần</b></div>`).join('')+`<div class="summaryline" style="font-weight:900;margin-top:12px"><span>🧺 Tổng tất cả món</span><span>${Object.values(allCounts).reduce((a,b)=>a+b,0).toLocaleString('vi-VN')}</span></div>`;}
+  if($('allTimeItemStats')){$('allTimeItemStats').innerHTML=`<div class="summaryline" style="font-weight:900"><span>🥤 Tổng đồ uống</span><span>${drinkRows.reduce((s,x)=>s+x[1],0)} ly</span></div>`+drinkRows.map((x,i)=>`<div class="summaryline"><span>${i+1}. ${esc(x[0])}</span><b>${x[1].toLocaleString('vi-VN')} ly</b></div>`).join('')+`<div class="summaryline" style="font-weight:900;margin-top:12px"><span>🍜 Tổng đồ ăn</span><span>${foodRows.reduce((s,x)=>s+x[1],0)} phần</span></div>`+foodRows.map((x,i)=>`<div class="summaryline"><span>${i+1}. ${esc(x[0])}</span><b>${x[1].toLocaleString('vi-VN')} phần</b></div>`).join('');}
 
   const days=[...new Set([...orders.map(o=>orderDate(o)),...expenses.map(e=>normalizeCafeDate(e.date))])].filter(d=>d && d>=REPORT_START).sort().reverse();
   $('dailyHistory').innerHTML=days.length?days.map(d=>{
@@ -1600,7 +1574,6 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
-document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2')){const d1=$('itemStatsDate1')?.value||today(), d2=$('itemStatsDate2')?.value||today(); const os=orders.filter(o=>!o.manual && orderDate(o)>=REPORT_START); const draw=(date,targetId)=>{const target=$(targetId);if(!target)return;const counts={};os.filter(o=>orderDate(o)===date).forEach(o=>(o.items||[]).forEach(i=>{const n=String(i.name||'Không tên');counts[n]=(counts[n]||0)+Number(i.qty||0)}));const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]),total=rows.reduce((s,x)=>s+x[1],0),ds=stats(date);target.innerHTML=`<div style="background:#f3e5ce;border-radius:10px;padding:9px;margin-bottom:8px"><div style="font-size:12px;color:#765538">Tổng số món</div><strong style="font-size:22px;color:#633d22">${total.toLocaleString('vi-VN')}</strong><div style="font-size:12px;margin-top:4px">Doanh thu: <b>${money(ds.revenue)}</b></div><div style="font-size:12px">Giá vốn: <b>${money(ds.cogs)}</b></div></div>`+(rows.length?rows.map(([n,q])=>`<div class="summaryline" style="gap:8px"><span style="overflow-wrap:anywhere">${esc(n)}</span><b style="white-space:nowrap">${q.toLocaleString('vi-VN')} ${(menu.find(m=>m.name===n)?.type||'drink')==='food'?'phần':'ly'}</b></div>`).join(''):'<div class="empty">Ngày này chưa có order món bán.</div>')};draw(d1,'itemDaySummary1');draw(d2,'itemDaySummary2');}});
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
