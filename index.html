@@ -1612,6 +1612,7 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
+<script>
 document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsDate1'||e.target.id==='itemStatsDate2'))renderStats();});
 // Tự cập nhật cặp ngày Món bán đúng lúc sang ngày mới theo giờ địa phương của điện thoại.
 (function autoRefreshItemStatsAtMidnight(){
@@ -1646,6 +1647,8 @@ document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsD
  function init(){if($('debtDate'))$('debtDate').value=today();if($('debtAdd'))$('debtAdd').addEventListener('click',add);if($('debtList'))$('debtList').addEventListener('click',e=>{const b=e.target.closest('[data-debt-delete]');if(!b)return;const id=b.getAttribute('data-debt-delete');const x=read().find(v=>String(v.id)===String(id));if(!x)return;if(!confirm('Xóa khoản nợ của '+x.name+' ('+money(x.amount)+')? Nếu người đó đã trả thì bấm OK.'))return;write(read().filter(v=>String(v.id)!==String(id)));});render();}
 })();
 </script>
+</body></html>
+
 <style id="cafe-tin-bold-visual-final">
 /* ===== Cafe Tin - tăng độ nổi bật ===== */
 .side-brand{
@@ -1744,5 +1747,3 @@ document.addEventListener('change',e=>{if(e.target && (e.target.id==='itemStatsD
 .cost-fold-body .card{box-shadow:none;margin:8px 0;border-radius:12px}
 @media(max-width:700px){.cost-fold summary{padding:15px 14px;font-size:17px}.fold-hint{font-size:11px}}
 </style>
-
-</body></html>
