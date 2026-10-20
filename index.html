@@ -1680,7 +1680,7 @@ window.addEventListener('pageshow',fix);
   function saveOpening(){const d=el('openingBalanceDate').value,c=Number(el('openingCash').value),b=Number(el('openingBank').value);if(!d||!Number.isFinite(c)||!Number.isFinite(b)||c<0||b<0){alert('Em nhập đủ ngày, tiền mặt và chuyển khoản nhé.');return}put('tin2_opening_balances',{date:d,cash:c,bank:b,updatedAt:new Date().toISOString()});const ledger=get('tin2_daily_settlements',{});Object.keys(ledger).forEach(x=>{if(x>=d && ledger[x].settled!==true)delete ledger[x]});put('tin2_daily_settlements',ledger);el('openingBalanceForm').style.display='none';render()}
   function install(){
     window.renderSettlement=render;window.settleToday=settle;window.updateMoney=showOpening;window.saveOpeningMoney=saveOpening;
-    el('settleDate')?.addEventListener('change',render);el('settleNow')?.addEventListener('click',settle);el('editBalances')?.addEventListener('click',showOpening);el('saveOpeningBalances')?.addEventListener('click',saveOpening);
+    el('settleDate')?.addEventListener('change',render); if(el('settleNow'))el('settleNow').onclick=settle; if(el('editBalances'))el('editBalances').onclick=showOpening; if(el('saveOpeningBalances'))el('saveOpeningBalances').onclick=saveOpening;
     document.addEventListener('click',e=>{if(['saveOrderOrder','addExpense'].includes(e.target&&e.target.id))setTimeout(render,100)});
     render();
   }
