@@ -1755,6 +1755,47 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
+
+<script id="cafetin-final-fix-closing-balance-v3">
+(function(){
+  const $=id=>document.getElementById(id);
+  const load=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
+  const money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+  const bank=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
+  const norm=v=>{if(!v)return '';const s=String(v).slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s:''};
+  const total=o=>Number.isFinite(Number(o.total))?Number(o.total):(o.items||[]).reduce((a,i)=>a+Number(i.price||0)*Number(i.qty||0),0);
+  const addDay=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+  function rows(key,mem){let a=load(key,[]);if(!Array.isArray(a))a=[];if(Array.isArray(mem)){const seen=new Set(a.map(x=>String(x.id)));for(const x of mem)if(!seen.has(String(x.id)))a.push(x)}return a}
+  function flow(d){
+    const os=rows('tin2_orders',typeof orders!=='undefined'?orders:[]).filter(x=>norm(x.date)===d);
+    const es=rows('tin2_expenses',typeof expenses!=='undefined'?expenses:[]).filter(x=>norm(x.date)===d);
+    let ci=0,bi=0,co=0,bo=0;for(const x of os)(bank(x)?bi:ci)+=0;
+    os.forEach(x=>{if(bank(x))bi+=total(x);else ci+=total(x)});es.forEach(x=>{if(bank(x))bo+=Number(x.amount)||0;else co+=Number(x.amount)||0});
+    const sv=Math.max(0,Number(load('tin2_savings_transfers',{})[d])||0);return {ci,bi,co,bo,sv};
+  }
+  function openingFor(d,ledger){
+    const start='2026-10-17', ob=load('tin2_opening_balances',{date:start,cash:0,bank:0});
+    if(d===start)return {cash:Number(ob.cash)||320000,bank:Number(ob.bank)||4141000};
+    let cursor=addDay(d,-1), guard=0, base=null, baseDate=null;
+    while(cursor>=start && guard++<3700){const e=ledger[cursor];if(e && (e.manualClosing || Number(e.cashClosing)!==0 || Number(e.bankClosing)!==0)){base={cash:Number(e.cashClosing)||0,bank:Number(e.bankClosing)||0};baseDate=cursor;break}cursor=addDay(cursor,-1)}
+    if(!base){base={cash:Number(ob.cash)||320000,bank:Number(ob.bank)||4141000};baseDate=start;const f=flow(start);base.cash+=f.ci-f.co-f.sv;base.bank+=f.bi-f.bo}
+    for(let x=addDay(baseDate,1);x<d;x=addDay(x,1)){const e=ledger[x];if(e&&e.manualClosing){base={cash:Number(e.cashClosing)||0,bank:Number(e.bankClosing)||0}}else{const f=flow(x);base.cash+=f.ci-f.co-f.sv;base.bank+=f.bi-f.bo}}
+    return base;
+  }
+  function fix(){
+    const de=$('settleDate');if(!de||!de.value)return;const d=de.value, ledger=load('tin2_daily_settlements',{}), old=ledger[d]||{}, op=openingFor(d,ledger), f=flow(d);
+    const cc=old.manualClosing?Number(old.cashClosing)||0:op.cash+f.ci-f.co-f.sv, cb=old.manualClosing?Number(old.bankClosing)||0:op.bank+f.bi-f.bo;
+    if($('settleCashOpening'))$('settleCashOpening').textContent=money(op.cash);if($('settleBankOpening'))$('settleBankOpening').textContent=money(op.bank);
+    if($('settleCashIn'))$('settleCashIn').textContent=money(f.ci);if($('settleBankIn'))$('settleBankIn').textContent=money(f.bi);if($('settleCashOut'))$('settleCashOut').textContent=money(f.co);if($('settleBankOut'))$('settleBankOut').textContent=money(f.bo);
+    if($('settleCashBalance'))$('settleCashBalance').textContent=money(cc);if($('settleBankBalance'))$('settleBankBalance').textContent=money(cb);
+    ledger[d]={...old,date:d,cashOpening:op.cash,bankOpening:op.bank,cashClosing:cc,bankClosing:cb,updatedAt:new Date().toISOString()};localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
+    const now=new Date(),td=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');if(d===td){localStorage.setItem('tin2_cash',JSON.stringify(cc));localStorage.setItem('tin2_bank',JSON.stringify(cb));}
+  }
+  function install(){setTimeout(fix,500);document.addEventListener('change',e=>{if(e.target&&e.target.id==='settleDate')setTimeout(fix,80)});document.addEventListener('click',e=>{if(['saveOrderOrder','addExpense','saveActualClosing','saveOpeningBalances'].includes(e.target&&e.target.id))setTimeout(fix,150)});window.addEventListener('pageshow',()=>setTimeout(fix,200));}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+})();
+</script>
+
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
