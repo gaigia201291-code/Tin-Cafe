@@ -1697,6 +1697,64 @@ window.addEventListener('pageshow',fix);
 })();
 </script>
 
+
+<script id="cafetin-fix-daily-cash-bank-settlement-v2">
+(function(){
+  const $id=id=>document.getElementById(id);
+  const load=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?f:v}catch(e){return f}};
+  const saveLedger=x=>localStorage.setItem('tin2_daily_settlements',JSON.stringify(x));
+  const isoToday=()=>{const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
+  const prevDay=d=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()-1);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+  const numText=id=>{const el=$id(id);return el?Number(String(el.textContent||'0').replace(/[^0-9-]/g,''))||0:0};
+
+  function syncCurrentBalances(){
+    try{
+      const d=($id('settleDate')&&$id('settleDate').value)||'';
+      if(!d)return;
+      const ledger=load('tin2_daily_settlements',{});
+      const old=ledger[d]||{};
+      const cashOpening=numText('settleCashOpening'), bankOpening=numText('settleBankOpening');
+      const cashClosing=numText('settleCashBalance'), bankClosing=numText('settleBankBalance');
+      ledger[d]={...old,date:d,cashOpening,bankOpening,cashClosing,bankClosing,updatedAt:new Date().toISOString()};
+      saveLedger(ledger);
+      // Số dư tiền mặt/chuyển khoản chính luôn theo số cuối ngày đang tính của hôm nay.
+      if(d===isoToday()){
+        localStorage.setItem('tin2_cash',JSON.stringify(cashClosing));
+        localStorage.setItem('tin2_bank',JSON.stringify(bankClosing));
+        try{cash=cashClosing;bank=bankClosing}catch(e){}
+      }
+    }catch(e){}
+  }
+
+  function repairCarryForward(){
+    try{
+      const d=($id('settleDate')&&$id('settleDate').value)||''; if(!d||d==='2026-10-17')return;
+      const ledger=load('tin2_daily_settlements',{}), pd=prevDay(d), prev=ledger[pd];
+      if(!prev)return;
+      const cash=Number(prev.cashClosing), bank=Number(prev.bankClosing);
+      if(Number.isFinite(cash)&&$id('settleCashOpening'))$id('settleCashOpening').textContent=cash.toLocaleString('vi-VN')+'đ';
+      if(Number.isFinite(bank)&&$id('settleBankOpening'))$id('settleBankOpening').textContent=bank.toLocaleString('vi-VN')+'đ';
+    }catch(e){}
+  }
+
+  function install(){
+    if(typeof window.renderSettlement==='function'){
+      const base=window.renderSettlement;
+      window.renderSettlement=function(){base();repairCarryForward();syncCurrentBalances();};
+    }
+    // Đồng bộ lại sau khi app render, chốt order, thêm chi phí hoặc quay lại tab.
+    document.addEventListener('click',e=>{
+      const id=e.target&&e.target.id;
+      if(['saveOrderOrder','addExpense','saveActualClosing','saveOpeningBalances'].includes(id))setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},80);
+    });
+    document.addEventListener('change',e=>{if(e.target&&e.target.id==='settleDate')setTimeout(syncCurrentBalances,30)});
+    setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},300);
+    window.addEventListener('pageshow',()=>setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},100));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+})();
+</script>
+
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
