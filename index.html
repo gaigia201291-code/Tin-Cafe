@@ -619,7 +619,7 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 <div id="allTimeItemStats" style="margin-top:10px"></div>
 </div>
 </section><section id="cost" class="tab">
-<div class="card"><div class="section-title">🧾 Kết toán thu chi</div><div class="note">Kết toán từ ngày 17/10/2026. Không cần chờ 19:00. Ứng dụng tự kết toán ngay khi mở nếu ngày hiện tại chưa được chốt. Dữ liệu order và chi phí không bị xóa.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Ngày xem kết toán</small><input id="settleDate" type="date" value="2026-10-17" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Trạng thái kết toán</small><b id="settleStatus">Đang tính</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Thu tiền mặt ngày đã chọn</small><b id="settleCashIn">0đ</b></div><div class="stat"><small>Thu chuyển khoản ngày đã chọn</small><b id="settleBankIn">0đ</b></div><div class="stat"><small>Chi tiền mặt ngày đã chọn</small><b id="settleCashOut">0đ</b></div><div class="stat"><small>Chi chuyển khoản ngày đã chọn</small><b id="settleBankOut">0đ</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tiền mặt đầu ngày</small><b id="settleCashOpening">0đ</b></div><div class="stat"><small>Chuyển khoản đầu ngày</small><b id="settleBankOpening">0đ</b></div><div class="stat"><small>Tiền mặt cuối ngày dự kiến</small><b id="settleCashBalance">0đ</b></div><div class="stat"><small>Chuyển khoản cuối ngày dự kiến</small><b id="settleBankBalance">0đ</b></div></div><div class="actions" style="margin-top:10px"><button class="btn" id="editBalances">✏️ Cập nhật số dư ban đầu</button></div><div id="openingBalanceForm" class="card" style="display:none;margin-top:10px;background:#fff8ed"><div class="section-title">📅 Nhập số dư ban đầu theo ngày</div><label>Ngày bắt đầu áp dụng số dư</label><input id="openingBalanceDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box;margin-bottom:10px"><label>Tiền mặt đầu ngày</label><input id="openingCash" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền mặt" style="width:100%;box-sizing:border-box;margin-bottom:10px"><label>Tiền chuyển khoản đầu ngày</label><input id="openingBank" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền chuyển khoản" style="width:100%;box-sizing:border-box;margin-bottom:10px"><button class="btn primary" id="saveOpeningBalances" style="width:100%">Lưu số dư ban đầu</button></div><div id="settleResult" class="note" style="margin-top:8px"></div></div>
+<div class="card" id="settlementCard"><div class="section-title">🧾 Kết toán cuối ngày</div><div class="note">Mục này tính riêng số dư <b>Tiền mặt</b> và <b>Chuyển khoản</b>. Công thức: số dư đầu ngày + tiền thu − tiền chi. Sau khi bấm <b>Chốt kết toán</b>, số dư cuối ngày sẽ tự chuyển thành số dư đầu ngày hôm sau.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Ngày kết toán</small><input id="settleDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Trạng thái</small><b id="settleStatus">Chưa chốt</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>💵 Tiền mặt đầu ngày</small><b id="settleCashOpening">0đ</b></div><div class="stat"><small>💵 Thu tiền mặt</small><b id="settleCashIn">0đ</b></div><div class="stat"><small>💵 Chi tiền mặt</small><b id="settleCashOut">0đ</b></div><div class="stat"><small>💵 Tiền mặt cuối ngày</small><b id="settleCashBalance">0đ</b></div></div><div class="grid" style="margin-top:10px"><div class="stat"><small>🏦 Chuyển khoản đầu ngày</small><b id="settleBankOpening">0đ</b></div><div class="stat"><small>🏦 Thu chuyển khoản</small><b id="settleBankIn">0đ</b></div><div class="stat"><small>🏦 Chi chuyển khoản</small><b id="settleBankOut">0đ</b></div><div class="stat"><small>🏦 Chuyển khoản cuối ngày</small><b id="settleBankBalance">0đ</b></div></div><div class="actions" style="margin-top:12px"><button class="btn" id="editBalances" type="button">✏️ Nhập số dư ban đầu</button><button class="btn primary" id="settleNow" type="button">✅ Chốt kết toán ngày này</button></div><div id="openingBalanceForm" class="card" style="display:none;margin-top:10px;background:#fff8ed"><div class="section-title">Nhập số dư ban đầu</div><label>Ngày bắt đầu</label><input id="openingBalanceDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box;margin-bottom:10px"><label>Tiền mặt đầu ngày</label><input id="openingCash" type="number" min="0" step="1000" inputmode="numeric" style="width:100%;box-sizing:border-box;margin-bottom:10px"><label>Chuyển khoản đầu ngày</label><input id="openingBank" type="number" min="0" step="1000" inputmode="numeric" style="width:100%;box-sizing:border-box;margin-bottom:10px"><button class="btn primary" id="saveOpeningBalances" type="button" style="width:100%">Lưu số dư ban đầu</button></div><div id="settleResult" class="note" style="margin-top:10px"></div></div>
 <div class="card"><div class="section-title">🐷 Tiền tiết kiệm</div><div class="note">Tự động chuyển 20.000đ mỗi ngày từ tiền mặt sang tiết kiệm khi mở bản quản lý vào ngày mới. Mỗi ngày chỉ chuyển một lần; số tiền chuyển được ghi nhận riêng và không tính vào chi phí kinh doanh.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tổng tiền tiết kiệm</small><b id="savingsBalance">0đ</b></div><div><label>Cập nhật tiền tiết kiệm</label><input id="savingsAmount" type="number" min="0" step="1000" placeholder="Nhập số tiền tiết kiệm" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="saveSavings">Lưu tiền tiết kiệm</button></div><div id="savingsMsg" class="note" style="margin-top:8px"></div></div>
 <div class="cost-accordion">
 <details class="cost-fold">
@@ -1629,174 +1629,62 @@ window.addEventListener('pageshow',fix);
 </script>
 
 
-<script id="cafetin-manual-end-of-day-cash-bank">
+<script id="cafetin-settlement-clean-v4">
 (function(){
-  const $id=id=>document.getElementById(id);
-  const readLedger=()=>{try{const x=JSON.parse(localStorage.getItem('tin2_daily_settlements')||'{}');return x&&typeof x==='object'?x:{}}catch(e){return {}}};
-  const writeLedger=x=>localStorage.setItem('tin2_daily_settlements',JSON.stringify(x));
+  const START='2026-10-17';
+  const el=id=>document.getElementById(id);
+  const get=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
+  const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
   const fmt=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
-  function install(){
-    const date=$id('settleDate'), card=$id('settleResult')?.closest('.card');
-    if(!date||!card||$id('actualClosingCash'))return;
-    const wrap=document.createElement('div');wrap.className='card';wrap.style.marginTop='12px';
-    wrap.innerHTML='<div class="section-title">💰 Nhập tiền thực tế cuối ngày</div><div class="note">Cuối ngày, em chọn đúng ngày/tháng, đếm tiền mặt thực tế và xem số dư chuyển khoản thực tế rồi nhập vào đây. Khi lưu, hai số dư này sẽ được dùng làm số dư đầu ngày kế tiếp, không tính thành doanh thu mới.</div><div style="margin-top:10px"><label for="actualClosingDate">📅 Ngày kết toán thực tế</label><input id="actualClosingDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="grid" style="margin-top:10px"><div><label for="actualClosingCash">Tiền mặt cuối ngày thực tế</label><input id="actualClosingCash" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền mặt" style="width:100%;box-sizing:border-box"></div><div><label for="actualClosingBank">Tiền chuyển khoản cuối ngày thực tế</label><input id="actualClosingBank" type="number" min="0" step="1000" inputmode="numeric" placeholder="Nhập tiền chuyển khoản" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn primary" id="saveActualClosing" type="button">💾 Lưu kết toán cuối ngày</button></div><div id="actualClosingMsg" class="note" style="margin-top:8px"></div>';
-    card.insertAdjacentElement('afterend',wrap);
-    const oldRender=window.renderSettlement;
-    if(typeof oldRender==='function'){
-      window.renderSettlement=function(){
-        oldRender();
-        const d=(date&&date.value)||'';if(!d)return;
-        if($id('actualClosingDate'))$id('actualClosingDate').value=d;
-        const ledger=readLedger(),entry=ledger[d]||{};
-        const prevDate=new Date(d+'T12:00:00');prevDate.setDate(prevDate.getDate()-1);const pd=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0')+'-'+String(prevDate.getDate()).padStart(2,'0');
-        const prev=ledger[pd];
-        if(d!=='2026-10-17'&&prev&&prev.manualClosing){
-          if($id('settleCashOpening'))$id('settleCashOpening').textContent=fmt(prev.cashClosing);
-          if($id('settleBankOpening'))$id('settleBankOpening').textContent=fmt(prev.bankClosing);
-          entry.cashOpening=Number(prev.cashClosing)||0;entry.bankOpening=Number(prev.bankClosing)||0;
-          ledger[d]={...entry,cashOpening:entry.cashOpening,bankOpening:entry.bankOpening};
-          writeLedger(ledger);
-        }
-        if(entry.manualClosing){
-          if($id('settleCashBalance'))$id('settleCashBalance').textContent=fmt(entry.cashClosing);
-          if($id('settleBankBalance'))$id('settleBankBalance').textContent=fmt(entry.bankClosing);
-          $id('actualClosingCash').value=Number(entry.cashClosing)||0;
-          $id('actualClosingBank').value=Number(entry.bankClosing)||0;
-          if($id('actualClosingMsg'))$id('actualClosingMsg').textContent='Đã lưu số dư thực tế ngày '+d+'.';
-        }else{
-          $id('actualClosingCash').value=$id('settleCashBalance')?String(($id('settleCashBalance').textContent||'0').replace(/[^0-9-]/g,'')):'0';
-          $id('actualClosingBank').value=$id('settleBankBalance')?String(($id('settleBankBalance').textContent||'0').replace(/[^0-9-]/g,'')):'0';
-          if($id('actualClosingMsg'))$id('actualClosingMsg').textContent='Chưa lưu số tiền thực tế cho ngày này. Em nhập số đã đếm rồi bấm Lưu kết toán cuối ngày.';
-        }
-        if(prev&&prev.manualClosing){ledger[d]={...entry,cashOpening:Number(prev.cashClosing)||0,bankOpening:Number(prev.bankClosing)||0};writeLedger(ledger)}
-      };
-    }
-    $id('actualClosingDate').addEventListener('change',()=>{const selected=$id('actualClosingDate').value;if(date&&selected){date.value=selected;if(typeof window.renderSettlement==='function')window.renderSettlement();}});
-    $id('saveActualClosing').addEventListener('click',()=>{
-      const d=($id('actualClosingDate')&&$id('actualClosingDate').value)||date.value;
-      if(date&&d)date.value=d;if(!d)return alert('Em chọn ngày kết toán trước nhé.');
-      const c=Number($id('actualClosingCash').value),b=Number($id('actualClosingBank').value);
-      if($id('actualClosingCash').value===''||$id('actualClosingBank').value===''||!Number.isFinite(c)||!Number.isFinite(b)||c<0||b<0)return alert('Em nhập đủ số tiền mặt và chuyển khoản cuối ngày, từ 0 trở lên nhé.');
-      const ledger=readLedger(),old=ledger[d]||{};
-      const prevDate=new Date(d+'T12:00:00');prevDate.setDate(prevDate.getDate()-1);const pd=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0')+'-'+String(prevDate.getDate()).padStart(2,'0');
-      const prev=ledger[pd];
-      const cashOpening=d==='2026-10-17'?(Number(old.cashOpening)||0):(prev&&prev.manualClosing?Number(prev.cashClosing)||0:Number(old.cashOpening)||0);
-      const bankOpening=d==='2026-10-17'?(Number(old.bankOpening)||0):(prev&&prev.manualClosing?Number(prev.bankClosing)||0:Number(old.bankOpening)||0);
-      ledger[d]={...old,date:d,cashOpening,bankOpening,cashClosing:c,bankClosing:b,manualClosing:true,settledAt:new Date().toISOString(),updatedAt:new Date().toISOString()};writeLedger(ledger);
-      if(d===new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(new Date().getDate()).padStart(2,'0')){
-        try{localStorage.setItem('tin2_cash',JSON.stringify(c));localStorage.setItem('tin2_bank',JSON.stringify(b));}catch(e){}
-      }
-      if(typeof window.renderSettlement==='function')window.renderSettlement();
-      if($id('actualClosingMsg'))$id('actualClosingMsg').textContent='Đã lưu tiền mặt '+fmt(c)+' và chuyển khoản '+fmt(b)+'. Số dư này sẽ làm số dư đầu ngày kế tiếp.';
-      alert('Đã lưu kết toán cuối ngày. Số dư sẽ được chuyển sang đầu ngày hôm sau.');
-    });
-    date.addEventListener('change',()=>{if(typeof window.renderSettlement==='function')window.renderSettlement()});
-    if(typeof window.renderSettlement==='function')window.renderSettlement();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
-})();
-</script>
-
-
-<script id="cafetin-fix-daily-cash-bank-settlement-v2">
-(function(){
-  const $id=id=>document.getElementById(id);
-  const load=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?f:v}catch(e){return f}};
-  const saveLedger=x=>localStorage.setItem('tin2_daily_settlements',JSON.stringify(x));
-  const isoToday=()=>{const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')};
-  const prevDay=d=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()-1);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
-  const numText=id=>{const el=$id(id);return el?Number(String(el.textContent||'0').replace(/[^0-9-]/g,''))||0:0};
-
-  function syncCurrentBalances(){
-    try{
-      const d=($id('settleDate')&&$id('settleDate').value)||'';
-      if(!d)return;
-      const ledger=load('tin2_daily_settlements',{});
-      const old=ledger[d]||{};
-      const cashOpening=numText('settleCashOpening'), bankOpening=numText('settleBankOpening');
-      const cashClosing=numText('settleCashBalance'), bankClosing=numText('settleBankBalance');
-      ledger[d]={...old,date:d,cashOpening,bankOpening,cashClosing,bankClosing,updatedAt:new Date().toISOString()};
-      saveLedger(ledger);
-      // Số dư tiền mặt/chuyển khoản chính luôn theo số cuối ngày đang tính của hôm nay.
-      if(d===isoToday()){
-        localStorage.setItem('tin2_cash',JSON.stringify(cashClosing));
-        localStorage.setItem('tin2_bank',JSON.stringify(bankClosing));
-        try{cash=cashClosing;bank=bankClosing}catch(e){}
-      }
-    }catch(e){}
-  }
-
-  function repairCarryForward(){
-    try{
-      const d=($id('settleDate')&&$id('settleDate').value)||''; if(!d||d==='2026-10-17')return;
-      const ledger=load('tin2_daily_settlements',{}), pd=prevDay(d), prev=ledger[pd];
-      if(!prev)return;
-      const cash=Number(prev.cashClosing), bank=Number(prev.bankClosing);
-      if(Number.isFinite(cash)&&$id('settleCashOpening'))$id('settleCashOpening').textContent=cash.toLocaleString('vi-VN')+'đ';
-      if(Number.isFinite(bank)&&$id('settleBankOpening'))$id('settleBankOpening').textContent=bank.toLocaleString('vi-VN')+'đ';
-    }catch(e){}
-  }
-
-  function install(){
-    if(typeof window.renderSettlement==='function'){
-      const base=window.renderSettlement;
-      window.renderSettlement=function(){base();repairCarryForward();syncCurrentBalances();};
-    }
-    // Đồng bộ lại sau khi app render, chốt order, thêm chi phí hoặc quay lại tab.
-    document.addEventListener('click',e=>{
-      const id=e.target&&e.target.id;
-      if(['saveOrderOrder','addExpense','saveActualClosing','saveOpeningBalances'].includes(id))setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},80);
-    });
-    document.addEventListener('change',e=>{if(e.target&&e.target.id==='settleDate')setTimeout(syncCurrentBalances,30)});
-    setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},300);
-    window.addEventListener('pageshow',()=>setTimeout(()=>{if(typeof window.renderSettlement==='function')window.renderSettlement();else syncCurrentBalances()},100));
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
-})();
-</script>
-
-
-<script id="cafetin-final-fix-closing-balance-v3">
-(function(){
-  const $=id=>document.getElementById(id);
-  const load=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
-  const money=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+  const norm=v=>{const m=String(v||'').match(/\d{4}-\d{2}-\d{2}/);return m?m[0]:''};
   const bank=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
-  const norm=v=>{if(!v)return '';const s=String(v).slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s:''};
-  const total=o=>Number.isFinite(Number(o.total))?Number(o.total):(o.items||[]).reduce((a,i)=>a+Number(i.price||0)*Number(i.qty||0),0);
-  const addDay=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
-  function rows(key,mem){let a=load(key,[]);if(!Array.isArray(a))a=[];if(Array.isArray(mem)){const seen=new Set(a.map(x=>String(x.id)));for(const x of mem)if(!seen.has(String(x.id)))a.push(x)}return a}
+  const orderMoney=o=>{let v=Number(o.total);if(!Number.isFinite(v))v=(o.items||[]).reduce((s,i)=>s+(Number(i.price)||0)*(Number(i.qty)||0),0);return v+(Number(o.tip)||Number(o.orderTip)||0)};
+  const dayAdd=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
   function flow(d){
-    const os=rows('tin2_orders',typeof orders!=='undefined'?orders:[]).filter(x=>norm(x.date)===d);
-    const es=rows('tin2_expenses',typeof expenses!=='undefined'?expenses:[]).filter(x=>norm(x.date)===d);
-    let ci=0,bi=0,co=0,bo=0;for(const x of os)(bank(x)?bi:ci)+=0;
-    os.forEach(x=>{if(bank(x))bi+=total(x);else ci+=total(x)});es.forEach(x=>{if(bank(x))bo+=Number(x.amount)||0;else co+=Number(x.amount)||0});
-    const sv=Math.max(0,Number(load('tin2_savings_transfers',{})[d])||0);return {ci,bi,co,bo,sv};
+    const os=get('tin2_orders',[]).filter(o=>norm(o.date)===d), es=get('tin2_expenses',[]).filter(e=>norm(e.date)===d);
+    let ci=0,bi=0,co=0,bo=0;
+    os.forEach(o=>{if(bank(o))bi+=orderMoney(o);else ci+=orderMoney(o)});
+    es.forEach(e=>{if(bank(e))bo+=Number(e.amount)||0;else co+=Number(e.amount)||0});
+    return {ci,bi,co,bo};
   }
-  function openingFor(d,ledger){
-    const start='2026-10-17', ob=load('tin2_opening_balances',{date:start,cash:0,bank:0});
-    if(d===start)return {cash:Number(ob.cash)||320000,bank:Number(ob.bank)||4141000};
-    let cursor=addDay(d,-1), guard=0, base=null, baseDate=null;
-    while(cursor>=start && guard++<3700){const e=ledger[cursor];if(e && (e.manualClosing || Number(e.cashClosing)!==0 || Number(e.bankClosing)!==0)){base={cash:Number(e.cashClosing)||0,bank:Number(e.bankClosing)||0};baseDate=cursor;break}cursor=addDay(cursor,-1)}
-    if(!base){base={cash:Number(ob.cash)||320000,bank:Number(ob.bank)||4141000};baseDate=start;const f=flow(start);base.cash+=f.ci-f.co-f.sv;base.bank+=f.bi-f.bo}
-    for(let x=addDay(baseDate,1);x<d;x=addDay(x,1)){const e=ledger[x];if(e&&e.manualClosing){base={cash:Number(e.cashClosing)||0,bank:Number(e.bankClosing)||0}}else{const f=flow(x);base.cash+=f.ci-f.co-f.sv;base.bank+=f.bi-f.bo}}
-    return base;
+  function base(){const o=get('tin2_opening_balances',{});return {date:norm(o.date)||START,cash:Number(o.cash)||0,bank:Number(o.bank)||0}}
+  function opening(d,ledger){
+    const b=base(); if(d<=b.date)return {cash:b.cash,bank:b.bank};
+    const pd=dayAdd(d,-1), prev=ledger[pd];
+    if(prev && prev.settled===true)return {cash:Number(prev.cashClosing)||0,bank:Number(prev.bankClosing)||0};
+    let c=b.cash,k=b.bank,x=b.date,guard=0;
+    while(x<d && guard++<4000){const saved=ledger[x];if(saved&&saved.settled===true){c=Number(saved.cashClosing)||0;k=Number(saved.bankClosing)||0}else{const f=flow(x);c+=f.ci-f.co;k+=f.bi-f.bo}x=dayAdd(x,1)}
+    return {cash:c,bank:k};
   }
-  function fix(){
-    const de=$('settleDate');if(!de||!de.value)return;const d=de.value, ledger=load('tin2_daily_settlements',{}), old=ledger[d]||{}, op=openingFor(d,ledger), f=flow(d);
-    const cc=old.manualClosing?Number(old.cashClosing)||0:op.cash+f.ci-f.co-f.sv, cb=old.manualClosing?Number(old.bankClosing)||0:op.bank+f.bi-f.bo;
-    if($('settleCashOpening'))$('settleCashOpening').textContent=money(op.cash);if($('settleBankOpening'))$('settleBankOpening').textContent=money(op.bank);
-    if($('settleCashIn'))$('settleCashIn').textContent=money(f.ci);if($('settleBankIn'))$('settleBankIn').textContent=money(f.bi);if($('settleCashOut'))$('settleCashOut').textContent=money(f.co);if($('settleBankOut'))$('settleBankOut').textContent=money(f.bo);
-    if($('settleCashBalance'))$('settleCashBalance').textContent=money(cc);if($('settleBankBalance'))$('settleBankBalance').textContent=money(cb);
-    ledger[d]={...old,date:d,cashOpening:op.cash,bankOpening:op.bank,cashClosing:cc,bankClosing:cb,updatedAt:new Date().toISOString()};localStorage.setItem('tin2_daily_settlements',JSON.stringify(ledger));
-    const now=new Date(),td=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');if(d===td){localStorage.setItem('tin2_cash',JSON.stringify(cc));localStorage.setItem('tin2_bank',JSON.stringify(cb));}
+  function render(){
+    const de=el('settleDate');if(!de)return; if(!de.value)de.value=(new Date()).toISOString().slice(0,10); if(de.value<START)de.value=START;
+    const d=de.value, ledger=get('tin2_daily_settlements',{}), op=opening(d,ledger), f=flow(d), saved=ledger[d]||{};
+    const cc=saved.settled===true?Number(saved.cashClosing)||0:op.cash+f.ci-f.co;
+    const cb=saved.settled===true?Number(saved.bankClosing)||0:op.bank+f.bi-f.bo;
+    el('settleCashOpening').textContent=fmt(op.cash);el('settleBankOpening').textContent=fmt(op.bank);
+    el('settleCashIn').textContent=fmt(f.ci);el('settleBankIn').textContent=fmt(f.bi);el('settleCashOut').textContent=fmt(f.co);el('settleBankOut').textContent=fmt(f.bo);
+    el('settleCashBalance').textContent=fmt(cc);el('settleBankBalance').textContent=fmt(cb);
+    el('settleStatus').textContent=saved.settled===true?'Đã chốt':'Chưa chốt';
+    el('settleResult').textContent=saved.settled===true?'Đã chốt ngày '+d+'. Số dư này được chuyển sang đầu ngày kế tiếp.':'Số cuối ngày đang được tính trực tiếp từ order và chi phí của ngày '+d+'.';
   }
-  function install(){setTimeout(fix,500);document.addEventListener('change',e=>{if(e.target&&e.target.id==='settleDate')setTimeout(fix,80)});document.addEventListener('click',e=>{if(['saveOrderOrder','addExpense','saveActualClosing','saveOpeningBalances'].includes(e.target&&e.target.id))setTimeout(fix,150)});window.addEventListener('pageshow',()=>setTimeout(fix,200));}
+  function settle(){
+    const d=el('settleDate').value, ledger=get('tin2_daily_settlements',{}), op=opening(d,ledger), f=flow(d);
+    const cc=op.cash+f.ci-f.co, cb=op.bank+f.bi-f.bo;
+    ledger[d]={...(ledger[d]||{}),date:d,cashOpening:op.cash,bankOpening:op.bank,cashIn:f.ci,bankIn:f.bi,cashOut:f.co,bankOut:f.bo,cashClosing:cc,bankClosing:cb,settled:true,settledAt:new Date().toISOString()};put('tin2_daily_settlements',ledger);
+    const td=(new Date()).toISOString().slice(0,10);if(d===td){put('tin2_cash',cc);put('tin2_bank',cb)}
+    render();
+  }
+  function showOpening(){const f=el('openingBalanceForm'),b=base();el('openingBalanceDate').value=b.date;el('openingCash').value=b.cash;el('openingBank').value=b.bank;f.style.display=f.style.display==='none'?'block':'none'}
+  function saveOpening(){const d=el('openingBalanceDate').value,c=Number(el('openingCash').value),b=Number(el('openingBank').value);if(!d||!Number.isFinite(c)||!Number.isFinite(b)||c<0||b<0){alert('Em nhập đủ ngày, tiền mặt và chuyển khoản nhé.');return}put('tin2_opening_balances',{date:d,cash:c,bank:b,updatedAt:new Date().toISOString()});const ledger=get('tin2_daily_settlements',{});Object.keys(ledger).forEach(x=>{if(x>=d && ledger[x].settled!==true)delete ledger[x]});put('tin2_daily_settlements',ledger);el('openingBalanceForm').style.display='none';render()}
+  function install(){
+    window.renderSettlement=render;window.settleToday=settle;window.updateMoney=showOpening;window.saveOpeningMoney=saveOpening;
+    el('settleDate')?.addEventListener('change',render);el('settleNow')?.addEventListener('click',settle);el('editBalances')?.addEventListener('click',showOpening);el('saveOpeningBalances')?.addEventListener('click',saveOpening);
+    document.addEventListener('click',e=>{if(['saveOrderOrder','addExpense'].includes(e.target&&e.target.id))setTimeout(render,100)});
+    render();
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
-</script>
-
-</body></html>
+</script>\n</body></html>
 
 <style id="cafe-tin-bold-visual-final">
 /* ===== Cafe Tin - tăng độ nổi bật ===== */
