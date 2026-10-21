@@ -623,7 +623,6 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 </section><section id="cost" class="tab">
 <div class="card" id="settlementCard"><div class="section-title">🧾 Kết toán cuối ngày</div><div class="note">Mục này tính riêng số dư <b>Tiền mặt</b> và <b>Chuyển khoản</b>. Công thức: số dư đầu ngày + tiền thu − tiền chi. Sau khi bấm <b>Chốt kết toán</b>, số dư cuối ngày sẽ tự chuyển thành số dư đầu ngày hôm sau.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Ngày kết toán</small><input id="settleDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>Trạng thái</small><b id="settleStatus">Chưa chốt</b></div></div><div class="settlement-columns" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px"><div class="card" style="margin:0;padding:12px;background:#fffaf2"><div class="section-title" style="margin-bottom:10px">💵 Tiền mặt</div><div class="stat" style="margin-bottom:8px"><small>Đầu ngày</small><b id="settleCashOpening">0đ</b></div><div class="stat" style="margin-bottom:8px"><small>Thu trong ngày</small><b id="settleCashIn">0đ</b></div><div class="stat" style="margin-bottom:8px"><small>Chi trong ngày</small><b id="settleCashOut">0đ</b></div><div class="stat"><small>Cuối ngày</small><b id="settleCashBalance">0đ</b></div></div><div class="card" style="margin:0;padding:12px;background:#f3f8ff"><div class="section-title" style="margin-bottom:10px">🏦 Chuyển khoản</div><div class="stat" style="margin-bottom:8px"><small>Đầu ngày</small><b id="settleBankOpening">0đ</b></div><div class="stat" style="margin-bottom:8px"><small>Thu trong ngày</small><b id="settleBankIn">0đ</b></div><div class="stat" style="margin-bottom:8px"><small>Chi trong ngày</small><b id="settleBankOut">0đ</b></div><div class="stat"><small>Cuối ngày</small><b id="settleBankBalance">0đ</b></div></div></div><div class="actions" style="margin-top:12px"><button class="btn primary" id="settleNow" type="button">✅ Chốt kết toán ngày này</button></div><div id="settleResult" class="note" style="margin-top:10px"></div>
 <div class="card" id="dailyOpeningCard" style="margin-top:14px;background:#fffdf7"><div class="section-title">🌅 Số dư đầu ngày mỗi ngày</div><div class="note">Em nhập số tiền thực tế đầu ngày. <b>Lưu để đối chiếu</b> chỉ lưu vào danh sách, không đổi cách hệ thống tính. <b>Lấy làm số dư đầu ngày</b> sẽ dùng đúng số em nhập làm mốc tính kết toán của ngày đó.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Ngày</small><input id="dailyOpeningDate" type="date" min="2026-10-17" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>💵 Tiền mặt đầu ngày</small><input id="dailyOpeningCash" type="number" min="0" step="1000" inputmode="numeric" placeholder="0" style="width:100%;box-sizing:border-box"></div><div class="stat"><small>🏦 Chuyển khoản đầu ngày</small><input id="dailyOpeningBank" type="number" min="0" step="1000" inputmode="numeric" placeholder="0" style="width:100%;box-sizing:border-box"></div></div><div class="actions" style="margin-top:10px"><button class="btn" id="saveOpeningCompare" type="button">💾 Lưu để đối chiếu</button><button class="btn primary" id="useOpeningForCalc" type="button">🧮 Lấy làm số dư đầu ngày</button></div><div id="dailyOpeningMsg" class="note" style="margin-top:8px"></div><div class="section-title" style="font-size:16px;margin-top:14px">📋 Danh sách số dư đã lưu</div><div id="dailyOpeningHistory" style="overflow-x:auto"></div></div></div>
-<div class="card"><div class="section-title">🐷 Tiền tiết kiệm</div><div class="note">Mỗi khi bắt đầu ngày mới, hệ thống tự chuyển <b>20.000đ</b> từ tiền mặt sang tiết kiệm. Khoản này làm <b>số dư đầu ngày tiền mặt do hệ thống tính giảm 20.000đ</b> và tiền tiết kiệm tăng 20.000đ. Mỗi ngày chỉ chuyển một lần.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tổng tiền tiết kiệm</small><b id="savingsBalance">0đ</b></div><div class="stat"><small>Tiết kiệm tự động mỗi ngày</small><b>20.000đ</b></div></div><div id="savingsMsg" class="note" style="margin-top:8px"></div></div>
 <div class="cost-accordion">
 <details class="cost-fold">
 <summary>💰 Chi phí trong ngày <span class="fold-hint">Bấm để mở</span></summary>
@@ -635,6 +634,7 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 <button type="button" class="expense-category-btn" data-expense-category="Ăn">🍚<span>Ăn</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Nguyên liệu">🥛<span>Nguyên liệu</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Ly">🥤<span>Ly</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Tiết kiệm">🐷<span>Tiết kiệm</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Chi phí khác">📦<span>Chi phí khác</span></button>
 </div>
 <input type="hidden" id="expenseCategory" value="">
@@ -642,7 +642,9 @@ input:focus,select:focus,textarea:focus{border-color:#8bb991!important;box-shado
 <label>Hình thức chi</label><select id="expensePayment" style="width:100%"><option value="cash">Tiền mặt</option><option value="bank">Chuyển khoản</option></select><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="Nhập số tiền">
 <label>Ghi chú</label><input id="expenseName" placeholder="Ví dụ: ăn sáng, mua cà phê, 100 ly...">
 <button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
-<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn, gồm Ăn, Nguyên liệu, Ly và Chi phí khác.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="dailyExpenseBreakdown" style="margin-top:7px"></div></div>
+<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn, gồm Ăn, Nguyên liệu, Ly, Tiết kiệm và Chi phí khác.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="dailyExpenseBreakdown" style="margin-top:7px"></div></div>
+<div class="card" id="savingsExpenseCard"><div class="section-title">🐷 Tiền tiết kiệm</div><div class="note">Mỗi khoản em chọn loại <b>Tiết kiệm</b> trong Chi phí sẽ tự cộng dồn vào đây. Khoản tiết kiệm được tính là một khoản chi nên sẽ trừ đúng theo hình thức em chọn: Tiền mặt hoặc Chuyển khoản.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tiết kiệm hôm nay</small><b id="savingsToday">0đ</b></div><div class="stat"><small>Tiết kiệm tháng này</small><b id="savingsMonth">0đ</b></div><div class="stat"><small>Tổng tiền tiết kiệm</small><b id="savingsBalance">0đ</b></div></div></div>
+
 </div>
 </details>
 
@@ -1045,8 +1047,14 @@ function moneyFlow(period){
   };
 }
 function renderSavings(){
-  if($('savingsBalance'))$('savingsBalance').textContent=money(savings);
-  if($('savingsAmount') && document.activeElement!==$('savingsAmount'))$('savingsAmount').value=savings||'';
+  const rows=expenses.filter(e=>String(e.category||'').trim()==='Tiết kiệm');
+  const total=rows.reduce((a,e)=>a+Number(e.amount||0),0);
+  const td=today(), mo=td.slice(0,7);
+  const dayTotal=rows.filter(e=>normalizeCafeDate(e.date)===td).reduce((a,e)=>a+Number(e.amount||0),0);
+  const monthTotal=rows.filter(e=>normalizeCafeDate(e.date).startsWith(mo)).reduce((a,e)=>a+Number(e.amount||0),0);
+  if($('savingsBalance'))$('savingsBalance').textContent=money(total);
+  if($('savingsToday'))$('savingsToday').textContent=money(dayTotal);
+  if($('savingsMonth'))$('savingsMonth').textContent=money(monthTotal);
 }
 const CHANNELS=[['outside','Khách ngoài'],['grab','App Grab'],['xanh','Xanh'],['shopee','Shopee']];
 function channelKey(o){const v=String(o&&o.channel||'outside').toLowerCase();return CHANNELS.some(x=>x[0]===v)?v:'outside';}
@@ -1113,7 +1121,7 @@ function renderExpenseDailySummary(){
   const total=day.reduce((s,e)=>s+Number(e.amount||0),0);
   if($('expenseSummaryDate'))$('expenseSummaryDate').textContent=normalizeCafeDate(d);
   if($('dailyExpenseTotal'))$('dailyExpenseTotal').textContent=money(total);
-  const sums={Ăn:0,'Nguyên liệu':0,Ly:0,'Chi phí khác':0};
+  const sums={Ăn:0,'Nguyên liệu':0,Ly:0,'Tiết kiệm':0,'Chi phí khác':0};
   day.forEach(e=>{const c=e.category||'Chi phí khác';sums[c]=(sums[c]||0)+Number(e.amount||0)});
   if($('dailyExpenseBreakdown'))$('dailyExpenseBreakdown').innerHTML=Object.entries(sums).map(([c,v])=>`<div class="summaryline"><span>${c}</span><b>${money(v)}</b></div>`).join('');
 }
@@ -1150,12 +1158,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   $('editBalances').onclick=updateMoney; if($('saveOpeningBalances'))$('saveOpeningBalances').onclick=saveOpeningMoney; if($('settleNow'))$('settleNow').onclick=settleToday;
   if($('settleDate'))$('settleDate').addEventListener('change',renderSettlement);
   autoSettleAtSeven();setInterval(autoSettleAtSeven,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden){autoSettleAtSeven();renderSettlement();}});
-  if($('saveSavings'))$('saveSavings').onclick=()=>{
-    const v=Number($('savingsAmount').value);
-    if(!Number.isFinite(v)||v<0)return alert('Nhập số tiền tiết kiệm hợp lệ nhé.');
-    savings=v;localStorage.setItem('tin2_savings',JSON.stringify(savings));
-    renderSavings();$('savingsMsg').textContent='Đã lưu tiền tiết kiệm: '+money(savings)+'.';
-  };
   renderSavings();
 });
 function deleteOrder(id){if(!confirm('Xóa đơn này?'))return;orders=orders.filter(o=>String(o.id)!==String(id));save();render()}
@@ -1679,39 +1681,6 @@ window.addEventListener('pageshow',fix);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
 </script>\n
-<script id="cafetin-auto-savings-v9">
-(function(){
- const AMOUNT=20000, START_KEY='tin2_auto_savings_start_v9', TRANS_KEY='tin2_savings_transfers_v9', BASE_KEY='tin2_savings_base_v9';
- const get=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
- const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
- const dayAdd=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
- const today=()=>{const x=new Date();return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
- function ensureTransfers(){
-   let start=localStorage.getItem(START_KEY);
-   if(!start){start=today();localStorage.setItem(START_KEY,start);put(BASE_KEY,Number(get('tin2_savings',0))||0)}
-   const t=get(TRANS_KEY,{}), td=today(); let d=start, guard=0, changed=false;
-   while(d<=td && guard++<4000){if(!t[d]){t[d]={date:d,amount:AMOUNT,createdAt:new Date().toISOString()};changed=true}d=dayAdd(d,1)}
-   if(changed)put(TRANS_KEY,t);
-   const base=Number(get(BASE_KEY,0))||0;
-   const total=base+Object.values(t).reduce((a,r)=>a+(Number(r.amount)||0),0);
-   localStorage.setItem('tin2_savings',JSON.stringify(total));
-   try{window.savings=total}catch(e){}
-   return t;
- }
- function hasTransfer(d){return !!ensureTransfers()[d]}
- function refreshSavings(){
-   const total=Number(get('tin2_savings',0))||0, b=document.getElementById('savingsBalance'), m=document.getElementById('savingsMsg');
-   if(b)b.textContent=total.toLocaleString('vi-VN')+'đ';
-   if(m)m.textContent='Hôm nay đã tự chuyển 20.000đ từ tiền mặt sang tiết kiệm. Số dư đầu ngày tiền mặt hệ thống tính đã giảm 20.000đ.';
- }
- // Expose helper for the V8 opening-balance calculation below.
- window.__cafeTinSavingsTransferForDay=hasTransfer;
- window.__cafeTinEnsureSavingsTransfers=ensureTransfers;
- ensureTransfers();
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshSavings);else refreshSavings();
-})();
-</script>
-
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
@@ -1883,13 +1852,13 @@ window.addEventListener('pageshow',fix);
    const checks=get(KEY,{}), own=checks[d];
    if(own&&own.applied===true)return{cash:Number(own.cash)||0,bank:Number(own.bank)||0,manual:true};
    const pd=dayAdd(d,-1),prev=ledger[pd];
-   if(prev&&prev.settled===true){let pc=Number(prev.cashClosing)||0;if(window.__cafeTinSavingsTransferForDay&&window.__cafeTinSavingsTransferForDay(d))pc-=20000;return{cash:pc,bank:Number(prev.bankClosing)||0,savingsDeducted:true};}
+   if(prev&&prev.settled===true){return{cash:Number(prev.cashClosing)||0,bank:Number(prev.bankClosing)||0};}
    const b=legacyBase(); if(d<=b.date)return{cash:b.cash,bank:b.bank};
    let c=b.cash,k=b.bank,x=b.date,guard=0;
-   while(x<d&&guard++<4000){const m=checks[x];if(m&&m.applied===true){c=Number(m.cash)||0;k=Number(m.bank)||0}const saved=ledger[x];if(saved&&saved.settled===true){c=Number(saved.cashClosing)||0;k=Number(saved.bankClosing)||0}else{const f=flow(x);c+=f.ci-f.co;k+=f.bi-f.bo}x=dayAdd(x,1);if(x<=d&&window.__cafeTinSavingsTransferForDay&&window.__cafeTinSavingsTransferForDay(x))c-=20000}
-   return{cash:c,bank:k,savingsDeducted:!!(window.__cafeTinSavingsTransferForDay&&window.__cafeTinSavingsTransferForDay(d))};
+   while(x<d&&guard++<4000){const m=checks[x];if(m&&m.applied===true){c=Number(m.cash)||0;k=Number(m.bank)||0}const saved=ledger[x];if(saved&&saved.settled===true){c=Number(saved.cashClosing)||0;k=Number(saved.bankClosing)||0}else{const f=flow(x);c+=f.ci-f.co;k+=f.bi-f.bo}x=dayAdd(x,1);}
+   return{cash:c,bank:k};
  }
- function renderSettlementV8(){const de=el('settleDate');if(!de)return;if(!de.value)de.value=new Date().toISOString().slice(0,10);if(de.value<START)de.value=START;const d=de.value,ledger=get('tin2_daily_settlements',{}),op=opening(d,ledger),f=flow(d),saved=ledger[d]||{};const cc=saved.settled===true?Number(saved.cashClosing)||0:op.cash+f.ci-f.co,cb=saved.settled===true?Number(saved.bankClosing)||0:op.bank+f.bi-f.bo;el('settleCashOpening').textContent=fmt(op.cash);el('settleBankOpening').textContent=fmt(op.bank);el('settleCashIn').textContent=fmt(f.ci);el('settleBankIn').textContent=fmt(f.bi);el('settleCashOut').textContent=fmt(f.co);el('settleBankOut').textContent=fmt(f.bo);el('settleCashBalance').textContent=fmt(cc);el('settleBankBalance').textContent=fmt(cb);el('settleStatus').textContent=saved.settled===true?'Đã chốt':'Chưa chốt';el('settleResult').textContent=(op.manual?'Đang dùng số dư đầu ngày em nhập. ':'')+(saved.settled===true?'Đã chốt ngày '+d+'.':'Số cuối ngày đang được tính từ số dư đầu ngày + thu − chi. Số dư đầu ngày hệ thống tính đã trừ 20.000đ tiết kiệm (nếu là ngày có chuyển tự động).');}
+ function renderSettlementV8(){const de=el('settleDate');if(!de)return;if(!de.value)de.value=new Date().toISOString().slice(0,10);if(de.value<START)de.value=START;const d=de.value,ledger=get('tin2_daily_settlements',{}),op=opening(d,ledger),f=flow(d),saved=ledger[d]||{};const cc=saved.settled===true?Number(saved.cashClosing)||0:op.cash+f.ci-f.co,cb=saved.settled===true?Number(saved.bankClosing)||0:op.bank+f.bi-f.bo;el('settleCashOpening').textContent=fmt(op.cash);el('settleBankOpening').textContent=fmt(op.bank);el('settleCashIn').textContent=fmt(f.ci);el('settleBankIn').textContent=fmt(f.bi);el('settleCashOut').textContent=fmt(f.co);el('settleBankOut').textContent=fmt(f.bo);el('settleCashBalance').textContent=fmt(cc);el('settleBankBalance').textContent=fmt(cb);el('settleStatus').textContent=saved.settled===true?'Đã chốt':'Chưa chốt';el('settleResult').textContent=(op.manual?'Đang dùng số dư đầu ngày em nhập. ':'')+(saved.settled===true?'Đã chốt ngày '+d+'.':'Số cuối ngày đang được tính từ số dư đầu ngày + thu − chi. Khoản Tiết kiệm chỉ được trừ khi em thêm nó trong mục Chi phí.');}
  function settleV8(){const d=el('settleDate').value,ledger=get('tin2_daily_settlements',{}),op=opening(d,ledger),f=flow(d),cc=op.cash+f.ci-f.co,cb=op.bank+f.bi-f.bo;ledger[d]={...(ledger[d]||{}),date:d,cashOpening:op.cash,bankOpening:op.bank,cashIn:f.ci,bankIn:f.bi,cashOut:f.co,bankOut:f.bo,cashClosing:cc,bankClosing:cb,settled:true,settledAt:new Date().toISOString()};put('tin2_daily_settlements',ledger);renderSettlementV8();renderHistory()}
  function vals(){const d=el('dailyOpeningDate').value,c=Number(el('dailyOpeningCash').value),b=Number(el('dailyOpeningBank').value);if(!d||d<START||!Number.isFinite(c)||c<0||!Number.isFinite(b)||b<0){alert('Em nhập đủ ngày, tiền mặt và chuyển khoản hợp lệ nhé.');return null}return{d,c,b}}
  function saveCompare(){const v=vals();if(!v)return;const a=get(KEY,{}),old=a[v.d]||{};a[v.d]={...old,date:v.d,cash:v.c,bank:v.b,applied:old.applied===true,savedAt:new Date().toISOString()};put(KEY,a);el('dailyOpeningMsg').textContent='Đã lưu số dư ngày '+v.d+' để đối chiếu. Hệ thống chưa dùng số này để tính.';renderHistory()}
