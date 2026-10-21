@@ -675,9 +675,10 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 <label>Ngày</label><input type="date" id="expenseDate">
 <label>Loại chi phí</label>
 <div class="expense-category-grid">
-<button type="button" class="expense-category-btn" data-expense-category="Ăn">🍚<span>Ăn</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Cho con">👶<span>Cho con</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Cho em">💗<span>Cho em</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Nguyên liệu">🥛<span>Nguyên liệu</span></button>
-<button type="button" class="expense-category-btn" data-expense-category="Ly">🥤<span>Ly</span></button>
+<button type="button" class="expense-category-btn" data-expense-category="Ăn">🍚<span>Ăn</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Tiết kiệm">🐷<span>Tiết kiệm</span></button>
 <button type="button" class="expense-category-btn" data-expense-category="Chi phí khác">📦<span>Chi phí khác</span></button>
 </div>
@@ -686,7 +687,8 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 <label>Hình thức chi</label><select id="expensePayment" style="width:100%"><option value="cash">Tiền mặt</option><option value="bank">Chuyển khoản</option></select><label>Số tiền</label><input id="expenseAmount" type="number" min="0" step="1000" placeholder="Nhập số tiền">
 <label>Ghi chú</label><input id="expenseName" placeholder="Ví dụ: ăn sáng, mua cà phê, 100 ly...">
 <button class="btn primary" style="width:100%;margin-top:10px" id="addExpense">Thêm chi phí</button></div>
-<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn, gồm Ăn, Nguyên liệu, Ly, Tiết kiệm và Chi phí khác.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="dailyExpenseBreakdown" style="margin-top:7px"></div></div>
+<div class="card daily-expense-summary-card"><div class="section-title">Tổng chi phí trong ngày</div><div class="note">Tổng tất cả khoản chi của ngày đang chọn, gồm Cho con, Cho em, Nguyên liệu, Ăn, Tiết kiệm và Chi phí khác.</div><div class="summaryline" style="margin-top:8px"><span>Ngày <b id="expenseSummaryDate"></b></span><b id="dailyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="dailyExpenseBreakdown" style="margin-top:7px"></div></div>
+<div class="card monthly-expense-summary-card"><div class="section-title">📊 Tổng hợp chi phí tháng</div><label>Tháng cần xem</label><input type="month" id="expenseMonthPick" style="width:100%"><div class="summaryline" style="margin-top:10px"><span>Tổng chi phí tháng</span><b id="monthlyExpenseTotal" style="font-size:24px;color:#8a5738">0đ</b></div><div id="monthlyExpenseBreakdown" style="margin-top:7px"></div></div>
 <div class="card" id="savingsExpenseCard"><div class="section-title">🐷 Tiền tiết kiệm</div><div class="note">Nếu em đã có tiền tiết kiệm từ trước khi dùng app, nhập vào ô <b>Tiết kiệm trước đó</b> một lần. Các khoản em chọn loại <b>Tiết kiệm</b> trong Chi phí từ nay sẽ tự cộng thêm vào tổng này.</div><div class="grid" style="margin-top:10px"><div class="stat"><small>Tiết kiệm trước đó</small><input id="previousSavingsInput" type="number" min="0" step="1000" inputmode="numeric" placeholder="0" style="width:100%;box-sizing:border-box"><button class="btn" id="savePreviousSavings" type="button" style="width:100%;margin-top:7px">💾 Lưu tiền trước đó</button></div><div class="stat"><small>Tiết kiệm hôm nay</small><b id="savingsToday">0đ</b></div><div class="stat"><small>Tiết kiệm tháng này</small><b id="savingsMonth">0đ</b></div><div class="stat"><small>Tổng tiền tiết kiệm</small><b id="savingsBalance">0đ</b></div></div><div id="previousSavingsMsg" class="note" style="margin-top:8px"></div></div>
 
 </div>
@@ -1169,9 +1171,22 @@ function renderExpenseDailySummary(){
   const total=day.reduce((s,e)=>s+Number(e.amount||0),0);
   if($('expenseSummaryDate'))$('expenseSummaryDate').textContent=normalizeCafeDate(d);
   if($('dailyExpenseTotal'))$('dailyExpenseTotal').textContent=money(total);
-  const sums={Ăn:0,'Nguyên liệu':0,Ly:0,'Tiết kiệm':0,'Chi phí khác':0};
-  day.forEach(e=>{const c=e.category||'Chi phí khác';sums[c]=(sums[c]||0)+Number(e.amount||0)});
+  const sums={'Cho con':0,'Cho em':0,'Nguyên liệu':0,'Ăn':0,'Tiết kiệm':0,'Chi phí khác':0};
+  day.forEach(e=>{let c=e.category||'Chi phí khác';if(c==='Ly')c='Nguyên liệu';sums[c]=(sums[c]||0)+Number(e.amount||0)});
   if($('dailyExpenseBreakdown'))$('dailyExpenseBreakdown').innerHTML=Object.entries(sums).map(([c,v])=>`<div class="summaryline"><span>${c}</span><b>${money(v)}</b></div>`).join('');
+  renderExpenseMonthlySummary();
+}
+function renderExpenseMonthlySummary(){
+  const monthEl=$('expenseMonthPick');
+  if(!monthEl)return;
+  const month=monthEl.value||today().slice(0,7);
+  if(!monthEl.value)monthEl.value=month;
+  const items=expenses.filter(e=>String(normalizeCafeDate(e.date)||'').slice(0,7)===month);
+  const total=items.reduce((s,e)=>s+Number(e.amount||0),0);
+  const sums={'Cho con':0,'Cho em':0,'Nguyên liệu':0,'Chi phí khác':0,'Ăn':0,'Tiết kiệm':0};
+  items.forEach(e=>{let c=e.category||'Chi phí khác';if(c==='Ly')c='Nguyên liệu';if(!Object.prototype.hasOwnProperty.call(sums,c))c='Chi phí khác';sums[c]+=Number(e.amount||0)});
+  if($('monthlyExpenseTotal'))$('monthlyExpenseTotal').textContent=money(total);
+  if($('monthlyExpenseBreakdown'))$('monthlyExpenseBreakdown').innerHTML=Object.entries(sums).map(([c,v])=>`<div class="summaryline"><span>${c}</span><b>${money(v)}</b></div>`).join('');
 }
 function renderExpenses(){
   renderExpenseDailySummary();
@@ -1265,7 +1280,7 @@ function switchTab(id){document.querySelectorAll('.tabs button').forEach(x=>x.cl
 document.querySelectorAll('[data-channel]').forEach(btn=>btn.onclick=()=>{ $('orderChannel').value=btn.dataset.channel; document.querySelectorAll('[data-channel]').forEach(b=>b.classList.toggle('active',b===btn)); syncOrderPayment(); });
 document.querySelectorAll('[data-payment]').forEach(btn=>btn.onclick=()=>{ $('orderPayment').value=btn.dataset.payment; document.querySelectorAll('[data-payment]').forEach(b=>b.classList.toggle('active',b===btn)); });
 if($('savePreviousSavings'))$('savePreviousSavings').onclick=savePreviousSavings;if($('orderChannel'))syncOrderPayment();if($('saveOrderOrder'))$('saveOrderOrder').onclick=addOrder;if($('clearCartOrder'))$('clearCartOrder').onclick=()=>{cart={};if($('orderTip'))$('orderTip').value='';renderMenu()};if($('addExpense'))$('addExpense').onclick=addExpense; document.querySelectorAll('.expense-category-btn').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.expense-category-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('expenseCategory').value=btn.dataset.expenseCategory;if($('expenseCategoryHint'))$('expenseCategoryHint').textContent='Đã chọn: '+btn.dataset.expenseCategory;});if($('addManualRevenue'))$('addManualRevenue').onclick=addManualRevenue;if($('addSetup'))$('addSetup').onclick=addSetup;if($('monthPick'))$('monthPick').value=today().slice(0,7);if($('monthPick'))$('monthPick').onchange=renderStats;$('thisMonth').onclick=()=>{if($('monthPick'))$('monthPick').value=today().slice(0,7);renderStats()};$('downloadBackup').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};$('addMenu').onclick=addMenuItem;if($('editMoney'))$('editMoney').onclick=updateMoney;$('clearData').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu trên thiết bị? Hãy chắc chắn đã tải file sao lưu.')){[K.menu,K.orders,K.expenses,K.setup,K.cash,K.bank].forEach(k=>localStorage.removeItem(k));menu=[];orders=[];expenses=[];setup=[];cash=0;bank=0;save();render()}};
-if($('expenseDate')){$('expenseDate').value=today();$('expenseDate').onchange=renderExpenseDailySummary;}if($('manualDate'))$('manualDate').value=today();if($('orderHistoryDate')){$('orderHistoryDate').value=today();$('orderHistoryDate').onchange=renderOrderHistory;}if($('itemStatsDate')){$('itemStatsDate').value=today();$('itemStatsDate').onchange=renderStats;}
+if($('expenseDate')){$('expenseDate').value=today();$('expenseDate').onchange=renderExpenseDailySummary;}if($('expenseMonthPick')){$('expenseMonthPick').value=today().slice(0,7);$('expenseMonthPick').onchange=renderExpenseMonthlySummary;}if($('manualDate'))$('manualDate').value=today();if($('orderHistoryDate')){$('orderHistoryDate').value=today();$('orderHistoryDate').onchange=renderOrderHistory;}if($('itemStatsDate')){$('itemStatsDate').value=today();$('itemStatsDate').onchange=renderStats;}
 // Tự phục hồi từ bản sao tự động cũ nếu dữ liệu hiện tại đang trống, rồi mới tạo bản sao mới.
 const recoveredExistingData=recoverFromExistingBackup();
 processDailySavingsTransfer(); // giữ tương thích dữ liệu cũ; không còn tự chuyển/trừ tiền
