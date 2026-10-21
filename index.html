@@ -641,7 +641,10 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 <button data-tab="music"><span class="navico">🎵</span><span>Nhạc</span></button>
 <button data-tab="debts"><span class="navico">💳</span><span>Nợ</span></button></nav></div><div class="side-footer"><div class="avatar">●</div><div><b>Quản lý</b><small>Chủ quán</small></div><span style="margin-left:auto">⌄</span></div></aside><main class="content" data-active-tab="order">
 
-<section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div><div><label>Phân loại món</label><select id="newMenuType"><option value="drink">🥤 Đồ uống (ly)</option><option value="food">🍜 Đồ ăn (phần)</option></select></div><div><label>Mục trên Order</label><select id="newMenuCategory"><option value="Cafe">☕ Cafe</option><option value="Cacao">🍫 Cacao</option><option value="Matcha">🍵 Matcha</option><option value="Trà">🧋 Trà</option><option value="Đồ ăn">🍜 Đồ ăn</option></select></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
+<section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div><div><label>Phân loại món</label><select id="newMenuType"><option value="drink">🥤 Đồ uống (ly)</option><option value="food">🍜 Đồ ăn (phần)</option></select></div><div><label>Mục trên Order</label><select id="newMenuCategory"><option value="Cafe">☕ Cafe</option><option value="Cacao">🍫 Cacao</option><option value="Matcha">🍵 Matcha</option><option value="Trà">🧋 Trà</option><option value="Đồ ăn">🍜 Đồ ăn</option></select></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div><div class="card" id="recipeCostCard"><div class="section-title">🧮 Công thức & giá vốn tự tính</div><div class="note">Chọn món, nhập lượng nguyên liệu dùng cho một ly. App tự cộng giá vốn và cập nhật giá vốn món. Các định lượng bên dưới có thể sửa.</div>
+<div class="grid" style="margin:12px 0"><div><label>Chọn món</label><select id="recipeMenuSelect"></select></div><div><label>Chi phí bao bì + đá (đ/ly)</label><input id="recipePackCost" type="number" min="0" value="856"></div></div>
+<div class="grid" id="recipeIngredients"></div>
+<div style="margin-top:12px;padding:12px;border-radius:12px;background:#fff8e9"><div id="recipeBreakdown">Chọn món để nhập công thức.</div><div style="font-size:20px;font-weight:900;margin-top:8px" id="recipeTotal">Giá vốn: 0đ/ly</div><button class="btn primary" type="button" id="saveRecipeCost" style="margin-top:10px">💾 Lưu công thức và giá vốn</button><div id="recipeSaveMsg" class="note" style="margin-top:8px"></div></div></div></section>
 <section id="order" class="tab active"><div class="card"><div class="section-title">Tạo đơn</div><div style="margin-bottom:12px"><label>Tên người mua</label><input id="buyerNameOrder" type="text" maxlength="60" placeholder="Ví dụ: Anh Nam, Chị Lan..."></div><label>Tệp khách hàng / Kênh bán</label><input type="hidden" id="orderChannel" value="outside"><div class="order-choice-grid" id="orderChannelChoices" style="margin-bottom:14px"><button type="button" class="order-choice active" data-channel="outside">🏪<span>Khách ngoài</span></button><button type="button" class="order-choice" data-channel="grab">🛵<span>App Grab</span></button><button type="button" class="order-choice" data-channel="xanh">🚲<span>Xanh</span></button><button type="button" class="order-choice" data-channel="shopee">🛍️<span>Shopee</span></button></div><label>Hình thức thanh toán</label><input type="hidden" id="orderPayment" value="cash"><div class="order-choice-grid order-payment-grid" id="orderPaymentChoices" style="margin-bottom:14px"><button type="button" class="order-choice active" data-payment="cash">💵<span>Tiền mặt</span></button><button type="button" class="order-choice" data-payment="bank">💳<span>Chuyển khoản</span></button></div><label>Tiền tip (không bắt buộc)</label><input id="orderTip" type="number" min="0" step="1000" inputmode="numeric" placeholder="0đ" style="width:100%;margin-bottom:12px"><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div><div class="card"><div class="section-title">📋 Doanh thu & lợi nhuận theo ngày</div><div class="grid"><div><label>Chọn ngày xem lịch sử</label><input id="orderHistoryDate" type="date"></div><div class="stat"><small>Tổng số đơn</small><b id="historyOrderCount">0</b></div><div class="stat"><small>Tổng doanh thu</small><b id="historyRevenue">0đ</b></div></div><div id="orderHistoryList" class="list" style="margin-top:12px"></div></div></section>
 <section id="stats" class="tab">
 <div class="card"><div class="section-title">Hôm nay</div><div class="grid"><div class="stat"><small>Doanh thu</small><b id="todayRevenue">0đ</b></div><div class="stat"><small>Giá vốn</small><b id="todayCogs">0đ</b></div><div class="stat"><small>Lãi gộp bán hàng (doanh thu − giá vốn + tip)</small><b id="todayGrossProfit">0đ</b></div><div class="stat"><small>Chi phí cộng dồn tháng</small><b id="todayExpense">0đ</b></div><div class="stat"><small>Lợi nhuận ngày</small><b id="todayProfit">0đ</b></div><div class="stat"><small>Số món bán hôm nay</small><b id="todayItemsSold">0</b></div><div class="stat"><small>Món bán chạy nhất hôm nay</small><b id="todayBestItem">—</b></div><div class="stat"><small>Tổng tiền cuối ngày</small><b id="todayEndMoney">0đ</b></div><div class="stat"><small>Tiền mặt ròng hôm nay</small><b id="todayCashFlow">0đ</b></div><div class="stat"><small>Chuyển khoản ròng hôm nay</small><b id="todayBankFlow">0đ</b></div></div></div>
@@ -1287,6 +1290,53 @@ processDailySavingsTransfer(); // giữ tương thích dữ liệu cũ; không c
 
 window.addEventListener('beforeunload',autoBackup);autoBackup();render();
 if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
+
+// Công thức & giá vốn tự tính - lưu riêng, không đụng dữ liệu đơn hàng/chi phí.
+const recipeIngredientsDef=[
+ {id:'coffee',name:'Nước cốt cà phê (ml)',unit:'ml',cost:85},
+ {id:'tea',name:'Nước cốt trà đã có đường (ml)',unit:'ml',cost:8700/1100},
+ {id:'tac',name:'Nước cốt tắc (ml)',unit:'ml',cost:25},
+ {id:'condensed',name:'Sữa đặc (ml)',unit:'ml',cost:65000/1280},
+ {id:'fresh',name:'Sữa tươi (ml)',unit:'ml',cost:30},
+ {id:'matcha',name:'Bột matcha (g)',unit:'g',cost:178000/200},
+ {id:'cocoa',name:'Bột cacao (g)',unit:'g',cost:60000/500},
+ {id:'jam',name:'Mứt xoài (ml)',unit:'ml',cost:97},
+ {id:'sugar',name:'Đường thêm riêng (g)',unit:'g',cost:21}
+];
+let recipeSelectedIndex=0;
+function recipeGetAll(){try{return JSON.parse(localStorage.getItem('tin2_recipes')||'{}')}catch(e){return {}}}
+function recipePutAll(v){localStorage.setItem('tin2_recipes',JSON.stringify(v))}
+function recipeLoadUI(){
+ const sel=$('recipeMenuSelect'), box=$('recipeIngredients');if(!sel||!box)return;
+ const old=sel.value;
+ sel.innerHTML=menu.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');
+ if(menu.length===0){box.innerHTML='<div class="note">Hãy thêm món vào menu trước.</div>';return}
+ recipeSelectedIndex=Math.min(Number(old||0),menu.length-1);sel.value=String(recipeSelectedIndex);
+ const all=recipeGetAll(), rec=all[String(recipeSelectedIndex)]||{};
+ $('recipePackCost').value=rec.packaging===undefined?856:rec.packaging;
+ box.innerHTML=recipeIngredientsDef.map(x=>`<div style="margin-bottom:10px"><label>${x.name}<br><small>Giá tham chiếu: ${money(x.cost)}/${x.unit}</small></label><input type="number" min="0" step="any" data-recipe-qty="${x.id}" value="${Number((rec.qty||{})[x.id]||0)}" placeholder="Nhập lượng dùng"></div>`).join('');
+ box.querySelectorAll('[data-recipe-qty]').forEach(el=>el.addEventListener('input',recipeCalcUI));
+ $('recipePackCost').oninput=recipeCalcUI;recipeCalcUI();
+}
+function recipeCalcUI(){
+ const box=$('recipeIngredients');if(!box)return;
+ let total=Math.max(0,Number($('recipePackCost')?.value)||0), lines=[];
+ recipeIngredientsDef.forEach(x=>{const q=Math.max(0,Number(box.querySelector(`[data-recipe-qty="${x.id}"]`)?.value)||0);if(q){const c=q*x.cost;total+=c;lines.push(`${x.name}: ${q} × ${money(x.cost)} = ${money(c)}`)}});
+ $('recipeBreakdown').innerHTML=(lines.length?lines.map(x=>`<div>${x}</div>`).join(''):'Chưa nhập lượng nguyên liệu.')+`<div>Bao bì + đá: ${money(Math.max(0,Number($('recipePackCost')?.value)||0))}</div>`;
+ $('recipeTotal').textContent='Giá vốn: '+money(Math.round(total))+'/ly';
+}
+function recipeSaveUI(){
+ const idx=Number($('recipeMenuSelect')?.value);if(!Number.isInteger(idx)||!menu[idx])return alert('Em thêm món vào menu trước nhé.');
+ const qty={};recipeIngredientsDef.forEach(x=>qty[x.id]=Math.max(0,Number($(`recipeIngredients`)?.querySelector(`[data-recipe-qty="${x.id}"]`)?.value)||0));
+ const packaging=Math.max(0,Number($('recipePackCost')?.value)||0),all=recipeGetAll();
+ let total=packaging;recipeIngredientsDef.forEach(x=>total+=qty[x.id]*x.cost);
+ all[String(idx)]={qty,packaging,cost:Math.round(total),updatedAt:new Date().toISOString(),menuName:menu[idx].name};
+ recipePutAll(all);menu[idx].cost=Math.round(total);save();render();recipeLoadUI();
+ $('recipeSaveMsg').textContent='Đã lưu công thức và cập nhật giá vốn món '+menu[idx].name+'.';
+}
+if($('recipeMenuSelect'))$('recipeMenuSelect').addEventListener('change',()=>{recipeSelectedIndex=Number($('recipeMenuSelect').value);recipeLoadUI()});
+if($('saveRecipeCost'))$('saveRecipeCost').addEventListener('click',recipeSaveUI);
+setTimeout(recipeLoadUI,300);
 </script>
 
 
