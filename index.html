@@ -646,7 +646,7 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 <section id="recipes" class="tab"><h2 class="page-heading">Công thức &amp; giá vốn</h2><div class="card" id="recipeCostCard"><div class="section-title">🧮 Công thức & giá vốn tự tính</div><div class="note">Chọn món, nhập lượng nguyên liệu dùng cho một ly. App tự cộng giá vốn và cập nhật giá vốn món. Các định lượng bên dưới có thể sửa.</div>
 <div class="grid" style="margin:12px 0"><div><label>Chọn món</label><select id="recipeMenuSelect" aria-label="Chọn món trong menu"><option value="">Đang tải danh sách món…</option></select></div><div><label>Chi phí bao bì + đá (đ/ly)</label><input id="recipePackCost" type="number" min="0" value="856"></div></div><div id="recipeMenuChoices" aria-label="Chọn món nhanh" style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px"></div>
 <div class="grid" id="recipeIngredients"></div>
-<div style="margin-top:12px;padding:12px;border-radius:12px;background:#fff8e9"><div id="recipeBreakdown">Chọn món để nhập công thức.</div><div style="font-size:20px;font-weight:900;margin-top:8px" id="recipeTotal">Giá vốn: 0đ/ly</div><button class="btn primary" type="button" id="saveRecipeCost" style="margin-top:10px">💾 Lưu công thức và giá vốn</button><div id="recipeSaveMsg" class="note" style="margin-top:8px"></div></div></div>
+<div style="margin-top:12px;padding:12px;border-radius:12px;background:#fff8e9"><div id="recipeBreakdown">Chọn món để nhập công thức.</div><div style="font-size:20px;font-weight:900;margin-top:8px" id="recipeTotal">Giá vốn: 0đ/ly</div><button class="btn primary" type="button" id="saveRecipeCost" style="margin-top:10px">💾 Lưu công thức và giá vốn</button><div id="recipeSaveMsg" class="note" style="margin-top:8px"></div></div></div><div class="card" id="customIngredientsCard"><div class="section-title">🥛 Quản lý nguyên liệu</div><div class="note">Em có thể thêm nguyên liệu mới, nhập giá mua và đơn vị tính. Sau khi bấm lưu, nguyên liệu sẽ hiện trong danh sách bên dưới và xuất hiện khi nhập công thức món.</div><div class="grid" style="margin-top:12px"><div><label>Tên nguyên liệu</label><input id="newRecipeIngredientName" placeholder="Ví dụ: Kem béo"></div><div><label>Giá mua (đ)</label><input id="newRecipeIngredientPrice" type="number" min="0" step="any" inputmode="decimal" placeholder="Ví dụ: 45000"></div><div><label>Số lượng theo giá mua</label><input id="newRecipeIngredientAmount" type="number" min="0.001" step="any" inputmode="decimal" value="1000" placeholder="Ví dụ: 1000"></div><div><label>Đơn vị</label><select id="newRecipeIngredientUnit"><option value="g">g (gam)</option><option value="ml">ml</option><option value="cái">cái</option><option value="gói">gói</option><option value="quả">quả</option><option value="lần">lần dùng</option></select></div></div><div class="actions" style="margin-top:12px"><button class="btn primary" type="button" id="saveNewRecipeIngredient">＋ Lưu nguyên liệu</button></div><div id="customIngredientMsg" class="note" style="margin-top:8px"></div><div class="section-title" style="margin-top:16px">Danh sách nguyên liệu đã lưu</div><div id="customIngredientsList" class="list"><div class="note">Chưa có nguyên liệu tự thêm.</div></div></div>
 </section>
 <section id="order" class="tab active"><div class="card"><div class="section-title">Tạo đơn</div><div style="margin-bottom:12px"><label>Tên người mua</label><input id="buyerNameOrder" type="text" maxlength="60" placeholder="Ví dụ: Anh Nam, Chị Lan..."></div><label>Tệp khách hàng / Kênh bán</label><input type="hidden" id="orderChannel" value="outside"><div class="order-choice-grid" id="orderChannelChoices" style="margin-bottom:14px"><button type="button" class="order-choice active" data-channel="outside">🏪<span>Khách ngoài</span></button><button type="button" class="order-choice" data-channel="grab">🛵<span>App Grab</span></button><button type="button" class="order-choice" data-channel="xanh">🚲<span>Xanh</span></button><button type="button" class="order-choice" data-channel="shopee">🛍️<span>Shopee</span></button></div><label>Hình thức thanh toán</label><input type="hidden" id="orderPayment" value="cash"><div class="order-choice-grid order-payment-grid" id="orderPaymentChoices" style="margin-bottom:14px"><button type="button" class="order-choice active" data-payment="cash">💵<span>Tiền mặt</span></button><button type="button" class="order-choice" data-payment="bank">💳<span>Chuyển khoản</span></button></div><label>Tiền tip (không bắt buộc)</label><input id="orderTip" type="number" min="0" step="1000" inputmode="numeric" placeholder="0đ" style="width:100%;margin-bottom:12px"><div id="menuListOrder"></div><div class="row"><span class="note">Tổng đơn</span><span class="total" id="cartTotalOrder">0đ</span></div><div class="actions"><button class="btn primary" id="saveOrderOrder">Chốt đơn</button><button class="btn" id="clearCartOrder">Xóa đơn</button></div></div><div class="card"><div class="section-title">Đơn hôm nay</div><div id="todayOrders" class="list"></div></div><div class="card"><div class="section-title">📋 Doanh thu & lợi nhuận theo ngày</div><div class="grid"><div><label>Chọn ngày xem lịch sử</label><input id="orderHistoryDate" type="date"></div><div class="stat"><small>Tổng số đơn</small><b id="historyOrderCount">0</b></div><div class="stat"><small>Tổng doanh thu</small><b id="historyRevenue">0đ</b></div></div><div id="orderHistoryList" class="list" style="margin-top:12px"></div></div></section>
 <section id="stats" class="tab">
@@ -1295,7 +1295,7 @@ window.addEventListener('beforeunload',()=>{try{autoBackup()}catch(e){console.er
 if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
 
 // Công thức & giá vốn tự tính - lưu riêng, không đụng dữ liệu đơn hàng/chi phí.
-const recipeIngredientsDef=[
+let recipeIngredientsDef=[
  {id:'coffee',name:'Nước cốt cà phê (ml)',unit:'ml',cost:85},
  {id:'tea',name:'Nước cốt trà đã có đường (ml)',unit:'ml',cost:8700/1100},
  {id:'tac',name:'Nước cốt tắc (ml)',unit:'ml',cost:25},
@@ -1307,6 +1307,25 @@ const recipeIngredientsDef=[
  {id:'sugar',name:'Đường thêm riêng (g)',unit:'g',cost:21}
 ];
 let recipeSelectedIndex=0;
+const CUSTOM_RECIPE_ING_KEY='tin2_custom_recipe_ingredients';
+function recipeGetCustomIngredients(){try{return JSON.parse(localStorage.getItem(CUSTOM_RECIPE_ING_KEY)||'[]')}catch(e){return []}}
+function recipeSaveCustomIngredients(items){localStorage.setItem(CUSTOM_RECIPE_ING_KEY,JSON.stringify(items))}
+function recipeRefreshIngredientDefs(){
+ const custom=recipeGetCustomIngredients();
+ recipeIngredientsDef=recipeIngredientsDef.filter(x=>!x.customIngredient);
+ custom.forEach(x=>recipeIngredientsDef.push({id:x.id,name:x.name+' ('+x.unit+')',unit:x.unit,cost:Number(x.price)/Math.max(.001,Number(x.amount)),customIngredient:true}));
+}
+function recipeRenderCustomIngredients(){
+ const list=$('customIngredientsList');if(!list)return;const items=recipeGetCustomIngredients();
+ if(!items.length){list.innerHTML='<div class="note">Chưa có nguyên liệu tự thêm.</div>';return}
+ list.innerHTML=items.map(x=>`<div class="list-item" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b>${esc(x.name)}</b><div class="note">${money(x.price)} / ${x.amount} ${esc(x.unit)} · ${money(Number(x.price)/Math.max(.001,Number(x.amount)))}/${esc(x.unit)}</div></div><button type="button" class="btn danger" data-delete-custom-ingredient="${esc(x.id)}">Xóa</button></div>`).join('');
+ list.querySelectorAll('[data-delete-custom-ingredient]').forEach(btn=>btn.addEventListener('click',()=>{const id=btn.getAttribute('data-delete-custom-ingredient');if(!confirm('Xóa nguyên liệu này khỏi danh sách? Công thức đã lưu trước đó sẽ không tự xóa lượng đã nhập.'))return;recipeSaveCustomIngredients(recipeGetCustomIngredients().filter(x=>x.id!==id));recipeRefreshIngredientDefs();recipeRenderCustomIngredients();recipeLoadUI(false)}));
+}
+function recipeAddCustomIngredient(){
+ const name=String($('newRecipeIngredientName')?.value||'').trim(),price=Number($('newRecipeIngredientPrice')?.value),amount=Number($('newRecipeIngredientAmount')?.value),unit=$('newRecipeIngredientUnit')?.value||'g';
+ if(!name)return alert('Em nhập tên nguyên liệu trước nhé.');if(!Number.isFinite(price)||price<0)return alert('Em nhập giá mua hợp lệ nhé.');if(!Number.isFinite(amount)||amount<=0)return alert('Số lượng theo giá mua phải lớn hơn 0 nhé.');
+ const items=recipeGetCustomIngredients();items.push({id:'custom_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),name,price,amount,unit});recipeSaveCustomIngredients(items);recipeRefreshIngredientDefs();recipeRenderCustomIngredients();recipeLoadUI(false);$('newRecipeIngredientName').value='';$('newRecipeIngredientPrice').value='';$('newRecipeIngredientAmount').value='1000';$('customIngredientMsg').textContent='Đã lưu nguyên liệu “'+name+'”. Em có thể nhập lượng dùng trong công thức món ở phía trên.';
+}
 function recipeGetAll(){try{return JSON.parse(localStorage.getItem('tin2_recipes')||'{}')}catch(e){return {}}}
 function recipePutAll(v){localStorage.setItem('tin2_recipes',JSON.stringify(v))}
 function recipeLoadUI(rebuildOptions=false){
@@ -1358,8 +1377,12 @@ function recipeSaveUI(){
 }
 if($('recipeMenuSelect')){ $('recipeMenuSelect').addEventListener('change',()=>{const v=$('recipeMenuSelect').value;if(v!==''){recipeSelectedIndex=Number(v);recipeLoadUI(false)}}); }
 if($('saveRecipeCost'))$('saveRecipeCost').addEventListener('click',recipeSaveUI);
+recipeRefreshIngredientDefs();recipeRenderCustomIngredients();
+if($('saveNewRecipeIngredient'))$('saveNewRecipeIngredient').addEventListener('click',recipeAddCustomIngredient);
 setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe init:',e);const s=$('recipeMenuSelect');if(s)s.innerHTML='<option value="">Không tải được danh sách món — vui lòng mở lại mục này</option>'}},300);
-document.querySelectorAll('[data-tab="recipes"]').forEach(btn=>btn.addEventListener('click',()=>{setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe refresh:',e)}},0)}));
+document.querySelectorAll('[data-tab="recipes"]').forEach(btn=>btn.addEventListener('click',()=>{recipeRefreshIngredientDefs();recipeRenderCustomIngredients();
+if($('saveNewRecipeIngredient'))$('saveNewRecipeIngredient').addEventListener('click',recipeAddCustomIngredient);
+setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe refresh:',e)}},0)}));
 </script>
 
 
