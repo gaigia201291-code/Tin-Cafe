@@ -1291,7 +1291,7 @@ if($('expenseDate')){$('expenseDate').value=today();$('expenseDate').onchange=re
 const recoveredExistingData=recoverFromExistingBackup();
 processDailySavingsTransfer(); // giữ tương thích dữ liệu cũ; không còn tự chuyển/trừ tiền
 
-window.addEventListener('beforeunload',autoBackup);autoBackup();render();
+window.addEventListener('beforeunload',()=>{try{autoBackup()}catch(e){console.error('Cafe Tin backup:',e)}});try{autoBackup()}catch(e){console.error('Cafe Tin backup init:',e)}try{render()}catch(e){console.error('Cafe Tin render init:',e)}
 if(recoveredExistingData){setTimeout(()=>alert('Cafe Tin đã tự phục hồi dữ liệu từ bản sao lưu tự động gần nhất.'),250);}
 
 // Công thức & giá vốn tự tính - lưu riêng, không đụng dữ liệu đơn hàng/chi phí.
@@ -1311,22 +1311,24 @@ function recipeGetAll(){try{return JSON.parse(localStorage.getItem('tin2_recipes
 function recipePutAll(v){localStorage.setItem('tin2_recipes',JSON.stringify(v))}
 function recipeLoadUI(rebuildOptions=false){
  const sel=$('recipeMenuSelect'), box=$('recipeIngredients'), choices=$('recipeMenuChoices');if(!sel||!box)return;
- // Keep the native selector stable and also provide tap-friendly buttons for mobile browsers.
- const previous=sel.value;
- if(rebuildOptions || sel.options.length!==menu.length+1){
-   sel.innerHTML='<option value="">— Chọn món trong menu —</option>'+menu.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');
+ // Đọc lại menu hiện hành mỗi lần mở mục, không giữ trạng thái tải cũ.
+ const currentMenu=Array.isArray(menu)?menu:[];
+ if(rebuildOptions || sel.options.length!==currentMenu.length+1 || sel.options[0]?.textContent.includes('Đang tải')){
+   const prior=sel.value;
+   sel.innerHTML='<option value="">— Chọn món trong menu —</option>'+currentMenu.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');
+   if(prior!=='' && Number(prior)<currentMenu.length) sel.value=prior;
  }
  if(choices){
-   choices.innerHTML=menu.length?menu.map((m,i)=>`<button type="button" data-recipe-pick="${i}" class="btn ${String(i)===String(sel.value)?'primary':''}" style="min-height:42px;touch-action:manipulation;pointer-events:auto">${esc(m.name)}</button>`).join(''):'<div class="note">Chưa có món trong menu.</div>';
+   choices.innerHTML=currentMenu.length?currentMenu.map((m,i)=>`<button type="button" data-recipe-pick="${i}" class="btn ${String(i)===String(sel.value)?'primary':''}" style="min-height:42px;touch-action:manipulation;pointer-events:auto">${esc(m.name)}</button>`).join(''):'<div class="note">Chưa có món trong menu.</div>';
    choices.querySelectorAll('[data-recipe-pick]').forEach(btn=>btn.addEventListener('click',()=>{
      const idx=Number(btn.getAttribute('data-recipe-pick'));
      sel.value=String(idx);recipeSelectedIndex=idx;recipeLoadUI(false);
    }));
  }
- if(menu.length===0){recipeSelectedIndex=0;box.innerHTML='<div class="note">Menu hiện chưa có món. Em thêm món trong phần Menu & giá vốn trước nhé.</div>';if($('recipeBreakdown'))$('recipeBreakdown').textContent='Chưa có món để nhập công thức.';if($('recipeTotal'))$('recipeTotal').textContent='Giá vốn: 0đ/ly';return}
+ if(currentMenu.length===0){recipeSelectedIndex=0;box.innerHTML='<div class="note">Menu hiện chưa có món. Em thêm món trong phần Menu & giá vốn trước nhé.</div>';if($('recipeBreakdown'))$('recipeBreakdown').textContent='Chưa có món để nhập công thức.';if($('recipeTotal'))$('recipeTotal').textContent='Giá vốn: 0đ/ly';return}
  let idx=Number(sel.value);
- if(sel.value==='' || !Number.isInteger(idx)||idx<0||idx>=menu.length){
-   idx=(Number.isInteger(recipeSelectedIndex)&&recipeSelectedIndex>=0&&recipeSelectedIndex<menu.length)?recipeSelectedIndex:0;
+ if(sel.value==='' || !Number.isInteger(idx)||idx<0||idx>=currentMenu.length){
+   idx=(Number.isInteger(recipeSelectedIndex)&&recipeSelectedIndex>=0&&recipeSelectedIndex<currentMenu.length)?recipeSelectedIndex:0;
    sel.value=String(idx);
  }
  recipeSelectedIndex=idx;
@@ -1356,7 +1358,8 @@ function recipeSaveUI(){
 }
 if($('recipeMenuSelect')){ $('recipeMenuSelect').addEventListener('change',()=>{const v=$('recipeMenuSelect').value;if(v!==''){recipeSelectedIndex=Number(v);recipeLoadUI(false)}}); }
 if($('saveRecipeCost'))$('saveRecipeCost').addEventListener('click',recipeSaveUI);
-setTimeout(()=>recipeLoadUI(true),300);
+setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe init:',e);const s=$('recipeMenuSelect');if(s)s.innerHTML='<option value="">Không tải được danh sách món — vui lòng mở lại mục này</option>'}},300);
+document.querySelectorAll('[data-tab="recipes"]').forEach(btn=>btn.addEventListener('click',()=>{setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe refresh:',e)}},0)}));
 </script>
 
 
