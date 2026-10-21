@@ -1181,7 +1181,7 @@ function renderExpenseMonthlySummary(){
   if(!monthEl)return;
   const month=monthEl.value||today().slice(0,7);
   if(!monthEl.value)monthEl.value=month;
-  const items=expenses.filter(e=>String(normalizeCafeDate(e.date)||'').slice(0,7)===month);
+  const items=expenses.filter(e=>{const d=normalizeCafeDate(e.date)||'';return d>=REPORT_START && d.slice(0,7)===month;});
   const total=items.reduce((s,e)=>s+Number(e.amount||0),0);
   const sums={'Cho con':0,'Cho em':0,'Nguyên liệu':0,'Chi phí khác':0,'Ăn':0,'Tiết kiệm':0};
   items.forEach(e=>{let c=e.category||'Chi phí khác';if(c==='Ly')c='Nguyên liệu';if(!Object.prototype.hasOwnProperty.call(sums,c))c='Chi phí khác';sums[c]+=Number(e.amount||0)});
