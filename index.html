@@ -644,7 +644,7 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 
 <section id="menuView" class="tab"><h2 class="page-heading">Menu & giá vốn</h2><div class="card"><div class="section-title">Danh sách món & giá bán</div><div id="menuCatalog" class="menu-catalog"></div></div><div class="card"><div class="section-title">Quản lý món & giá vốn</div><div class="note" style="margin-bottom:10px">Tại đây bạn có thể thêm, sửa hoặc <b>xóa món khỏi menu</b>. Xóa món không xóa các order cũ.</div><div class="grid" style="margin-bottom:12px"><div><label>Tên món mới</label><input id="newMenuName" placeholder="Ví dụ: Bạc xỉu"></div><div><label>Giá bán</label><input id="newMenuPrice" type="number" min="0" step="1000" placeholder="0"></div><div><label>Giá vốn</label><input id="newMenuCost" type="number" min="0" step="1000" placeholder="0"></div><div><label>Phân loại món</label><select id="newMenuType"><option value="drink">🥤 Đồ uống (ly)</option><option value="food">🍜 Đồ ăn (phần)</option></select></div><div><label>Mục trên Order</label><select id="newMenuCategory"><option value="Cafe">☕ Cafe</option><option value="Cacao">🍫 Cacao</option><option value="Matcha">🍵 Matcha</option><option value="Trà">🧋 Trà</option><option value="Đồ ăn">🍜 Đồ ăn</option></select></div></div><div class="actions" style="margin-bottom:12px"><button class="btn primary" id="addMenu">+ Thêm món</button></div><div id="menuAdmin"></div></div></section>
 <section id="recipes" class="tab"><h2 class="page-heading">Công thức &amp; giá vốn</h2><div class="card" id="recipeCostCard"><div class="section-title">🧮 Công thức & giá vốn tự tính</div><div class="note">Chọn món, nhập lượng nguyên liệu dùng cho một ly. App tự cộng giá vốn và cập nhật giá vốn món. Các định lượng bên dưới có thể sửa.</div>
-<div class="grid" style="margin:12px 0"><div><label>Chọn món</label><select id="recipeMenuSelect"></select></div><div><label>Chi phí bao bì + đá (đ/ly)</label><input id="recipePackCost" type="number" min="0" value="856"></div></div>
+<div class="grid" style="margin:12px 0"><div><label>Chọn món</label><select id="recipeMenuSelect" aria-label="Chọn món trong menu"><option value="">Đang tải danh sách món…</option></select></div><div><label>Chi phí bao bì + đá (đ/ly)</label><input id="recipePackCost" type="number" min="0" value="856"></div></div><div id="recipeMenuChoices" aria-label="Chọn món nhanh" style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px"></div>
 <div class="grid" id="recipeIngredients"></div>
 <div style="margin-top:12px;padding:12px;border-radius:12px;background:#fff8e9"><div id="recipeBreakdown">Chọn món để nhập công thức.</div><div style="font-size:20px;font-weight:900;margin-top:8px" id="recipeTotal">Giá vốn: 0đ/ly</div><button class="btn primary" type="button" id="saveRecipeCost" style="margin-top:10px">💾 Lưu công thức và giá vốn</button><div id="recipeSaveMsg" class="note" style="margin-top:8px"></div></div></div>
 </section>
@@ -1310,17 +1310,28 @@ let recipeSelectedIndex=0;
 function recipeGetAll(){try{return JSON.parse(localStorage.getItem('tin2_recipes')||'{}')}catch(e){return {}}}
 function recipePutAll(v){localStorage.setItem('tin2_recipes',JSON.stringify(v))}
 function recipeLoadUI(rebuildOptions=false){
- const sel=$('recipeMenuSelect'), box=$('recipeIngredients');if(!sel||!box)return;
- // Chỉ tạo lại danh sách khi cần; không thay options ngay sau thao tác chọn trên điện thoại.
- if(rebuildOptions || sel.options.length!==menu.length){
-   const previous=sel.value;
-   sel.innerHTML=menu.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');
-   if(menu.length && previous!=='' && Number(previous)<menu.length) sel.value=previous;
+ const sel=$('recipeMenuSelect'), box=$('recipeIngredients'), choices=$('recipeMenuChoices');if(!sel||!box)return;
+ // Keep the native selector stable and also provide tap-friendly buttons for mobile browsers.
+ const previous=sel.value;
+ if(rebuildOptions || sel.options.length!==menu.length+1){
+   sel.innerHTML='<option value="">— Chọn món trong menu —</option>'+menu.map((m,i)=>`<option value="${i}">${esc(m.name)}</option>`).join('');
+ }
+ if(choices){
+   choices.innerHTML=menu.length?menu.map((m,i)=>`<button type="button" data-recipe-pick="${i}" class="btn ${String(i)===String(sel.value)?'primary':''}" style="min-height:42px;touch-action:manipulation;pointer-events:auto">${esc(m.name)}</button>`).join(''):'<div class="note">Chưa có món trong menu.</div>';
+   choices.querySelectorAll('[data-recipe-pick]').forEach(btn=>btn.addEventListener('click',()=>{
+     const idx=Number(btn.getAttribute('data-recipe-pick'));
+     sel.value=String(idx);recipeSelectedIndex=idx;recipeLoadUI(false);
+   }));
  }
  if(menu.length===0){recipeSelectedIndex=0;box.innerHTML='<div class="note">Menu hiện chưa có món. Em thêm món trong phần Menu & giá vốn trước nhé.</div>';if($('recipeBreakdown'))$('recipeBreakdown').textContent='Chưa có món để nhập công thức.';if($('recipeTotal'))$('recipeTotal').textContent='Giá vốn: 0đ/ly';return}
- const idx=Number(sel.value);
- recipeSelectedIndex=Number.isInteger(idx)&&idx>=0&&idx<menu.length?idx:0;
- sel.value=String(recipeSelectedIndex);
+ let idx=Number(sel.value);
+ if(sel.value==='' || !Number.isInteger(idx)||idx<0||idx>=menu.length){
+   idx=(Number.isInteger(recipeSelectedIndex)&&recipeSelectedIndex>=0&&recipeSelectedIndex<menu.length)?recipeSelectedIndex:0;
+   sel.value=String(idx);
+ }
+ recipeSelectedIndex=idx;
+ // Highlight the currently selected quick-pick button without rebuilding the selector.
+ if(choices)choices.querySelectorAll('[data-recipe-pick]').forEach(btn=>btn.classList.toggle('primary',Number(btn.getAttribute('data-recipe-pick'))===idx));
  const all=recipeGetAll(), rec=all[String(recipeSelectedIndex)]||{};
  $('recipePackCost').value=rec.packaging===undefined?856:rec.packaging;
  box.innerHTML=recipeIngredientsDef.map(x=>`<div style="margin-bottom:10px"><label>${x.name}<br><small>Giá tham chiếu: ${money(x.cost)}/${x.unit}</small></label><input type="number" min="0" step="any" inputmode="decimal" data-recipe-qty="${x.id}" value="${Number((rec.qty||{})[x.id]||0)}" placeholder="Nhập lượng dùng"></div>`).join('');
@@ -1343,7 +1354,7 @@ function recipeSaveUI(){
  recipePutAll(all);menu[idx].cost=Math.round(total);save();render();recipeLoadUI();
  $('recipeSaveMsg').textContent='Đã lưu công thức và cập nhật giá vốn món '+menu[idx].name+'.';
 }
-if($('recipeMenuSelect')){ $('recipeMenuSelect').addEventListener('change',()=>{recipeSelectedIndex=Number($('recipeMenuSelect').value);recipeLoadUI(false)}); $('recipeMenuSelect').addEventListener('input',()=>{recipeSelectedIndex=Number($('recipeMenuSelect').value);recipeLoadUI(false)}); }
+if($('recipeMenuSelect')){ $('recipeMenuSelect').addEventListener('change',()=>{const v=$('recipeMenuSelect').value;if(v!==''){recipeSelectedIndex=Number(v);recipeLoadUI(false)}}); }
 if($('saveRecipeCost'))$('saveRecipeCost').addEventListener('click',recipeSaveUI);
 setTimeout(()=>recipeLoadUI(true),300);
 </script>
