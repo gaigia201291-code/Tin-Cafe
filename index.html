@@ -1972,6 +1972,13 @@ window.addEventListener('pageshow',fix);
 #debts .debt-status{font-weight:800;border-radius:20px;padding:5px 9px;font-size:12px}
 #debts .debt-status.paid{background:#e0f4e5;color:#24733b}
 #debts .debt-status.unpaid{background:#fff0d8;color:#8a4b00}
+#debts .debt-group{border:1px solid var(--line,#e5e7eb);border-radius:13px;margin:10px 0;background:var(--card,#fff);overflow:hidden}
+#debts .debt-group>summary{cursor:pointer;list-style:none;padding:13px 14px;font-weight:800;background:var(--soft,#f7f8fa);display:flex;align-items:center;gap:8px}
+#debts .debt-group>summary::-webkit-details-marker{display:none}
+#debts .debt-group>summary:after{content:'＋';margin-left:auto;font-size:18px}
+#debts .debt-group[open]>summary:after{content:'−'}
+#debts .debt-group-body{padding:4px 10px 10px}
+#debts .debt-history-note{font-size:12px;color:var(--muted,#666);padding:8px 4px;margin:0}
 </style>
 <script id="cafe-tin-debts">
 (function(){
@@ -1988,17 +1995,21 @@ window.addEventListener('pageshow',fix);
    try{if(typeof window.renderSettlement==='function')window.renderSettlement();if(typeof window.renderSettlementV8==='function')window.renderSettlementV8()}catch(e){console.warn('Không thể làm mới kết toán',e)}
  }
  function render(){
-  const unpaid=debts.filter(x=>x.status!=='paid').reduce((a,x)=>a+(Number(x.amount)||0),0);
-  const paid=debts.filter(x=>x.status==='paid').reduce((a,x)=>a+(Number(x.amount)||0),0);
+  const unpaidDebts=debts.filter(x=>x.status!=='paid').sort((a,b)=>String(b.date).localeCompare(String(a.date))||(Number(b.id)||0)-(Number(a.id)||0));
+  const paidDebts=debts.filter(x=>x.status==='paid').sort((a,b)=>String(b.paidDate||b.date).localeCompare(String(a.paidDate||a.date))||(Number(b.id)||0)-(Number(a.id)||0));
+  const unpaid=unpaidDebts.reduce((a,x)=>a+(Number(x.amount)||0),0);
+  const paid=paidDebts.reduce((a,x)=>a+(Number(x.amount)||0),0);
   if($('debtUnpaidTotal'))$('debtUnpaidTotal').textContent=money(unpaid);
   if($('debtPaidTotal'))$('debtPaidTotal').textContent=money(paid);
   const list=$('debtList');if(!list)return;
-  if(!debts.length){list.innerHTML='<div class="empty">Chưa có khoản nợ nào.</div>';return}
-  list.innerHTML=debts.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||(Number(b.id)||0)-(Number(a.id)||0)).map(x=>{
+  const renderRow=x=>{
    const id=esc(x.id), isPaid=x.status==='paid', isEditing=String(editingId)===String(x.id);
    const paymentControls=(!isPaid&&isEditing)?`<div class="debt-pay-editor" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px;padding:12px;background:var(--soft,#f7f8fa);border-radius:12px"><div><label for="debt-paid-date-${id}">Ngày trả</label><input type="date" id="debt-paid-date-${id}" data-debt-paid-date value="${esc(today())}" style="width:100%;box-sizing:border-box"></div><div><label for="debt-payment-method-${id}">Trả bằng</label><select id="debt-payment-method-${id}" data-debt-payment-method style="width:100%;box-sizing:border-box"><option value="cash">💵 Tiền mặt</option><option value="bank">🏦 Chuyển khoản</option></select></div><div style="display:flex;gap:8px;align-items:end;grid-column:1/-1"><button class="btn primary" type="button" data-debt-confirm-paid="${id}">Xác nhận đã trả</button><button class="btn" type="button" data-debt-cancel-paid>Hủy</button></div></div>`:'';
    return `<div class="debt-row"><div class="debt-head"><span class="debt-name">${esc(x.name)}</span><span class="debt-status ${isPaid?'paid':'unpaid'}">${isPaid?'Đã trả':'Chưa trả'}</span></div><div class="debt-meta">Ngày phát sinh: ${esc(x.date)} · Số tiền: <b>${money(x.amount)}</b>${isPaid?`<br>Ngày trả: ${esc(x.paidDate||x.date)} · Hình thức: ${x.paymentMethod==='bank'?'Chuyển khoản':'Tiền mặt'}`:''}</div><div class="debt-actions">${isPaid?`<button class="btn" type="button" data-debt-unpay="${id}">↩ Đánh dấu chưa trả</button>`:`<button class="btn" type="button" data-debt-toggle="${id}">${isEditing?'Đang cập nhật thanh toán':'✓ Đánh dấu đã trả'}</button>`}<button class="btn danger" type="button" data-debt-delete="${id}">Xóa</button></div>${paymentControls}</div>`;
-  }).join('');
+  };
+  const unpaidHtml=unpaidDebts.map(renderRow).join('')||'<div class="empty">Không còn khoản nợ chưa trả.</div>';
+  const paidHtml=paidDebts.map(renderRow).join('')||'<div class="empty">Chưa có khoản nợ đã trả.</div>';
+  list.innerHTML=`<details class="debt-group" open><summary>📌 Nợ chưa trả (${unpaidDebts.length}) · ${money(unpaid)}</summary><div class="debt-group-body">${unpaidHtml}</div></details><details class="debt-group"><summary>✅ Nợ đã trả / lịch sử (${paidDebts.length}) · ${money(paid)}</summary><div class="debt-group-body">${paidHtml}<p class="debt-history-note">Khoản đã trả được ẩn khỏi danh sách nợ đang cần thu nhưng vẫn giữ trong lịch sử để kết toán không bị sai. Em có thể mở mục này để xem hoặc xóa thủ công.</p></div></details>`;
  }
  if($('debtDate'))$('debtDate').value=today();
  if($('debtAdd'))$('debtAdd').addEventListener('click',()=>{
