@@ -1682,7 +1682,11 @@ setTimeout(()=>{try{recipeLoadUI(true)}catch(e){console.error('Cafe Tin recipe r
     return (o&&o.items||[]).reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||0),0);
   }
   function isBank(x){
-    return ['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
+    const raw = x && (x.paymentMethod ?? x.payment ?? x.method ?? x.paymentType ?? x.payMethod ?? 'cash');
+    const v = String(raw == null ? 'cash' : raw).trim().toLowerCase()
+      .normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/g,'d');
+    return ['bank','transfer','transferring','chuyen khoan','ck','momo','qr','bank transfer','transferencia'].includes(v)
+      || v.includes('chuyen khoan') || v.includes('bank transfer') || v === 'wire';
   }
   function getRows(key,fallback){
     try{
@@ -2051,7 +2055,7 @@ window.addEventListener('pageshow',fix);
  const norm=v=>{const m=String(v||'').match(/\d{4}-\d{2}-\d{2}/);return m?m[0]:''};
  const isBank=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
  const orderMoney=o=>{let v=Number(o.total);if(!Number.isFinite(v))v=(o.items||[]).reduce((s,i)=>s+(Number(i.price)||0)*(Number(i.qty)||0),0);return v+(Number(o.tip)||Number(o.orderTip)||0)};
- function flow(d){const os=get('tin2_orders',[]).filter(o=>norm(o.date)===d),es=get('tin2_expenses',[]).filter(e=>norm(e.date)===d),ds=get('tin2_debts',[]);let ci=0,bi=0,co=0,bo=0,debtCashIn=0,debtBankIn=0,debtCashOut=0,debtBankOut=0;os.forEach(o=>isBank(o)?bi+=orderMoney(o):ci+=orderMoney(o));es.forEach(e=>isBank(e)?bo+=Number(e.amount)||0:co+=Number(e.amount)||0);ds.forEach(x=>{const amt=Number(x.amount)||0;if(norm(x.date)===d){debtCashOut+=amt}if(x.status==='paid'&&norm(x.paidDate||x.date)===d){if(isBank({paymentMethod:x.paymentMethod||'cash'})){debtBankIn+=amt}else{debtCashIn+=amt}}});return{ci,bi,co,bo,debtCashIn,debtBankIn,debtCashOut,debtBankOut}}
+ function flow(d){const os=get('tin2_orders',[]).filter(o=>norm(o.date)===d),es=get('tin2_expenses',[]).filter(e=>norm(e.date)===d),ds=get('tin2_debts',[]);let ci=0,bi=0,co=0,bo=0,debtCashIn=0,debtBankIn=0,debtCashOut=0,debtBankOut=0;os.forEach(o=>isBank(o)?bi+=orderMoney(o):ci+=orderMoney(o));es.forEach(e=>{const method=e.paymentMethod??e.payment??e.method??e.paymentType??e.payMethod??'cash';const bank=isBank({...e,paymentMethod:method});const amount=Number(e.amount)||0;if(bank)bo+=amount;else co+=amount;});ds.forEach(x=>{const amt=Number(x.amount)||0;if(norm(x.date)===d){debtCashOut+=amt}if(x.status==='paid'&&norm(x.paidDate||x.date)===d){if(isBank({paymentMethod:x.paymentMethod||'cash'})){debtBankIn+=amt}else{debtCashIn+=amt}}});return{ci,bi,co,bo,debtCashIn,debtBankIn,debtCashOut,debtBankOut}}
  function legacyBase(){const o=get('tin2_opening_balances',{});return{date:norm(o.date)||START,cash:Number(o.cash)||0,bank:Number(o.bank)||0}}
  function opening(d,ledger){
    const checks=get(KEY,{}), b=legacyBase();
