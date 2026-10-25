@@ -773,9 +773,15 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
   </div>
   <button class="btn primary" id="debtAdd" style="width:100%;margin-top:12px">＋ Thêm khoản nợ</button>
 </div>
+<div class="card" id="orderDebtTransferCard">
+  <h3 style="margin:0 0 8px;color:#8a4b50">🧾 Nợ tự động từ mục Order</h3>
+  <p class="note">Các đơn trong mục Order được chọn “Ghi nợ — chưa thanh toán” sẽ tự hiện ở đây, gồm tên khách, ngày nợ, món đã mua và số tiền còn nợ. Không cần nhập lại. Khi khách trả, bấm “Nhận trả nợ” để ghi nhận tiền; trạng thái sẽ cập nhật cả ở Order và Nợ.</p>
+  <div class="grid" style="margin-bottom:10px"><div class="stat"><small>Số đơn còn nợ</small><b id="orderDebtCount">0</b></div><div class="stat"><small>Tổng tiền khách còn nợ</small><b id="orderDebtTotal">0đ</b></div></div>
+  <div id="orderDebtInDebtTab"></div>
+</div>
 <div class="card">
   <div class="grid">
-    <div class="stat"><small>Tổng đang nợ</small><b id="debtUnpaidTotal">0đ</b></div>
+    <div class="stat"><small>Tổng đang nợ (ghi tay)</small><b id="debtUnpaidTotal">0đ</b></div>
     <div class="stat"><small>Tổng đã trả</small><b id="debtPaidTotal">0đ</b></div>
   </div>
   <div class="section-title" style="margin-top:16px">Danh sách khoản nợ</div>
@@ -2007,7 +2013,18 @@ window.addEventListener('pageshow',fix);
    try{const k='tin2_daily_settlements',ledger=JSON.parse(localStorage.getItem(k)||'{}');Object.keys(ledger).forEach(d=>{if(!fromDate||d>=fromDate)delete ledger[d]});localStorage.setItem(k,JSON.stringify(ledger))}catch(e){}
    try{if(typeof window.renderSettlement==='function')window.renderSettlement();if(typeof window.renderSettlementV8==='function')window.renderSettlementV8()}catch(e){console.warn('Không thể làm mới kết toán',e)}
  }
+ function renderOrderDebts(){
+  let ds=[];try{const raw=JSON.parse(localStorage.getItem('tin2_customer_debts')||'[]');if(Array.isArray(raw))ds=raw}catch(e){}
+  const open=ds.filter(d=>Number(d.amount||0)>Number(d.paidAmount||0)).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  const total=open.reduce((sum,d)=>sum+Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0)),0);
+  if($('orderDebtCount'))$('orderDebtCount').textContent=String(open.length);
+  if($('orderDebtTotal'))$('orderDebtTotal').textContent=money(total);
+  const box=$('orderDebtInDebtTab');if(!box)return;
+  box.innerHTML=open.length?open.map(d=>{const remain=Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0));return `<div class="debt-row" style="border:1px solid #ead8c2;border-radius:12px;padding:12px;margin:9px 0;background:#fffdf9"><div class="debt-head"><span class="debt-name">${esc(d.name||'Chưa có tên')}</span><span class="debt-status unpaid">Chưa trả đủ</span></div><div class="debt-meta">Ngày nợ: <b>${esc(d.date||'—')}</b><br>Món đã mua: <b>${esc(d.items||'Đơn ghi nợ')}</b><br>Tổng đơn: ${money(d.amount)} · Đã trả: ${money(d.paidAmount||0)}<br><span style="font-size:15px;color:#9a4545;font-weight:900">Còn nợ: ${money(remain)}</span></div><div class="debt-actions"><button class="btn primary" type="button" data-customer-debt-pay="${esc(d.id)}">💵 Nhận trả nợ</button></div></div>`}).join(''):'<div class="empty">🎉 Không có đơn Order nào còn nợ.</div>';
+ }
+ window.renderOrderDebts=renderOrderDebts;
  function render(){
+  renderOrderDebts();
   const unpaidDebts=debts.filter(x=>x.status!=='paid').sort((a,b)=>String(b.date).localeCompare(String(a.date))||(Number(b.id)||0)-(Number(a.id)||0));
   const paidDebts=debts.filter(x=>x.status==='paid').sort((a,b)=>String(b.paidDate||b.date).localeCompare(String(a.paidDate||a.date))||(Number(b.id)||0)-(Number(a.id)||0));
   const unpaid=unpaidDebts.reduce((a,x)=>a+(Number(x.amount)||0),0);
