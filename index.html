@@ -2456,3 +2456,24 @@ html body #ctMainApp > main.content > section.tab.active { display:block !import
  #ctHomeDashboard .ct-home-tile img{width:86%!important;max-width:86%!important;max-height:132px!important;margin:5px auto!important;border-radius:16px!important;border-width:1.5px!important;}
 }
 </style>
+
+
+<style id="ct-final-menu-size-and-slogan-v3">
+/* Final tune: smaller menu pictures, larger red greeting slogan. */
+#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+  width:72% !important; max-width:72% !important; max-height:112px !important;
+  height:auto !important; object-fit:contain !important; margin:4px auto !important;
+  border:1.5px solid rgba(226,190,145,.8) !important; border-radius:16px !important;
+  box-shadow:0 3px 8px rgba(105,68,39,.09) !important;
+}
+#ctHomeDashboard.ct-home-dashboard .ct-home-tile { padding:2px !important; border-radius:14px !important; }
+.brand-slogan { font-size:clamp(28px,6vw,38px) !important; line-height:1.2 !important; font-weight:950 !important; max-width:100% !important; }
+@media(max-width:620px) {
+ #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+ #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+   width:72% !important; max-width:72% !important; max-height:96px !important; margin:3px auto !important; border-radius:14px !important;
+ }
+ .brand-slogan { font-size:clamp(27px,7.2vw,34px) !important; line-height:1.18 !important; padding:10px 8px !important; }
+}
+</style>
