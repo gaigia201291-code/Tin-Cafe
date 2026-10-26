@@ -2400,3 +2400,16 @@ html,body{background:#fff8ed!important;color:#4a2d1d!important}body{background:l
 #ctMainApp .sidebar { display:none !important; }
 #ctMainApp .content { width:100% !important; margin:0 auto !important; }
 </style>
+
+<style id="ct-final-hide-duplicate-sidebar-menu">
+/* FINAL OVERRIDE: keep the illustrated dashboard tiles; remove the duplicate lower text navigation. */
+html body #ctMainApp > aside.sidebar,
+html body #ctMainApp .sidebar,
+html body #ctMainApp .sidebar .side-nav,
+html body #ctMainApp .sidebar .tabs,
+html body #ctMainApp .sidebar .ct-home-nav,
+html body #ctMainApp .sidebar .side-footer { display:none !important; visibility:hidden !important; height:0 !important; min-height:0 !important; max-height:0 !important; overflow:hidden !important; margin:0 !important; padding:0 !important; border:0 !important; }
+html body #ctMainApp > main.content { display:block !important; width:100% !important; max-width:none !important; margin:0 auto !important; }
+html body #ctMainApp > main.content > section.tab { display:none !important; }
+html body #ctMainApp > main.content > section.tab.active { display:block !important; }
+</style>
