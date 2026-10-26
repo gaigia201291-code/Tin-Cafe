@@ -2141,3 +2141,32 @@ window.addEventListener('pageshow',fix);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,0));else setTimeout(install,0);
 })();
 </script>
+<script id="cafetin-live-ui-refresh-fix">
+/* Cafe Tin: đồng bộ giao diện ngay sau thao tác, không cần tải lại trang */
+(function(){
+  let timer=null;
+  function liveRefresh(){
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      try{ if(typeof window.render==='function') window.render(); }catch(e){ console.warn('CafeTin live render:',e); }
+      try{ if(typeof window.renderCustomerDebts==='function') window.renderCustomerDebts(); }catch(e){}
+      try{ if(typeof window.renderOrderDebts==='function') window.renderOrderDebts(); }catch(e){}
+      try{ if(typeof window.renderSettlementV8==='function') window.renderSettlementV8(); else if(typeof window.renderSettlement==='function') window.renderSettlement(); }catch(e){}
+      try{ if(typeof window.renderSavings==='function') window.renderSavings(); }catch(e){}
+    },80);
+  }
+  // Sau nút bấm/thay đổi dữ liệu, cập nhật toàn bộ phần đang hiển thị.
+  document.addEventListener('click',function(e){
+    if(e.target.closest('button,[role="button"]')) liveRefresh();
+  },false);
+  document.addEventListener('change',function(e){
+    if(e.target.matches('input,select,textarea')) liveRefresh();
+  },false);
+  // Khi quay lại app/tab, lấy dữ liệu mới nhất và vẽ lại ngay.
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) liveRefresh(); });
+  window.addEventListener('pageshow',liveRefresh);
+  window.addEventListener('focus',liveRefresh);
+  // Cho các đoạn mã khác gọi khi cần.
+  window.cafeTinLiveRefresh=liveRefresh;
+})();
+</script>
