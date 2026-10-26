@@ -699,6 +699,19 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 #ctMainApp .tab{scroll-margin-top:10px}
 @media(max-width:420px){#ctMainApp .tabs{gap:8px!important}#ctMainApp .tabs button{min-height:60px!important;padding:10px!important;font-size:15px!important}}
 </style>
+
+<style id="ct-fix-menu-visible-20261026">
+/* Sửa lỗi menu bị ẩn ở bản trước: luôn hiện bộ chọn mục phía trên nội dung */
+#ctMainApp .sidebar{display:block!important;position:relative!important;top:auto!important;height:auto!important;min-height:0!important;width:100%!important;padding:10px 12px!important;margin:0!important;border:0!important;border-bottom:1px solid #ead2b1!important;background:#fff1dc!important;z-index:5!important;overflow:visible!important}
+#ctMainApp .sidebar .side-logo,#ctMainApp .sidebar .mobile-brand-logo,#ctMainApp .sidebar .side-brand,#ctMainApp .sidebar .barista-buddy,#ctMainApp .sidebar .side-footer{display:none!important}
+#ctMainApp .side-nav{display:block!important;width:100%!important;margin:0!important}
+#ctMainApp nav.tabs,#ctMainApp .tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;padding:0!important;margin:0!important;background:transparent!important}
+#ctMainApp nav.tabs button,#ctMainApp .tabs button{display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;min-width:0!important;min-height:56px!important;padding:10px 11px!important;margin:0!important;border:1px solid #ead8c2!important;border-radius:13px!important;background:#fffaf0!important;color:#60391f!important;font-size:14px!important;font-weight:800!important;line-height:1.25!important;white-space:normal!important;text-align:left!important;box-shadow:0 2px 7px rgba(89,57,35,.07)!important;transform:none!important}
+#ctMainApp nav.tabs button.active,#ctMainApp .tabs button.active{background:linear-gradient(135deg,#986746,#704124)!important;color:#fff!important}
+#ctMainApp nav.tabs button .navico,#ctMainApp .tabs button .navico{display:inline-block!important;flex:0 0 auto!important;font-size:21px!important}
+@media(min-width:621px){#ctMainApp .sidebar{padding:12px 16px!important}}
+</style>
+
 </head>
 <body><header class="ct-home-header">
   <img class="ct-top-banner" src="01_dau_trang_logo_ca_voixanh.png" alt="Cafe Tin - chất lượng, đậm vị, ngon miệng">
