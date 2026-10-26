@@ -662,7 +662,7 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 .ct-money-cat{position:relative;flex:0 0 64px;width:64px;height:68px;border:2px solid #e6c28c;border-radius:18px;background:linear-gradient(#fff9e9,#ffe6ad);font-size:40px;box-shadow:0 4px 10px #74421b24;cursor:pointer}
 .ct-money-cat span{position:absolute;bottom:2px;left:0;right:0;font-size:10px;color:#9b5f16;font-weight:900}.ct-money-cat svg{width:43px;height:51px;display:block;margin:-5px auto 5px}.ct-money-cat .cat-paw{animation:ctPawWave .8s ease-in-out infinite alternate;transform-origin:87px 28px}.ct-money-cat .cat-paw-outline{animation:ctPawWave .8s ease-in-out infinite alternate;transform-origin:87px 28px}@keyframes ctPawWave{to{transform:rotate(-13deg)}}
 .ct-home-dashboard{max-width:1024px;margin:0 auto;padding:10px 16px 24px;background:linear-gradient(180deg,#fffaf0,#f8e6cb);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.ct-home-tile{display:block;width:100%;padding:0;border:0;background:transparent;border-radius:15px;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px #71472a12}
+.ct-home-tile{display:block;width:94%;justify-self:center;padding:0;border:0;background:transparent;border-radius:15px;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px #71472a12}
 .ct-home-tile:active{transform:scale(.98)}
 .ct-home-tile img{display:block;width:100%;height:auto;object-fit:contain}
 .ct-order-tile,.ct-home-tile:nth-child(2){grid-column:span 1}
@@ -684,68 +684,6 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
  .ct-home-footer{font-size:13px}
 }
 @media(min-width:800px){.ct-home-dashboard{grid-template-columns:repeat(4,minmax(0,1fr));padding:16px;gap:14px}.ct-music-tile{grid-column:span 2}}
-
-/* Cafe Tin mobile-first navigation: remove duplicate outer tiles and use the inner menu */
-#ctHomeDashboard{display:none!important}
-#ctMainApp.ct-app-hidden{display:block!important}
-#ctMainApp.app{display:block!important;max-width:980px;margin:0 auto;padding:10px 12px 36px}
-#ctMainApp .sidebar{position:static!important;top:auto!important;height:auto!important;min-height:0!important;width:100%!important;display:block!important;padding:0!important;margin:0 0 12px!important;border:0!important;background:transparent!important;box-shadow:none!important}
-#ctMainApp .side-logo,#ctMainApp .mobile-brand-logo,#ctMainApp .side-brand,#ctMainApp .side-footer{display:none!important}
-#ctMainApp .side-nav{display:block!important;width:100%!important}
-#ctMainApp .tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin:0!important;padding:0!important}
-#ctMainApp .tabs button{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;min-height:62px!important;padding:12px 14px!important;border-radius:14px!important;font-size:16px!important;font-weight:750!important;line-height:1.25!important;white-space:normal!important;text-align:left!important;box-shadow:0 3px 10px rgba(45,80,48,.09)!important}
-#ctMainApp .tabs button .navico{font-size:23px!important;flex:0 0 auto!important}
-#ctMainApp .content{display:block!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important}
-#ctMainApp .tab{scroll-margin-top:10px}
-@media(max-width:420px){#ctMainApp .tabs{gap:8px!important}#ctMainApp .tabs button{min-height:60px!important;padding:10px!important;font-size:15px!important}}
-</style>
-
-<style id="ct-fix-menu-visible-20261026">
-/* Sửa lỗi menu bị ẩn ở bản trước: luôn hiện bộ chọn mục phía trên nội dung */
-#ctMainApp .sidebar{display:block!important;position:relative!important;top:auto!important;height:auto!important;min-height:0!important;width:100%!important;padding:10px 12px!important;margin:0!important;border:0!important;border-bottom:1px solid #ead2b1!important;background:#fff1dc!important;z-index:5!important;overflow:visible!important}
-#ctMainApp .sidebar .side-logo,#ctMainApp .sidebar .mobile-brand-logo,#ctMainApp .sidebar .side-brand,#ctMainApp .sidebar .barista-buddy,#ctMainApp .sidebar .side-footer{display:none!important}
-#ctMainApp .side-nav{display:block!important;width:100%!important;margin:0!important}
-#ctMainApp nav.tabs,#ctMainApp .tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;position:static!important;overflow:visible!important;width:100%!important;height:auto!important;padding:0!important;margin:0!important;background:transparent!important}
-#ctMainApp nav.tabs button,#ctMainApp .tabs button{display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;min-width:0!important;min-height:56px!important;padding:10px 11px!important;margin:0!important;border:1px solid #ead8c2!important;border-radius:13px!important;background:#fffaf0!important;color:#60391f!important;font-size:14px!important;font-weight:800!important;line-height:1.25!important;white-space:normal!important;text-align:left!important;box-shadow:0 2px 7px rgba(89,57,35,.07)!important;transform:none!important}
-#ctMainApp nav.tabs button.active,#ctMainApp .tabs button.active{background:linear-gradient(135deg,#986746,#704124)!important;color:#fff!important}
-#ctMainApp nav.tabs button .navico,#ctMainApp .tabs button .navico{display:inline-block!important;flex:0 0 auto!important;font-size:21px!important}
-@media(min-width:621px){#ctMainApp .sidebar{padding:12px 16px!important}}
-</style>
-
-
-<style id="ct-hide-duplicate-lower-menu-final">
-/* Chỉ ẩn thanh menu chữ bên dưới; giữ menu chức năng dạng hình ảnh phía trên. */
-#ctMainApp .sidebar .tabs, #ctMainApp .sidebar nav.tabs, #ctMainApp .tabs { display:none !important; visibility:hidden !important; height:0 !important; min-height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; }
-#ctMainApp .sidebar { display:none !important; }
-</style>
-
-<style id="ct-menu-final-size-spacing-20261026">
-/* Menu 3 cot: hinh to hon va cac nut gan nhau hon */
-#ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 4px !important; padding: 5px !important;
-}
-#ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-compact .ct-home-tile {
-  grid-column: span 1 !important; min-width: 0 !important; padding: 3px !important;
-  margin: 0 !important; border-radius: 14px !important;
-}
-#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-  display: block !important; width: 94% !important; max-width: 94% !important;
-  height: auto !important; max-height: 145px !important; object-fit: contain !important;
-  margin: 2px auto !important; border-radius: 14px !important;
-}
-#ctHomeDashboard .ct-music-tile { grid-column: span 1 !important; }
-@media (max-width: 620px) {
-  #ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 3px !important; padding: 4px !important;
-  }
-  #ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile {
-    padding: 2px !important; border-radius: 12px !important;
-  }
-  #ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-    width: 96% !important; max-width: 96% !important; max-height: 138px !important; margin: 1px auto !important;
-  }
-}
 </style>
 </head>
 <body><header class="ct-home-header">
@@ -1369,17 +1307,8 @@ function syncOrderPayment(){const ch=$('orderChannel')?.value||'outside';if($('o
 function getCustomerDebts(){try{const a=JSON.parse(localStorage.getItem('tin2_customer_debts')||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveCustomerDebts(a){localStorage.setItem('tin2_customer_debts',JSON.stringify(a))}
 function addOrder(){let items=menu.map((m,i)=>({name:m.name,qty:Number(cart[i]||0),price:Number(m.price),cost:Number(m.cost)})).filter(x=>x.qty>0);if(!items.length)return alert('Chưa chọn món.');let buyerName=String($('buyerNameOrder').value||'').trim();let paymentStatus=$('orderPaymentStatus')?.value||'paid';if(paymentStatus==='unpaid'&&!buyerName){alert('Đơn ghi nợ bắt buộc phải nhập tên khách nhé em.');$('buyerNameOrder').focus();return}let channel=$('orderChannel')?.value||'outside';let tip=Math.max(0,Number($('orderTip')?.value)||0);let o={id:Date.now(),date:today(),time:new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),buyerName,channel,paymentMethod:$('orderPayment').value||defaultPaymentForChannel(channel),paymentStatus,items,tip,total:items.reduce((s,i)=>s+i.qty*i.price,0)};orders.push(o);if(paymentStatus==='unpaid'){const amount=o.total+tip;const ds=getCustomerDebts();ds.push({id:'order-'+o.id,orderId:o.id,date:o.date,name:buyerName,amount,paidAmount:0,status:'unpaid',paymentMethod:o.paymentMethod,items:o.items.map(i=>i.name+' × '+i.qty).join(', '),history:[]});saveCustomerDebts(ds)}cart={};$('buyerNameOrder').value='';if($('orderTip'))$('orderTip').value='';if($('orderChannel'))$('orderChannel').value='outside';if($('orderPaymentStatus'))$('orderPaymentStatus').value='paid';syncOrderPayment();if($('orderHistoryDate'))$('orderHistoryDate').value=today();save();render();renderCustomerDebts();alert(paymentStatus==='unpaid'?'Đã chốt đơn và ghi nợ khách.':'Đã chốt đơn đã thanh toán.')}
-function renderCustomerDebts(){const el=$('customerDebtList');if(!el)return;const ds=getCustomerDebts();const open=ds.filter(d=>Number(d.amount||0)>Number(d.paidAmount||0));if(!open.length){el.innerHTML='<div class="empty">Không có nợ khách chưa thanh toán.</div>';return}el.innerHTML=open.map(d=>{const remain=Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0));return `<div class="summaryline" style="align-items:flex-start"><span><b>${esc(d.name)}</b><br><small>${esc(d.date)} · ${esc(d.items||'Đơn ghi nợ')}<br>Đơn hàng: ${money(d.amount)} · Đã trả: ${money(d.paidAmount||0)}<br><b>Còn nợ: ${money(remain)}</b></small></span><button class="btn primary" type="button" data-customer-debt-pay="${esc(d.id)}">✓ Đánh dấu đã trả</button></div>`}).join('')}
-function receiveCustomerDebt(id){
- const ds=getCustomerDebts(),d=ds.find(x=>String(x.id)===String(id));if(!d)return;
- const remain=Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0));
- let modal=document.getElementById('ctDebtPayModal');if(modal)modal.remove();
- modal=document.createElement('div');modal.id='ctDebtPayModal';modal.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(30,20,20,.48);display:flex;align-items:center;justify-content:center;padding:18px;';
- modal.innerHTML=`<div style="width:min(420px,100%);background:#fffdf9;border:1px solid #ead8c2;border-radius:18px;padding:20px;box-shadow:0 12px 40px #0003"><h3 style="margin:0 0 8px;color:#8a4b50">💵 Đánh dấu đã trả</h3><p style="margin:0 0 14px">${esc(d.name||'Khách hàng')} · Còn nợ <b>${money(remain)}</b></p><label for="ctDebtPayAmount">Số tiền khách trả</label><input id="ctDebtPayAmount" type="number" min="1" max="${remain}" value="${remain}" style="width:100%;box-sizing:border-box;margin:5px 0 12px;padding:10px"><label for="ctDebtPayDate">Ngày trả</label><input id="ctDebtPayDate" type="date" value="${today()}" style="width:100%;box-sizing:border-box;margin:5px 0 12px;padding:10px"><label for="ctDebtPayMethod">Nhận bằng</label><select id="ctDebtPayMethod" style="width:100%;box-sizing:border-box;margin:5px 0 16px;padding:10px"><option value="cash">💵 Tiền mặt</option><option value="bank">🏦 Chuyển khoản</option></select><div style="display:flex;gap:8px"><button type="button" id="ctDebtPayConfirm" class="btn primary" style="flex:1">Xác nhận đã trả</button><button type="button" id="ctDebtPayCancel" class="btn">Hủy</button></div></div>`;
- document.body.appendChild(modal);
- document.getElementById('ctDebtPayCancel').onclick=()=>modal.remove();modal.addEventListener('click',e=>{if(e.target===modal)modal.remove()});
- document.getElementById('ctDebtPayConfirm').onclick=()=>{const amount=Number(document.getElementById('ctDebtPayAmount').value),date=document.getElementById('ctDebtPayDate').value,m=document.getElementById('ctDebtPayMethod').value;if(!Number.isFinite(amount)||amount<=0||amount>remain){alert('Số tiền trả phải lớn hơn 0 và không vượt quá số nợ còn lại.');return}if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('Em chọn ngày trả hợp lệ nhé.');return}if(!['cash','bank'].includes(m)){alert('Em chọn tiền mặt hoặc chuyển khoản nhé.');return}d.paidAmount=(Number(d.paidAmount)||0)+amount;d.history=Array.isArray(d.history)?d.history:[];d.history.push({date,amount,paymentMethod:m});d.status=d.paidAmount>=Number(d.amount||0)?'paid':'unpaid';saveCustomerDebts(ds);modal.remove();refreshSettlement(date);render();renderCustomerDebts();alert('Đã ghi nhận '+money(amount)+' vào '+(m==='cash'?'tiền mặt':'chuyển khoản')+' ngày '+date+'.')};
-}
+function renderCustomerDebts(){const el=$('customerDebtList');if(!el)return;const ds=getCustomerDebts();const open=ds.filter(d=>Number(d.amount||0)>Number(d.paidAmount||0));if(!open.length){el.innerHTML='<div class="empty">Không có nợ khách chưa thanh toán.</div>';return}el.innerHTML=open.map(d=>{const remain=Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0));return `<div class="summaryline" style="align-items:flex-start"><span><b>${esc(d.name)}</b><br><small>${esc(d.date)} · ${esc(d.items||'Đơn ghi nợ')}<br>Đơn hàng: ${money(d.amount)} · Đã trả: ${money(d.paidAmount||0)}<br><b>Còn nợ: ${money(remain)}</b></small></span><button class="btn primary" type="button" data-customer-debt-pay="${esc(d.id)}">Nhận trả nợ</button></div>`}).join('')}
+function receiveCustomerDebt(id){const ds=getCustomerDebts(),d=ds.find(x=>String(x.id)===String(id));if(!d)return;const remain=Math.max(0,Number(d.amount||0)-Number(d.paidAmount||0));const raw=prompt('Khách '+d.name+' còn nợ '+money(remain)+'. Nhập số tiền khách trả:',String(remain));if(raw===null)return;const amount=Number(raw);if(!Number.isFinite(amount)||amount<=0||amount>remain){alert('Số tiền trả phải lớn hơn 0 và không vượt quá số nợ còn lại.');return}const method=prompt('Nhập hình thức nhận tiền: gõ "cash" nếu tiền mặt, hoặc "bank" nếu chuyển khoản.','cash');if(method===null)return;const m=String(method).trim().toLowerCase();if(!['cash','bank'].includes(m)){alert('Em nhập cash hoặc bank nhé.');return}const date=today();d.paidAmount=(Number(d.paidAmount)||0)+amount;d.history=Array.isArray(d.history)?d.history:[];d.history.push({date,amount,paymentMethod:m});d.status=d.paidAmount>=Number(d.amount||0)?'paid':'unpaid';saveCustomerDebts(ds);save();refreshSettlement(d.date);render();renderCustomerDebts();alert('Đã ghi nhận khách trả nợ '+money(amount)+' bằng '+(m==='cash'?'tiền mặt':'chuyển khoản')+'.')}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-customer-debt-pay]');if(b)receiveCustomerDebt(b.dataset.customerDebtPay)});
 function addManualRevenue(){let d=$('manualDate').value||today(),rev=Number($('manualRevenue').value),cost=Number($('manualCogs').value)||0,count=Math.max(1,Number($('manualOrderCount').value)||1),note=$('manualNote').value.trim()||'Doanh thu nhập tay';if(!rev)return alert('Nhập doanh thu.');orders.push({id:Date.now(),date:d,time:'',manual:true,channel:$('manualChannel')?.value||'outside',orderCount:count,items:[{name:note,qty:1,price:rev,cost:cost}],total:rev});$('manualRevenue').value='';if($('manualChannel'))$('manualChannel').value='outside';$('manualCogs').value='';$('manualOrderCount').value='1';$('manualNote').value='';save();render();alert('Đã thêm doanh thu cho ngày '+d+'.')}
 function addExpense(){
@@ -2024,32 +1953,41 @@ window.addEventListener('pageshow',fix);
  const dashboard=document.getElementById('ctHomeDashboard');
  const homeHeader=document.querySelector('.ct-home-header');
  const app=document.getElementById('ctMainApp');
+ function returnHome(){
+   if(dashboard) dashboard.classList.remove('ct-home-hidden');
+   if(homeHeader) homeHeader.classList.remove('ct-home-hidden');
+   if(app) app.classList.add('ct-app-hidden');
+   window.scrollTo({top:0,behavior:'smooth'});
+ }
  function showApp(tab){
-   // Giữ banner và các ô chức năng ở trên; chỉ thu gọn các ô sau khi mở mục.
-   if(dashboard) dashboard.classList.add('ct-home-compact');
-   if(homeHeader) homeHeader.classList.add('ct-home-section-open');
+   if(dashboard) dashboard.classList.add('ct-home-hidden');
+   if(homeHeader) homeHeader.classList.add('ct-home-hidden');
    if(app) app.classList.remove('ct-app-hidden');
    if(tab){
      const nav=document.querySelector('.sidebar .tabs button[data-tab="'+tab+'"]');
      if(nav) nav.click();
+   }
+   const content=app&&app.querySelector('.content');
+   if(content&&!document.getElementById('ctBackHome')){
+     const back=document.createElement('button');
+     back.id='ctBackHome';back.type='button';back.className='btn';
+     back.textContent='← Quay về trang chủ';
+     back.style.cssText='display:block;margin:0 0 14px auto;background:#fff5e4;color:#6b3e25;border:1px solid #e6c9a3;border-radius:12px;padding:10px 15px;font-weight:800;box-shadow:0 3px 9px #71472a12;';
+     back.addEventListener('click',returnHome);
+     content.insertBefore(back,content.firstChild);
    }
    window.scrollTo({top:0,behavior:'smooth'});
  }
  document.querySelectorAll('[data-home-tab]').forEach(function(tile){
    tile.addEventListener('click',function(){showApp(tile.getAttribute('data-home-tab'));});
  });
- // Nút trang chủ đưa về trạng thái ban đầu mà không tải lại trang.
+ // Add a home shortcut to the navigation so the dashboard can always be reopened.
  const nav=document.querySelector('.sidebar .tabs');
  if(nav){
    const home=document.createElement('button');
    home.type='button';home.className='ct-home-nav';
    home.innerHTML='<span class="navico">🏠</span><span>Trang chủ</span>';
-   home.addEventListener('click',function(){
-     if(dashboard) dashboard.classList.remove('ct-home-compact');
-     if(homeHeader) homeHeader.classList.remove('ct-home-section-open');
-     if(app) app.classList.add('ct-app-hidden');
-     window.scrollTo({top:0,behavior:'smooth'});
-   });
+   home.addEventListener('click',returnHome);
    nav.insertBefore(home,nav.firstChild);
  }
  // Coins and gold ingots rain when the lucky cat is tapped.
@@ -2096,91 +2034,6 @@ window.addEventListener('pageshow',fix);
 }
 </style>
 
-
-<style id="ct-menu-restore-fix">
-/* Khôi phục menu chọn mục bị CSS dọn giao diện ẩn mất */
-#ctHomeDashboard{display:none!important}
-#ctMainApp.app,#ctMainApp.app.ct-app-hidden{display:block!important;max-width:980px;width:100%;margin:0 auto;padding:10px 12px 36px}
-#ctMainApp .sidebar{display:block!important;position:static!important;top:auto!important;left:auto!important;width:100%!important;height:auto!important;min-height:0!important;float:none!important;padding:0!important;margin:0 0 12px!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
-#ctMainApp .side-logo,#ctMainApp .mobile-brand-logo,#ctMainApp .side-brand,#ctMainApp .side-footer{display:none!important}
-#ctMainApp .side-nav{display:block!important;width:100%!important;visibility:visible!important;opacity:1!important}
-#ctMainApp .side-nav nav.tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;width:100%!important;height:auto!important;visibility:visible!important;opacity:1!important;margin:0!important;padding:0!important;position:static!important}
-#ctMainApp .side-nav nav.tabs button{display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;width:100%!important;min-width:0!important;min-height:60px!important;padding:10px 12px!important;border-radius:13px!important;font-size:15px!important;font-weight:750!important;line-height:1.25!important;white-space:normal!important;text-align:left!important;position:static!important;transform:none!important}
-#ctMainApp .side-nav nav.tabs button .navico{display:inline-block!important;font-size:22px!important;flex:0 0 auto!important}
-#ctMainApp .content{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:10px 0!important}
-#ctMainApp .content>.tab{display:none!important;scroll-margin-top:10px}
-#ctMainApp .content>.tab.active{display:block!important}
-@media(max-width:420px){#ctMainApp .side-nav nav.tabs{gap:7px!important}#ctMainApp .side-nav nav.tabs button{min-height:56px!important;padding:9px!important;font-size:14px!important}}
-</style>
-
-
-<style id="ct-menu-final-emergency-fix">
-/* Final override: keep the internal section picker visible on all screens */
-#ctHomeDashboard{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important}
-html body #ctMainApp.app,html body #ctMainApp.app.ct-app-hidden{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;max-width:980px!important;margin:0 auto!important;padding:8px 10px 30px!important}
-html body #ctMainApp .sidebar{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;padding:10px!important;margin:0 0 12px!important;border:1px solid #ead8c2!important;border-radius:16px!important;background:#fff8ed!important;box-shadow:none!important}
-html body #ctMainApp .sidebar>.side-logo,html body #ctMainApp .sidebar>.mobile-brand-logo,html body #ctMainApp .sidebar>.side-brand,html body #ctMainApp .sidebar>.side-footer,html body #ctMainApp .sidebar>.barista-buddy{display:none!important}
-html body #ctMainApp .sidebar .side-nav{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;height:auto!important;overflow:visible!important;position:relative!important;margin:0!important;padding:0!important}
-html body #ctMainApp .sidebar .side-nav nav.tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-flow:row!important;gap:8px!important;visibility:visible!important;opacity:1!important;position:relative!important;inset:auto!important;width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;transform:none!important}
-html body #ctMainApp .sidebar .side-nav nav.tabs>button{display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;inset:auto!important;float:none!important;width:100%!important;min-width:0!important;min-height:54px!important;height:auto!important;margin:0!important;padding:9px 10px!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:left!important;font-size:14px!important;line-height:1.25!important;color:#60391f!important;background:#fffdf6!important;border:1px solid #ead8c2!important;border-radius:12px!important;box-shadow:0 2px 6px #60391f12!important;transform:none!important}
-html body #ctMainApp .sidebar .side-nav nav.tabs>button.active{background:#75ad80!important;color:#fff!important;border-color:#75ad80!important}
-html body #ctMainApp .sidebar .side-nav nav.tabs>button .navico{display:inline-block!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important;font-size:20px!important}
-html body #ctMainApp .content{display:block!important;visibility:visible!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:8px 0 24px!important}
-html body #ctMainApp .content>.tab{display:none!important}
-html body #ctMainApp .content>.tab.active{display:block!important}
-@media(max-width:420px){html body #ctMainApp .sidebar .side-nav nav.tabs{gap:6px!important}html body #ctMainApp .sidebar .side-nav nav.tabs>button{min-height:50px!important;padding:8px!important;font-size:13px!important}}
-</style>
-
-
-<style id="ct-menu-image-restore-final">
-/* Khôi phục menu dạng thẻ hình ảnh gốc, luôn hiện phía trên phần nội dung */
-#ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
- display:grid!important; visibility:visible!important; opacity:1!important;
- grid-template-columns:repeat(2,minmax(0,1fr))!important;
- gap:10px!important; padding:10px!important; width:100%!important; max-width:1024px!important;
- height:auto!important; max-height:none!important; overflow:visible!important;
-}
-#ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-compact .ct-home-tile {
- display:block!important; visibility:visible!important; opacity:1!important;
- width:100%!important; max-width:none!important; min-height:0!important;
- padding:0!important; margin:0!important; grid-column:span 1!important;
- background:transparent!important; border:0!important; overflow:hidden!important;
-}
-#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-compact .ct-home-tile img {
- display:block!important; visibility:visible!important; opacity:1!important;
- width:100%!important; height:auto!important; max-height:none!important; object-fit:contain!important;
-}
-#ctHomeDashboard .ct-music-tile {grid-column:span 1!important}
-#ctHomeDashboard .ct-home-footer {display:none!important}
-@media(max-width:620px){#ctHomeDashboard.ct-home-dashboard,#ctHomeDashboard.ct-home-dashboard.ct-home-compact{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;padding:8px!important}}
-</style>
-
-<style id="ct-final-menu-size-slogan-fix">
-/* Thu nho them hinh menu, giu bo goc de thuong */
-#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img { width:76% !important; max-width:76% !important; max-height:112px !important; height:auto !important; object-fit:contain !important; margin:4px auto !important; border-radius:18px !important; }
-/* Tang chu loi chuc mua may ban dat */
-.brand-slogan { font-size:20px !important; line-height:1.35 !important; max-width:100% !important; padding:10px 12px !important; font-weight:900 !important; }
-@media (max-width:520px) { #ctHomeDashboard .ct-home-tile img { width:76% !important; max-width:76% !important; max-height:105px !important; } .brand-slogan { font-size:19px !important; } }
-</style>
-
-
-<style id="ct-menu-image-size-override-20261026">
-/* Override previous conflicting menu image sizes: make menu illustrations visibly larger while retaining 3 columns and rounded borders. */
-#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
-#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img,
-#ctHomeDashboard .ct-home-tile img {
-  width: 94% !important; max-width: 94% !important; height: auto !important;
-  max-height: 155px !important; object-fit: contain !important; display: block !important;
-  margin: 4px auto !important; border-radius: 15px !important;
-}
-#ctHomeDashboard.ct-home-dashboard .ct-home-tile,
-#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile { padding: 4px !important; min-width: 0 !important; }
-@media (max-width: 620px) {
-  #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
-  #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img,
-  #ctHomeDashboard .ct-home-tile img { width: 94% !important; max-width: 94% !important; max-height: 130px !important; }
-}
-</style>
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
@@ -2435,7 +2288,7 @@ html,body{background:#fff8ed!important;color:#4a2d1d!important}body{background:l
 </style>
 
 <style id="ct-direct-section-cleanup">
-/* Nội dung mục được chọn nằm dưới banner và các ô chức năng. */
+/* Khi chọn một ô trên trang chủ, chỉ hiện đúng trang chức năng đã chọn; ẩn giao diện điều hướng cũ. */
 .app.ct-app-hidden{display:none!important}
 #ctMainApp{display:block;max-width:1024px;width:100%;margin:0 auto;padding:0!important;background:linear-gradient(180deg,#fffaf0,#f8e6cb)!important;min-height:100vh}
 #ctMainApp .sidebar{display:none!important}
@@ -2443,109 +2296,6 @@ html,body{background:#fff8ed!important;color:#4a2d1d!important}body{background:l
 #ctMainApp .content>.tab{display:none!important}
 #ctMainApp .content>.tab.active{display:block!important}
 #ctMainApp .content .page-heading{margin-top:0!important}
-.ct-home-hidden{display:none!important}
-.ct-home-dashboard.ct-home-compact{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px 10px 10px}
-.ct-home-dashboard.ct-home-compact .ct-home-tile{padding:4px;border-radius:10px;min-height:0}
-.ct-home-dashboard.ct-home-compact .ct-home-tile img{width:100%;height:auto;max-height:74px;object-fit:contain}
-.ct-home-dashboard.ct-home-compact .ct-music-tile{grid-column:span 1}
-.ct-home-dashboard.ct-home-compact .ct-home-footer{display:none}
-@media(max-width:620px){
- .ct-home-dashboard.ct-home-compact{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px 7px 8px}
- .ct-home-dashboard.ct-home-compact .ct-home-tile{padding:2px;border-radius:8px}
- .ct-home-dashboard.ct-home-compact .ct-home-tile img{max-height:58px;width:100%}
- #ctMainApp .content{padding:10px!important}
-}
-</style>
-
-<style id="ct-remove-duplicate-lower-menu">
-/* Keep the illustrated image menu; remove the duplicate text/icon menu below it. */
-#ctMainApp .sidebar .side-nav,
-#ctMainApp .sidebar .tabs,
-#ctMainApp .sidebar .ct-home-nav { display:none !important; }
-#ctMainApp .sidebar { display:none !important; }
-#ctMainApp .content { width:100% !important; margin:0 auto !important; }
-</style>
-
-<style id="ct-final-hide-duplicate-sidebar-menu">
-/* FINAL OVERRIDE: keep the illustrated dashboard tiles; remove the duplicate lower text navigation. */
-html body #ctMainApp > aside.sidebar,
-html body #ctMainApp .sidebar,
-html body #ctMainApp .sidebar .side-nav,
-html body #ctMainApp .sidebar .tabs,
-html body #ctMainApp .sidebar .ct-home-nav,
-html body #ctMainApp .sidebar .side-footer { display:none !important; visibility:hidden !important; height:0 !important; min-height:0 !important; max-height:0 !important; overflow:hidden !important; margin:0 !important; padding:0 !important; border:0 !important; }
-html body #ctMainApp > main.content { display:block !important; width:100% !important; max-width:none !important; margin:0 auto !important; }
-html body #ctMainApp > main.content > section.tab { display:none !important; }
-html body #ctMainApp > main.content > section.tab.active { display:block !important; }
-</style>
-
-<style id="ct-menu-image-slightly-smaller">
-/* Thu nho hinh minh hoa trong cac the menu mot chut, giu nguyen nut bam va bo cuc 2 cot */
-#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
-#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-  width: 88% !important;
-  max-width: 88% !important;
-  height: auto !important;
-  max-height: 190px !important;
-  object-fit: contain !important;
-  margin: 0 auto !important;
-}
-@media (max-width: 620px) {
-  #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
-  #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-    width: 90% !important; max-width: 90% !important; max-height: 150px !important;
-  }
-}
-</style>
-
-<style id="ct-menu-cute-image-style-v2">
-/* Hinh menu nho hon mot chut, vien bo tron de giao dien de thuong hon */
-#ctHomeDashboard .ct-home-tile{overflow:hidden!important;border-radius:18px!important;}
-#ctHomeDashboard .ct-home-tile img{
- width:84%!important;max-width:84%!important;height:auto!important;max-height:170px!important;
- object-fit:contain!important;display:block!important;margin:7px auto!important;
- border:2px solid rgba(226,190,145,.72)!important;border-radius:18px!important;
- box-shadow:0 4px 10px rgba(105,68,39,.10)!important;
-}
-@media(max-width:620px){
- #ctHomeDashboard .ct-home-tile{border-radius:16px!important;padding:3px!important;}
- #ctHomeDashboard .ct-home-tile img{width:86%!important;max-width:86%!important;max-height:132px!important;margin:5px auto!important;border-radius:16px!important;border-width:1.5px!important;}
-}
-</style>
-
-
-<style id="ct-final-menu-size-and-slogan-v3">
-/* Final tune: smaller menu pictures, larger red greeting slogan. */
-#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
-#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-  width:72% !important; max-width:72% !important; max-height:112px !important;
-  height:auto !important; object-fit:contain !important; margin:4px auto !important;
-  border:1.5px solid rgba(226,190,145,.8) !important; border-radius:16px !important;
-  box-shadow:0 3px 8px rgba(105,68,39,.09) !important;
-}
-#ctHomeDashboard.ct-home-dashboard .ct-home-tile { padding:2px !important; border-radius:14px !important; }
-.brand-slogan { font-size:clamp(28px,6vw,38px) !important; line-height:1.2 !important; font-weight:950 !important; max-width:100% !important; }
-@media(max-width:620px) {
- #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
- #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
-   width:72% !important; max-width:72% !important; max-height:96px !important; margin:3px auto !important; border-radius:14px !important;
- }
- .brand-slogan { font-size:clamp(27px,7.2vw,34px) !important; line-height:1.18 !important; padding:10px 8px !important; }
-}
-</style>
-
-<style id="ct-menu-three-per-row-final">
-/* Menu chinh: 3 muc tren moi hang */
-#ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:8px !important; }
-#ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-compact .ct-home-tile { grid-column:span 1 !important; min-width:0 !important; }
-#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-compact .ct-home-tile img { width:64% !important; max-width:64% !important; max-height:88px !important; height:auto !important; object-fit:contain !important; margin:3px auto !important; }
-#ctHomeDashboard .ct-music-tile { grid-column:span 1 !important; }
-</style>
-
-<style id="cafetin-menu-size-final-v2">
-#ctHomeDashboard.ct-home-dashboard{gap:5px!important;row-gap:5px!important;column-gap:5px!important;padding-left:8px!important;padding-right:8px!important}
-#ctHomeDashboard .ct-home-tile,#ctHomeDashboard.ct-home-compact .ct-home-tile{padding:1px!important;margin:0!important;min-width:0!important;border-radius:15px!important}
-#ctHomeDashboard .ct-home-tile img,#ctHomeDashboard.ct-home-compact .ct-home-tile img{width:92%!important;max-width:92%!important;max-height:150px!important;height:auto!important;object-fit:contain!important;margin:2px auto!important;border-radius:14px!important}
-#ctHomeDashboard .ct-home-grid,#ctHomeDashboard .ct-home-tiles{gap:5px!important;row-gap:5px!important;column-gap:5px!important}
-@media(max-width:600px){#ctHomeDashboard .ct-home-tile img,#ctHomeDashboard.ct-home-compact .ct-home-tile img{width:94%!important;max-width:94%!important;max-height:145px!important}}
+.app-bg-image{display:none!important}
+@media(max-width:620px){#ctMainApp .content{padding:10px!important}}
 </style>
