@@ -712,6 +712,12 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 @media(min-width:621px){#ctMainApp .sidebar{padding:12px 16px!important}}
 </style>
 
+
+<style id="ct-hide-duplicate-lower-menu-final">
+/* Chỉ ẩn thanh menu chữ bên dưới; giữ menu chức năng dạng hình ảnh phía trên. */
+#ctMainApp .sidebar .tabs, #ctMainApp .sidebar nav.tabs, #ctMainApp .tabs { display:none !important; visibility:hidden !important; height:0 !important; min-height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; }
+#ctMainApp .sidebar { display:none !important; }
+</style>
 </head>
 <body><header class="ct-home-header">
   <img class="ct-top-banner" src="01_dau_trang_logo_ca_voixanh.png" alt="Cafe Tin - chất lượng, đậm vị, ngon miệng">
