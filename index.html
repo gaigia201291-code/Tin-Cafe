@@ -962,7 +962,8 @@ function moneyFlowForDate(d,method){
  if(d===today() && os.length===0) os=dashboardOrders(d);
  const es=settlementExpensesForDate(d);
  const isMethod=x=>{const p=String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase();const bank=['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(p);return method==='bank'?bank:!bank;};
- const incoming=os.filter(isMethod).reduce((s,o)=>s+orderReceivedTotal(o),0);
+ // Đơn còn nợ/chưa thanh toán chưa phải tiền thực nhận, không cộng vào tiền mặt/chuyển khoản.
+ const incoming=os.filter(o=>o.paymentStatus!=='unpaid' && isMethod(o)).reduce((s,o)=>s+orderReceivedTotal(o),0);
  const outgoing=es.filter(isMethod).reduce((s,e)=>s+Number(e.amount||0),0);
  return {incoming,outgoing,net:incoming-outgoing};
 }
@@ -987,7 +988,8 @@ function renderSettlement(){
  const es=settlementExpensesForDate(d);
  const bankMethod=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
  const sum=(arr,isBank,fn)=>arr.filter(x=>bankMethod(x)===isBank).reduce((s,x)=>s+fn(x),0);
- const ci=sum(os,false,orderTotal),bi=sum(os,true,orderTotal),co=sum(es,false,e=>Number(e.amount||0)),bo=sum(es,true,e=>Number(e.amount||0));
+ const paidOrders=os.filter(o=>o.paymentStatus!=='unpaid');
+ const ci=sum(paidOrders,false,orderReceivedTotal),bi=sum(paidOrders,true,orderReceivedTotal),co=sum(es,false,e=>Number(e.amount||0)),bo=sum(es,true,e=>Number(e.amount||0));
  const prev=new Date(d+'T12:00:00');prev.setDate(prev.getDate()-1);const pd=prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0')+'-'+String(prev.getDate()).padStart(2,'0');
  const opening=getOpeningBalances();
  // Carry yesterday's final balance into today's opening balance.
