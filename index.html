@@ -2125,6 +2125,24 @@ html body #ctMainApp .content>.tab.active{display:block!important}
 @media (max-width:520px) { #ctHomeDashboard .ct-home-tile img { width:76% !important; max-width:76% !important; max-height:105px !important; } .brand-slogan { font-size:19px !important; } }
 </style>
 
+
+<style id="ct-menu-image-size-override-20261026">
+/* Override previous conflicting menu image sizes: make menu illustrations visibly larger while retaining 3 columns and rounded borders. */
+#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img,
+#ctHomeDashboard .ct-home-tile img {
+  width: 94% !important; max-width: 94% !important; height: auto !important;
+  max-height: 155px !important; object-fit: contain !important; display: block !important;
+  margin: 4px auto !important; border-radius: 15px !important;
+}
+#ctHomeDashboard.ct-home-dashboard .ct-home-tile,
+#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile { padding: 4px !important; min-width: 0 !important; }
+@media (max-width: 620px) {
+  #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+  #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img,
+  #ctHomeDashboard .ct-home-tile img { width: 94% !important; max-width: 94% !important; max-height: 130px !important; }
+}
+</style>
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
