@@ -2087,6 +2087,29 @@ html body #ctMainApp .content>.tab.active{display:block!important}
 @media(max-width:420px){html body #ctMainApp .sidebar .side-nav nav.tabs{gap:6px!important}html body #ctMainApp .sidebar .side-nav nav.tabs>button{min-height:50px!important;padding:8px!important;font-size:13px!important}}
 </style>
 
+
+<style id="ct-menu-image-restore-final">
+/* Khôi phục menu dạng thẻ hình ảnh gốc, luôn hiện phía trên phần nội dung */
+#ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
+ display:grid!important; visibility:visible!important; opacity:1!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:10px!important; padding:10px!important; width:100%!important; max-width:1024px!important;
+ height:auto!important; max-height:none!important; overflow:visible!important;
+}
+#ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-compact .ct-home-tile {
+ display:block!important; visibility:visible!important; opacity:1!important;
+ width:100%!important; max-width:none!important; min-height:0!important;
+ padding:0!important; margin:0!important; grid-column:span 1!important;
+ background:transparent!important; border:0!important; overflow:hidden!important;
+}
+#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-compact .ct-home-tile img {
+ display:block!important; visibility:visible!important; opacity:1!important;
+ width:100%!important; height:auto!important; max-height:none!important; object-fit:contain!important;
+}
+#ctHomeDashboard .ct-music-tile {grid-column:span 1!important}
+#ctHomeDashboard .ct-home-footer {display:none!important}
+@media(max-width:620px){#ctHomeDashboard.ct-home-dashboard,#ctHomeDashboard.ct-home-dashboard.ct-home-compact{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;padding:8px!important}}
+</style>
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
