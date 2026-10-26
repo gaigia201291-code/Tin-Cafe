@@ -718,6 +718,35 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 #ctMainApp .sidebar .tabs, #ctMainApp .sidebar nav.tabs, #ctMainApp .tabs { display:none !important; visibility:hidden !important; height:0 !important; min-height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; }
 #ctMainApp .sidebar { display:none !important; }
 </style>
+
+<style id="ct-menu-final-size-spacing-20261026">
+/* Menu 3 cot: hinh to hon va cac nut gan nhau hon */
+#ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 4px !important; padding: 5px !important;
+}
+#ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-compact .ct-home-tile {
+  grid-column: span 1 !important; min-width: 0 !important; padding: 3px !important;
+  margin: 0 !important; border-radius: 14px !important;
+}
+#ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+  display: block !important; width: 94% !important; max-width: 94% !important;
+  height: auto !important; max-height: 145px !important; object-fit: contain !important;
+  margin: 2px auto !important; border-radius: 14px !important;
+}
+#ctHomeDashboard .ct-music-tile { grid-column: span 1 !important; }
+@media (max-width: 620px) {
+  #ctHomeDashboard.ct-home-dashboard, #ctHomeDashboard.ct-home-dashboard.ct-home-compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 3px !important; padding: 4px !important;
+  }
+  #ctHomeDashboard .ct-home-tile, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile {
+    padding: 2px !important; border-radius: 12px !important;
+  }
+  #ctHomeDashboard .ct-home-tile img, #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+    width: 96% !important; max-width: 96% !important; max-height: 138px !important; margin: 1px auto !important;
+  }
+}
+</style>
 </head>
 <body><header class="ct-home-header">
   <img class="ct-top-banner" src="01_dau_trang_logo_ca_voixanh.png" alt="Cafe Tin - chất lượng, đậm vị, ngon miệng">
