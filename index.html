@@ -2276,3 +2276,16 @@ html,body{background:#fff8ed!important;color:#4a2d1d!important}body{background:l
 .card,.dash-card,.dash-stat{background:#fffaf0!important;border-color:#ead8c2!important;box-shadow:0 4px 14px rgba(89,57,35,.09)!important}.section-title,.dash-card h2,.welcome h1{color:#60391f!important}.btn.primary{background:linear-gradient(135deg,#986746,#704124)!important}#order>.barista-buddy{margin:4px auto 14px!important}
 @media(max-width:620px){.cafe-tin-greeting{min-height:78px!important;gap:7px!important;padding:9px 8px 11px!important;font-size:clamp(18px,5.1vw,25px)!important}.greeting-lucky-cat{width:49px;height:57px;flex-basis:49px}.greeting-message{max-width:calc(100% - 56px)}}
 </style>
+
+<style id="ct-direct-section-cleanup">
+/* Khi chọn một ô trên trang chủ, chỉ hiện đúng trang chức năng đã chọn; ẩn giao diện điều hướng cũ. */
+.app.ct-app-hidden{display:none!important}
+#ctMainApp{display:block;max-width:1024px;width:100%;margin:0 auto;padding:0!important;background:linear-gradient(180deg,#fffaf0,#f8e6cb)!important;min-height:100vh}
+#ctMainApp .sidebar{display:none!important}
+#ctMainApp .content{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:14px!important;min-width:0!important}
+#ctMainApp .content>.tab{display:none!important}
+#ctMainApp .content>.tab.active{display:block!important}
+#ctMainApp .content .page-heading{margin-top:0!important}
+.app-bg-image{display:none!important}
+@media(max-width:620px){#ctMainApp .content{padding:10px!important}}
+</style>
