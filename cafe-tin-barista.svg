@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 250">
+<ellipse cx="110" cy="238" rx="58" ry="8" fill="#6b432c" opacity=".12"/>
+<!-- hair behind --> <path d="M43 105Q30 28 108 24Q183 24 178 103L186 178Q179 206 153 203L61 203Q35 197 35 169Z" fill="#4b2b20"/>
+<!-- body and apron --> <path d="M53 163Q29 175 25 222L195 222Q190 177 165 163Z" fill="#fff3df" stroke="#6b432c" stroke-width="3"/><path d="M68 171L151 171L166 222L54 222Z" fill="#8a5738" stroke="#6b432c" stroke-width="3"/><path d="M83 170Q87 195 110 195Q133 195 137 170" fill="none" stroke="#fff3df" stroke-width="6"/>
+<!-- face --> <ellipse cx="109" cy="111" rx="59" ry="69" fill="#ffdfc5" stroke="#6b432c" stroke-width="2.5"/>
+<!-- hair fringe --> <path d="M49 106Q38 48 91 36Q141 24 166 68Q177 84 169 112Q150 93 144 69Q121 94 82 88Q69 103 49 106Z" fill="#4b2b20"/><path d="M79 43Q61 70 69 91M109 35Q95 62 99 84M139 49Q126 70 135 86" fill="none" stroke="#76503b" stroke-width="5" stroke-linecap="round"/>
+<!-- eyes and blush --> <ellipse cx="86" cy="115" rx="8" ry="12" fill="#3d2921"/><ellipse cx="133" cy="115" rx="8" ry="12" fill="#3d2921"/><circle cx="88" cy="111" r="3" fill="#fff"/><circle cx="135" cy="111" r="3" fill="#fff"/><ellipse cx="68" cy="135" rx="11" ry="6" fill="#f39c9a" opacity=".65"/><ellipse cx="151" cy="135" rx="11" ry="6" fill="#f39c9a" opacity=".65"/><path d="M96 140Q110 155 125 140" fill="none" stroke="#b94f4c" stroke-width="4" stroke-linecap="round"/>
+<!-- arms --> <path d="M43 185Q22 180 20 201Q20 217 46 217L62 206" fill="#ffdfc5" stroke="#6b432c" stroke-width="3"/><path d="M165 185Q184 176 191 191" fill="none" stroke="#6b432c" stroke-width="10" stroke-linecap="round"/><circle cx="192" cy="193" r="12" fill="#ffdfc5" stroke="#6b432c" stroke-width="2"/>
+<!-- coffee cup --> <rect x="172" y="155" width="28" height="35" rx="5" fill="#fff8ec" stroke="#6b432c" stroke-width="2.5"/><path d="M200 163Q216 160 211 174Q208 180 200 178" fill="none" stroke="#6b432c" stroke-width="3"/><path d="M179 151Q176 143 182 139M190 151Q187 143 193 139" fill="none" stroke="#9b6a48" stroke-width="2.5" stroke-linecap="round"/><path d="M96 207L109 218L122 207" fill="#f4c4a3" stroke="#6b432c" stroke-width="2"/>
+<!-- hearts --> <path d="M28 72C12 58 1 78 28 96C55 78 44 58 28 72Z" fill="#e65d5d"/><path d="M184 72C172 62 164 78 184 91C204 78 196 62 184 72Z" fill="#e65d5d"/>
+</svg>
