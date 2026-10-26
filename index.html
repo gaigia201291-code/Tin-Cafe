@@ -1967,20 +1967,6 @@ window.addEventListener('pageshow',fix);
  document.querySelectorAll('[data-home-tab]').forEach(function(tile){
    tile.addEventListener('click',function(){showApp(tile.getAttribute('data-home-tab'));});
  });
- // Nút trang chủ đưa về trạng thái ban đầu mà không tải lại trang.
- const nav=document.querySelector('.sidebar .tabs');
- if(nav){
-   const home=document.createElement('button');
-   home.type='button';home.className='ct-home-nav';
-   home.innerHTML='<span class="navico">🏠</span><span>Trang chủ</span>';
-   home.addEventListener('click',function(){
-     if(dashboard) dashboard.classList.remove('ct-home-compact');
-     if(homeHeader) homeHeader.classList.remove('ct-home-section-open');
-     if(app) app.classList.add('ct-app-hidden');
-     window.scrollTo({top:0,behavior:'smooth'});
-   });
-   nav.insertBefore(home,nav.firstChild);
- }
  // Coins and gold ingots rain when the lucky cat is tapped.
  const cat=document.getElementById('ctMoneyCat');
  if(cat) cat.addEventListener('click',function(){
@@ -2025,6 +2011,37 @@ window.addEventListener('pageshow',fix);
 }
 </style>
 
+
+<style id="ct-no-home-large-menu">
+/* Bỏ trang chủ riêng: vào thẳng nội dung, các mục chức năng là menu điều hướng chính. */
+#ctHomeDashboard{display:none!important}
+.ct-home-header{display:none!important}
+#ctMainApp.ct-app-hidden{display:block!important}
+#ctMainApp{display:block!important}
+#ctMainApp .sidebar{display:block!important;width:100%!important;max-width:none!important;position:static!important}
+#ctMainApp .sidebar .tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#ctMainApp .sidebar .tabs button{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;min-height:64px!important;padding:12px!important;font-size:16px!important;line-height:1.3!important;white-space:normal!important;text-align:left!important;border-radius:12px!important}
+#ctMainApp .sidebar .tabs button .navico{font-size:25px!important;min-width:30px!important;text-align:center!important}
+#ctMainApp .content{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:12px!important;min-width:0!important}
+#ctMainApp .content>.tab{display:none!important}
+#ctMainApp .content>.tab.active{display:block!important}
+#ctMainApp .ct-home-nav{display:none!important}
+@media(min-width:760px){
+ #ctMainApp{display:grid!important;grid-template-columns:minmax(250px,320px) minmax(0,1fr)!important;align-items:start!important;gap:14px!important;padding:12px!important}
+ #ctMainApp .sidebar{width:100%!important}
+ #ctMainApp .sidebar .tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+</style>
+<script id="ct-no-home-start">
+(function(){
+ const dash=document.getElementById('ctHomeDashboard');
+ const header=document.querySelector('.ct-home-header');
+ const app=document.getElementById('ctMainApp');
+ if(dash) dash.style.setProperty('display','none','important');
+ if(header) header.style.setProperty('display','none','important');
+ if(app) app.classList.remove('ct-app-hidden');
+})();
+</script>
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
