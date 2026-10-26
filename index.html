@@ -2413,3 +2413,22 @@ html body #ctMainApp > main.content { display:block !important; width:100% !impo
 html body #ctMainApp > main.content > section.tab { display:none !important; }
 html body #ctMainApp > main.content > section.tab.active { display:block !important; }
 </style>
+
+<style id="ct-menu-image-slightly-smaller">
+/* Thu nho hinh minh hoa trong cac the menu mot chut, giu nguyen nut bam va bo cuc 2 cot */
+#ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+#ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+  width: 88% !important;
+  max-width: 88% !important;
+  height: auto !important;
+  max-height: 190px !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+}
+@media (max-width: 620px) {
+  #ctHomeDashboard.ct-home-dashboard .ct-home-tile img,
+  #ctHomeDashboard.ct-home-dashboard.ct-home-compact .ct-home-tile img {
+    width: 90% !important; max-width: 90% !important; max-height: 150px !important;
+  }
+}
+</style>
