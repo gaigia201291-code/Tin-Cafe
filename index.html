@@ -4,6 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f4328"><link rel="manifest" href="manifest.json">
 <title>Cafe Tin - Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
 <style>
 :root{--bg:#edf8ec;--card:rgba(255,255,255,.94);--ink:#24452d;--muted:#718273;--accent:#78b982;--accent-dark:#5d9f68;--line:#d7ead5;--good:#68ad78;--danger:#dc7777;--blue:#a7d8c1;--lav:#c9dcb7;--cream:#fff9ed;--leaf:#8fbd79;--flower:#e7a8b8}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
@@ -2460,3 +2463,12 @@ window.addEventListener('pageshow',fix);
 <script id="cafetin-move-banner-to-page-top">
 (function(){function moveCafeTinBanner(){var banner=document.querySelector('.cafe-tin-top-banner');var app=document.querySelector('.app');if(banner&&app&&banner.parentElement!==document.body){document.body.insertBefore(banner,app)}else if(banner&&app&&banner.nextElementSibling!==app){document.body.insertBefore(banner,app)}if(banner){banner.setAttribute('aria-label','Banner Cafe Tin ở đầu trang')}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',moveCafeTinBanner,{once:true})}else{moveCafeTinBanner()}window.addEventListener('load',moveCafeTinBanner,{once:true})})();
 </script>
+
+<style id="cafe-tin-handwritten-font">
+/* Font chữ viết tay mềm mại theo mẫu người dùng gửi */
+body, body button, body input, body select, body textarea, body table, body th, body td, body label, body .btn, body .tabs button, body .tab, body .card, body .modal, body .toast, body .side-nav, body .dashboard-grid {
+  font-family: "Dancing Script", "Segoe Print", cursive !important;
+}
+body { font-weight: 600; }
+body button, body input, body select, body textarea { font-weight: 600; }
+</style>
