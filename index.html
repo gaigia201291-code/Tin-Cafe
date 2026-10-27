@@ -2194,3 +2194,24 @@ window.addEventListener('pageshow',fix);
   window.cafeTinLiveRefresh=liveRefresh;
 })();
 </script>
+
+<style id="cafetin-banner-top-three-column-fix">
+/* Banner được đưa lên đầu toàn ứng dụng, thay vị trí logo cũ */
+.cafe-tin-top-banner{display:block!important;position:relative!important;order:-1;width:100%!important;max-width:none!important;margin:0 0 14px!important;padding:0!important;overflow:hidden!important;border-radius:0 0 16px 16px!important;background:#fff6e7!important;box-shadow:0 4px 15px rgba(70,45,20,.12)!important;min-height:0!important}
+.cafe-tin-top-banner>img{display:block!important;width:100%!important;height:clamp(105px,20vw,245px)!important;object-fit:cover!important;object-position:center!important}
+/* Slogan tách thành hàng riêng bên dưới ảnh, không đè lên banner */
+.cafe-tin-top-banner .banner-goodluck{position:relative!important;left:auto!important;bottom:auto!important;transform:none!important;display:block!important;width:100%!important;box-sizing:border-box!important;white-space:normal!important;text-align:center!important;padding:9px 12px 12px!important;margin:0!important;border-radius:0!important;background:linear-gradient(90deg,#fff0d5,#fffaf0,#fff0d5)!important;color:#c71919!important;font-size:clamp(18px,3vw,30px)!important;line-height:1.25!important;text-shadow:0 1px #fff!important}
+.cafe-tin-top-banner .banner-lucky-cat{top:8px!important;left:12px!important;width:clamp(42px,6vw,74px)!important;height:clamp(42px,6vw,74px)!important}
+.cafe-tin-top-banner .banner-cat-face{font-size:clamp(28px,4.5vw,48px)!important}
+.cafe-tin-top-banner .banner-money-rain{inset:0 0 auto 0!important;height:clamp(105px,20vw,245px)!important;bottom:auto!important}
+/* Xóa logo, mèo thần tài và slogan cũ trong thanh bên */
+.sidebar .side-logo,.sidebar .mobile-brand-logo,.sidebar .side-brand,.sidebar .barista-buddy{display:none!important}
+.sidebar .lucky-cat,.sidebar .lucky-cat-brand-logo,.sidebar .tin-heart-label{display:none!important}
+/* Ba thẻ/mục trên mỗi hàng */
+.dashboard-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+@media(max-width:900px){.dashboard-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:620px){.cafe-tin-top-banner{margin-bottom:10px!important}.cafe-tin-top-banner>img{height:clamp(92px,29vw,145px)!important}.cafe-tin-top-banner .banner-money-rain{height:clamp(92px,29vw,145px)!important}.cafe-tin-top-banner .banner-goodluck{font-size:clamp(16px,4.5vw,22px)!important;padding:8px 8px 10px!important}.cafe-tin-top-banner .banner-lucky-cat{left:7px!important;top:5px!important;width:40px!important;height:40px!important}.dashboard-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}.dash-stat{padding:9px 7px!important;min-width:0!important}.dash-stat .stat-head{font-size:10px!important;gap:4px!important}.dash-stat b{font-size:clamp(12px,3.4vw,17px)!important;overflow-wrap:anywhere!important}.dash-stat small{font-size:9px!important}.stat-icon{width:27px!important;height:27px!important;font-size:14px!important}}
+</style>
+<script id="cafetin-move-banner-to-page-top">
+(function(){function moveCafeTinBanner(){var banner=document.querySelector('.cafe-tin-top-banner');var app=document.querySelector('.app');if(banner&&app&&banner.parentElement!==document.body){document.body.insertBefore(banner,app)}else if(banner&&app&&banner.nextElementSibling!==app){document.body.insertBefore(banner,app)}if(banner){banner.setAttribute('aria-label','Banner Cafe Tin ở đầu trang')}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',moveCafeTinBanner,{once:true})}else{moveCafeTinBanner()}window.addEventListener('load',moveCafeTinBanner,{once:true})})();
+</script>
