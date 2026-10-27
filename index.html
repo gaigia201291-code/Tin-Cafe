@@ -2039,15 +2039,14 @@ window.addEventListener('pageshow',fix);
   const get=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
   const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
   const fmt=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
-  const norm=v=>{if(!v)return '';const s=String(v).trim();const m=s.match(/(\d{4}-\d{2}-\d{2})/);if(m)return m[1];const d=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);if(d)return d[3]+'-'+String(d[2]).padStart(2,'0')+'-'+String(d[1]).padStart(2,'0');const dt=new Date(s);return isNaN(dt.getTime())?'':dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0')};
-  const bank=x=>{const v=String(x.paymentMethod||x.payment||x.method||x.paymentType||x.payMethod||'cash').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');return ['bank','transfer','transferring','chuyen khoan','ck','momo','qr','wire'].includes(v)||v.includes('chuyen khoan')||v.includes('bank transfer')};
+  const norm=v=>{const m=String(v||'').match(/\d{4}-\d{2}-\d{2}/);return m?m[0]:''};
+  const bank=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod||x.payment||x.method||'cash').toLowerCase());
   const orderMoney=o=>{let v=Number(o.total);if(!Number.isFinite(v))v=(o.items||[]).reduce((s,i)=>s+(Number(i.price)||0)*(Number(i.qty)||0),0);return v+(Number(o.tip)||Number(o.orderTip)||0)};
   const dayAdd=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
   function flow(d){
     const os=get('tin2_orders',[]).filter(o=>norm(o.date)===d), es=get('tin2_expenses',[]).filter(e=>norm(e.date)===d);
     let ci=0,bi=0,co=0,bo=0;
-    // Đơn ghi nợ/chưa thanh toán không phải tiền đã thực nhận, không cộng vào kết toán.
-    os.filter(o=>o.paymentStatus!=='unpaid').forEach(o=>{if(bank(o))bi+=orderMoney(o);else ci+=orderMoney(o)});
+    os.forEach(o=>{if(bank(o))bi+=orderMoney(o);else ci+=orderMoney(o)});
     es.forEach(e=>{if(bank(e))bo+=Number(e.amount)||0;else co+=Number(e.amount)||0});
     return {ci,bi,co,bo};
   }
@@ -2182,7 +2181,46 @@ window.addEventListener('pageshow',fix);
   .app .sidebar .side-nav nav.tabs.no-print > button,
   .sidebar .side-nav nav.tabs.no-print > button { padding:0 !important; aspect-ratio:1 / 1 !important; border-radius:10px !important; }
 }
-</style>\n</body></html>
+</style>\n<script id="cafetin-unpaid-order-settlement-fix-v9">
+/* Cafe Tin: unpaid orders never affect cash/bank; rebuild settlement from current records so deleted test orders do not remain in cached closing balances. */
+(function(){
+ const START='2026-10-17';
+ const el=id=>document.getElementById(id);
+ const get=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v}catch(e){return f}};
+ const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+ const fmt=n=>(Number(n)||0).toLocaleString('vi-VN')+'đ';
+ const norm=v=>{const m=String(v||'').match(/\d{4}-\d{2}-\d{2}/);return m?m[0]:''};
+ const dayAdd=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+ const bank=x=>['bank','transfer','transfering','chuyển khoản','chuyen khoan','ck','momo','qr'].includes(String(x.paymentMethod??x.payment??x.method??x.paymentType??x.payMethod??'cash').trim().toLowerCase());
+ const unpaid=o=>{const v=String(o.paymentStatus??o.payment_status??o.payStatus??o.statusPayment??'paid').trim().toLowerCase();return ['unpaid','pending','not_paid','not paid','chưa thanh toán','chua thanh toan','ghi nợ','ghi no','debt'].includes(v)};
+ const amount=o=>{let v=Number(o.total);if(!Number.isFinite(v))v=(Array.isArray(o.items)?o.items:[]).reduce((s,i)=>s+(Number(i.price)||0)*(Number(i.qty)||0),0);return v+(Number(o.tip)||Number(o.orderTip)||0)};
+ function flow(d){
+   const os=get('tin2_orders',[]).filter(o=>norm(o.date||o.createdAt||o.created_at||o.timestamp)===d&&!unpaid(o));
+   const es=get('tin2_expenses',[]).filter(e=>norm(e.date||e.createdAt||e.timestamp)===d);
+   let ci=0,bi=0,co=0,bo=0,dc=0,db=0;
+   os.forEach(o=>{if(bank(o))bi+=amount(o);else ci+=amount(o)});
+   es.forEach(e=>{if(bank(e))bo+=Number(e.amount)||0;else co+=Number(e.amount)||0});
+   get('tin2_customer_debts',[]).forEach(x=>(Array.isArray(x.history)?x.history:[]).filter(h=>norm(h.date)===d).forEach(h=>{if(bank({paymentMethod:h.paymentMethod}))db+=Number(h.amount)||0;else dc+=Number(h.amount)||0}));
+   get('tin2_debts',[]).forEach(x=>{if(x.status==='paid'&&norm(x.paidDate||x.date)===d){if(bank({paymentMethod:x.paymentMethod}))db+=Number(x.amount)||0;else dc+=Number(x.amount)||0}});
+   return {ci,bi,co,bo,dc,db};
+ }
+ function base(){const o=get('tin2_opening_balances',{});return {date:norm(o.date)||START,cash:Number(o.cash)||0,bank:Number(o.bank)||0}}
+ function balancesBefore(d){const b=base();let c=b.cash,k=b.bank,x=b.date,guard=0;const checks=get('tin2_daily_opening_checks',{});while(x<d&&guard++<4000){const f=flow(x);c+=f.ci+f.dc-f.co;k+=f.bi+f.db-f.bo;const m=checks[x];if(m&&m.applied===true){c=Number(m.cash)||0;k=Number(m.bank)||0}x=dayAdd(x,1)}return {cash:c,bank:k}}
+ function render(){const de=el('settleDate');if(!de)return;if(!de.value)de.value=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(new Date().getDate()).padStart(2,'0');if(de.value<START)de.value=START;const d=de.value,op=balancesBefore(d),f=flow(d);const cc=op.cash+f.ci+f.dc-f.co,cb=op.bank+f.bi+f.db-f.bo;
+   const putText=(id,v)=>{const n=el(id);if(n)n.textContent=fmt(v)};
+   putText('settleCashOpening',op.cash);putText('settleBankOpening',op.bank);putText('settleCashIn',f.ci);putText('settleBankIn',f.bi);putText('settleCashOut',f.co);putText('settleBankOut',f.bo);putText('settleCashDebtIn',f.dc);putText('settleBankDebtIn',f.db);putText('settleCashBalance',cc);putText('settleBankBalance',cb);
+   const st=el('settleStatus');if(st)st.textContent='Đang tính theo dữ liệu hiện tại';const msg=el('settleResult');if(msg)msg.textContent='Order chưa thanh toán và order đã xóa không được tính vào tiền mặt/chuyển khoản. Số cuối ngày được tính lại từ số dư đầu ngày + tiền thực nhận − chi phí.';
+ }
+ function settle(){const de=el('settleDate');if(!de)return;const d=de.value,op=balancesBefore(d),f=flow(d),cc=op.cash+f.ci+f.dc-f.co,cb=op.bank+f.bi+f.db-f.bo;const ledger=get('tin2_daily_settlements',{});ledger[d]={date:d,cashOpening:op.cash,bankOpening:op.bank,cashIn:f.ci+f.dc,bankIn:f.bi+f.db,cashOut:f.co,bankOut:f.bo,cashClosing:cc,bankClosing:cb,settled:true,settledAt:new Date().toISOString()};put('tin2_daily_settlements',ledger);render();}
+ window.renderSettlement=render;window.renderSettlementV8=render;window.settleToday=settle;
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(render,0));else setTimeout(render,0);
+ document.addEventListener('change',e=>{if(e.target&&e.target.id==='settleDate')render()});
+ document.addEventListener('click',e=>{if(e.target&&['saveOrderOrder','addExpense'].includes(e.target.id))setTimeout(render,150)});
+ const oldRefresh=window.refreshSettlement;if(typeof oldRefresh==='function')window.refreshSettlement=function(){const r=oldRefresh.apply(this,arguments);setTimeout(render,0);return r};
+})();
+</script>
+
+</body></html>
 
 <style id="cafe-tin-bold-visual-final">
 /* ===== Cafe Tin - tăng độ nổi bật ===== */
