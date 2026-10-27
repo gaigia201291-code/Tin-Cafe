@@ -1980,6 +1980,16 @@ window.addEventListener('pageshow',fix);
 </script>\n
 
 <style id="cafe-tin-debt-payment-fix">#debts .debt-pay-editor input,#debts .debt-pay-editor select{min-height:42px;border:1px solid var(--line,#ddd);border-radius:9px;padding:8px;background:var(--card,#fff);color:inherit}#debts .debt-pay-editor label{display:block;margin-bottom:5px;font-size:13px;font-weight:700}#debts .debt-pay-editor button{min-height:40px}</style>
+
+/* FIX THUC TE: cac muc thong ke trong tab Thong ke - toi da 3 muc moi hang */
+<style id="cafe-tin-stat-grid-fix">
+#stats .grid, section#stats .card .grid { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:10px !important; width:100% !important; box-sizing:border-box !important; }
+#stats .grid > .stat, section#stats .card .grid > * { min-width:0 !important; max-width:100% !important; box-sizing:border-box !important; }
+#stats .grid > .stat { padding:10px 8px !important; overflow-wrap:anywhere !important; }
+#stats .grid > .stat small { font-size:clamp(10px,2.6vw,13px) !important; }
+#stats .grid > .stat b { font-size:clamp(12px,3.3vw,20px) !important; overflow-wrap:anywhere !important; }
+@media(max-width:520px){ #stats .grid, section#stats .card .grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:6px !important; } #stats .grid > .stat { padding:8px 5px !important; } #stats .grid > .stat small { font-size:10px !important; } #stats .grid > .stat b { font-size:clamp(11px,3vw,15px) !important; } }
+</style>
 </body></html>
 
 <style id="cafe-tin-bold-visual-final">
