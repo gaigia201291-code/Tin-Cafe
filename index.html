@@ -2100,7 +2100,88 @@ window.addEventListener('pageshow',fix);
 #stats .grid > .stat b { font-size:clamp(12px,3.3vw,20px) !important; overflow-wrap:anywhere !important; }
 @media(max-width:520px){ #stats .grid, section#stats .card .grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:6px !important; } #stats .grid > .stat { padding:8px 5px !important; } #stats .grid > .stat small { font-size:10px !important; } #stats .grid > .stat b { font-size:clamp(11px,3vw,15px) !important; } }
 </style>
-</body></html>
+\n<style id="cafetin-menu-image-final-override">
+/* Cafe Tin: chỉ hiện ảnh trong các ô menu chính, ảnh phóng lớn phủ kín ô */
+.app .sidebar .side-nav nav.tabs.no-print,
+.app .sidebar .side-nav nav.tabs.no-print.tabs,
+.sidebar .side-nav nav.tabs.no-print {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-auto-flow:row !important;
+  gap:8px !important;
+  width:100% !important;
+  overflow:visible !important;
+  align-items:stretch !important;
+}
+.app .sidebar .side-nav nav.tabs.no-print > button,
+.sidebar .side-nav nav.tabs.no-print > button {
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:1 / 1 !important;
+  margin:0 !important;
+  padding:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  font-size:0 !important;
+  line-height:0 !important;
+  border-radius:12px !important;
+  box-sizing:border-box !important;
+}
+.app .sidebar .side-nav nav.tabs.no-print > button > span:not(.navico),
+.sidebar .side-nav nav.tabs.no-print > button > span:not(.navico) {
+  display:none !important;
+  visibility:hidden !important;
+  width:0 !important;
+  height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.app .sidebar .side-nav nav.tabs.no-print > button > .navico.cafe-card-img,
+.sidebar .side-nav nav.tabs.no-print > button > .navico.cafe-card-img {
+  display:flex !important;
+  flex:1 1 100% !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  border-radius:inherit !important;
+  line-height:0 !important;
+}
+.app .sidebar .side-nav nav.tabs.no-print > button > .navico.cafe-card-img > img,
+.sidebar .side-nav nav.tabs.no-print > button > .navico.cafe-card-img > img {
+  display:block !important;
+  flex:1 1 100% !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:100% !important;
+  min-height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:inherit !important;
+}
+@media(max-width:620px) {
+  .app .sidebar .side-nav nav.tabs.no-print,
+  .sidebar .side-nav nav.tabs.no-print { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:6px !important; }
+  .app .sidebar .side-nav nav.tabs.no-print > button,
+  .sidebar .side-nav nav.tabs.no-print > button { padding:0 !important; aspect-ratio:1 / 1 !important; border-radius:10px !important; }
+}
+</style>\n</body></html>
 
 <style id="cafe-tin-bold-visual-final">
 /* ===== Cafe Tin - tăng độ nổi bật ===== */
