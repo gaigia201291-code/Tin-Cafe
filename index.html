@@ -4,9 +4,6 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f4328"><link rel="manifest" href="manifest.json">
 <title>Cafe Tin - Order</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
 <style>
 :root{--bg:#edf8ec;--card:rgba(255,255,255,.94);--ink:#24452d;--muted:#718273;--accent:#78b982;--accent-dark:#5d9f68;--line:#d7ead5;--good:#68ad78;--danger:#dc7777;--blue:#a7d8c1;--lav:#c9dcb7;--cream:#fff9ed;--leaf:#8fbd79;--flower:#e7a8b8}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 5%,#fff 0 7%,transparent 25%),radial-gradient(circle at 95% 10%,#dff1d8 0 11%,transparent 29%),linear-gradient(180deg,#e6f5df 0%,#f4faef 45%,#eaf6e6 100%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;position:relative;overflow-x:hidden}
@@ -816,60 +813,6 @@ body:after{content:'✿  ✧  ♡  ✦';position:fixed;right:14px;bottom:12px;z-
 @media(max-width:620px){
  .sidebar .side-nav nav.tabs.no-print,.sidebar .side-nav .tabs.no-print{gap:7px!important}
  .sidebar .side-nav nav.tabs.no-print>button,.sidebar .side-nav .tabs.no-print>button{padding:3px!important;aspect-ratio:1/1!important}
-}
-</style>
-
-<style id="cafe-tin-readable-font-size">
-/* Tang co chu va do dam de de doc; giu nguyen bo cuc va chuc nang */
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { font-size: 18px !important; font-weight: 700 !important; }
-body :is(button, input, select, textarea, label, .btn, .tab, .tabs button, .side-nav button) { font-size: 18px !important; font-weight: 700 !important; }
-body :is(p, li, td, th, .card, .modal, .toast, .side-nav, .dashboard-grid) { font-weight: 700 !important; }
-body :is(h1,h2,h3,h4,.title,.section-title) { font-weight: 700 !important; }
-body .tabs button, body .side-nav button { font-size: 20px !important; }
-body input::placeholder, body textarea::placeholder { font-weight: 600 !important; opacity: 0.9; }
-</style>
-
-<style id="cafe-tin-extra-large-accessible-font">
-/* Tăng cỡ chữ toàn ứng dụng để dễ đọc hơn, vẫn giữ font viết tay đã chọn */
-body, body * { font-weight: 700 !important; }
-body { font-size: 20px !important; line-height: 1.45 !important; }
-button, .btn, [role="button"], .tabs button, .tab, .side-nav button { font-size: 22px !important; line-height: 1.25 !important; font-weight: 700 !important; }
-input, select, textarea { font-size: 21px !important; line-height: 1.35 !important; font-weight: 700 !important; min-height: 44px; }
-label, .label, th, td, p, li { font-size: 20px !important; line-height: 1.45 !important; font-weight: 700 !important; }
-h1 { font-size: 34px !important; font-weight: 700 !important; }
-h2 { font-size: 30px !important; font-weight: 700 !important; }
-h3 { font-size: 26px !important; font-weight: 700 !important; }
-small, .small, .hint, .muted, .help-text { font-size: 17px !important; font-weight: 700 !important; }
-@media (max-width: 620px) {
- body { font-size: 19px !important; }
- button, .btn, [role="button"], .tabs button, .tab, .side-nav button { font-size: 21px !important; min-height: 48px; }
- input, select, textarea { font-size: 20px !important; min-height: 46px; }
- label, .label, th, td, p, li { font-size: 19px !important; }
- h1 { font-size: 30px !important; } h2 { font-size: 27px !important; } h3 { font-size: 24px !important; }
- small, .small, .hint, .muted, .help-text { font-size: 16px !important; }
-}
-</style>
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap&subset=vietnamese" rel="stylesheet">
-<style id="cafe-tin-font-refresh-2026">
-/* Be Vietnam Pro: rõ dấu tiếng Việt, dễ đọc; Poppins cho tiêu đề. */
-html { font-size: 18px !important; }
-body, body *:not(svg):not(path):not(i):not(.icon):not([class*="fa-"]) { font-family: "Be Vietnam Pro", sans-serif !important; }
-body { font-size: 19px !important; line-height: 1.45 !important; font-weight: 600 !important; }
-.app p, .app span, .app div, .app label, .app li, .app td, .app th, .app summary, .app option, .app small, .app .muted, .app .hint, .app .help-text { font-size: 18px !important; line-height: 1.45 !important; font-weight: 600 !important; }
-.app button, .app .btn, .app input, .app select, .app textarea, .app .tabs button, .app nav button, .app [role="button"] { font-size: 19px !important; line-height: 1.35 !important; font-weight: 700 !important; }
-.app h1, .app h2, .app h3, .app h4, .brand b, .brand-tin { font-family: "Poppins", "Be Vietnam Pro", sans-serif !important; font-weight: 800 !important; }
-.app h1 { font-size: 30px !important; } .app h2 { font-size: 27px !important; } .app h3, .app h4 { font-size: 23px !important; }
-.app input::placeholder, .app textarea::placeholder { font-size: 18px !important; font-weight: 600 !important; }
-@media (max-width: 620px) {
- body { font-size: 20px !important; }
- .app p, .app span, .app div, .app label, .app li, .app td, .app th, .app summary, .app option, .app small, .app .hint, .app .help-text { font-size: 18px !important; }
- .app button, .app .btn, .app input, .app select, .app textarea, .app .tabs button, .app nav button, .app [role="button"] { font-size: 19px !important; }
- .app h1 { font-size: 31px !important; } .app h2 { font-size: 28px !important; } .app h3, .app h4 { font-size: 24px !important; }
 }
 </style>
 </head>
@@ -2517,48 +2460,3 @@ window.addEventListener('pageshow',fix);
 <script id="cafetin-move-banner-to-page-top">
 (function(){function moveCafeTinBanner(){var banner=document.querySelector('.cafe-tin-top-banner');var app=document.querySelector('.app');if(banner&&app&&banner.parentElement!==document.body){document.body.insertBefore(banner,app)}else if(banner&&app&&banner.nextElementSibling!==app){document.body.insertBefore(banner,app)}if(banner){banner.setAttribute('aria-label','Banner Cafe Tin ở đầu trang')}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',moveCafeTinBanner,{once:true})}else{moveCafeTinBanner()}window.addEventListener('load',moveCafeTinBanner,{once:true})})();
 </script>
-
-<style id="cafe-tin-handwritten-font">
-/* Font chữ viết tay mềm mại theo mẫu người dùng gửi */
-body, body button, body input, body select, body textarea, body table, body th, body td, body label, body .btn, body .tabs button, body .tab, body .card, body .modal, body .toast, body .side-nav, body .dashboard-grid {
-  font-family: "Dancing Script", "Segoe Print", cursive !important;
-}
-body { font-weight: 600; }
-body button, body input, body select, body textarea { font-weight: 600; }
-</style>
-
-<style id="cafe-tin-accessibility-font-extra-large">
-/* Chế độ chữ thật lớn, đậm, dễ đọc trên điện thoại */
-html { font-size: 20px !important; }
-body, body *:not(svg):not(path):not(i):not(.icon):not([class*="fa-"]) {
-  font-family: "Dancing Script", "Segoe Print", cursive !important;
-}
-body { font-size: 21px !important; line-height: 1.45 !important; font-weight: 700 !important; }
-.app, .app p, .app span, .app div, .app label, .app li, .app td, .app th,
-.app summary, .app option, .app .muted, .app small, .app .hint, .app .help-text {
-  font-size: 20px !important; font-weight: 700 !important; line-height: 1.4 !important;
-}
-.app button, .app .btn, .app input, .app select, .app textarea,
-.app .tabs button, .app nav button, .app [role="button"] {
-  font-size: 22px !important; font-weight: 800 !important; line-height: 1.3 !important;
-}
-.app h1 { font-size: 32px !important; font-weight: 800 !important; }
-.app h2 { font-size: 29px !important; font-weight: 800 !important; }
-.app h3, .app h4 { font-size: 25px !important; font-weight: 800 !important; }
-.app table { font-size: 19px !important; }
-.app input::placeholder, .app textarea::placeholder { font-size: 20px !important; font-weight: 700 !important; }
-@media (max-width: 620px) {
-  body { font-size: 22px !important; }
-  .app, .app p, .app span, .app div, .app label, .app li, .app td, .app th,
-  .app summary, .app option, .app small, .app .hint, .app .help-text {
-    font-size: 21px !important; line-height: 1.4 !important;
-  }
-  .app button, .app .btn, .app input, .app select, .app textarea,
-  .app .tabs button, .app nav button, .app [role="button"] {
-    font-size: 23px !important; line-height: 1.3 !important;
-  }
-  .app h1 { font-size: 34px !important; }
-  .app h2 { font-size: 30px !important; }
-  .app h3, .app h4 { font-size: 27px !important; }
-}
-</style>
